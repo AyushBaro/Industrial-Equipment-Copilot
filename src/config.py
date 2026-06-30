@@ -20,6 +20,7 @@ CHROMA_COLLECTION = "maintenance_corpus"
 CORPUS_MANIFEST = BUILD_DIR / "corpus_manifest.json"  # content hashes → skip re-embed
 EVAL_DIR = ROOT / "Data" / "eval"
 PHASE2_SEED = EVAL_DIR / "phase2_seed.jsonl"
+PHASE3_SEED = EVAL_DIR / "phase3_seed.jsonl"
 
 RETRIEVAL_K = 5            # chunks returned by hybrid retrieval
 RRF_K = 60                 # reciprocal-rank-fusion constant

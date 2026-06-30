@@ -1,0 +1,12 @@
+{"question": "What was sensor 4's trend for engine 23 over its last 50 cycles?", "expected_route": "timeseries", "expected_engine": 23, "type": "timeseries"}
+{"question": "Show me the Ps30 trend for engine 1.", "expected_route": "timeseries", "expected_engine": 1, "type": "timeseries"}
+{"question": "Is engine 12's core speed in alarm?", "expected_route": "timeseries", "expected_engine": 12, "type": "timeseries"}
+{"question": "Give me an overview of engine 76's current status.", "expected_route": "timeseries", "expected_engine": 76, "type": "timeseries"}
+{"question": "Engine 47 is showing elevated Ps30 readings — is this consistent with a known fault pattern, and what does the manual say to do about it?", "expected_route": "fusion", "expected_engine": 47, "type": "fusion"}
+{"question": "Engine 47's HPC discharge temperature looks high. Is that a known fault and what is the recommended procedure?", "expected_route": "fusion", "expected_engine": 47, "type": "fusion"}
+{"question": "What is the recommended inspection interval for the HPC?", "expected_route": "doc", "expected_engine": null, "type": "doc"}
+{"question": "What does fault code FC-HPC-001 mean?", "expected_route": "doc", "expected_engine": null, "type": "doc"}
+{"question": "Show me the trend for engine 999.", "expected_route": "out_of_scope", "expected_engine": null, "type": "out_of_scope"}
+{"question": "What was the sensor trend last week?", "expected_route": "out_of_scope", "expected_engine": null, "type": "out_of_scope"}
+{"question": "What is the tire pressure of a Boeing 747?", "expected_route": "out_of_scope", "expected_engine": null, "type": "out_of_scope"}
+{"question": "What's the stock price of the engine manufacturer?", "expected_route": "out_of_scope", "expected_engine": null, "type": "out_of_scope"}

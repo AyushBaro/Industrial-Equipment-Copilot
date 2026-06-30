@@ -3,7 +3,7 @@
 **Read this anytime to see where you are and what's next.**
 Full spec lives in `Project_Docs/PRD.md`. This file is the living checklist.
 
-- **Status:** ✅ Phases 0–2 complete (offline 13/13 green; live 3/3 passed) — next: Phase 3
+- **Status:** ✅ Phases 0–3 complete (offline 22/22 green; live 7/7 passed) — next: Phase 4
 - **Started:** 2026-06-30 (Tue)
 - **Target finish:** ~Jul 15 (focused) / early Aug (part-time, evenings+weekends)
 - **App LLM stack:** **OpenAI only** — chat model + OpenAI embeddings. (Claude Code is just the tool you build *with*; the app calls OpenAI.)
@@ -68,7 +68,7 @@ changed in exactly one place.
 - ✅ 🤖 **Asset hierarchy** (`build/asset_hierarchy.csv`) — 21 sensors → subsystem, data-derived nominal range + alarm threshold/direction. Single source of truth.
 - ✅ 🤖 **19 Claude-authored maintenance docs** in `data/corpus/` (7 manuals, 3 fault-code, 9 work orders), every cited value asserted against the hierarchy
 - ✅ 🤖 8-test acceptance suite `tests/test_phase1.py` — **all green** (incl. the corpus↔hierarchy consistency lint)
-- ⬜ 👤 (optional) Spot-check: `make data` then eyeball `build/asset_hierarchy.csv`; skim 2–3 docs in `data/corpus/`
+- ✅ 👤 (optional) Spot-check: `make data` then eyeball `build/asset_hierarchy.csv`; skim 2–3 docs in `data/corpus/`
 
 **Checkpoint:** ✅ `make test` → 8/8 pass. Time-series queries work; corpus is consistent with the data.
 **Artifacts:** `src/` (config, llm_client stub, data/, docs_gen/), `data/corpus/`, `tests/`, `Makefile`.
@@ -91,15 +91,26 @@ changed in exactly one place.
 
 ---
 
-## Phase 3 — Structured tool + router  (Jul 6 – Jul 7)
+## Phase 3 — Structured tool + router  ✅ COMPLETE (2026-06-30)
 
-- ⬜ 🤖 Time-series query tool over DuckDB (trends, last-N-cycles, threshold checks) joined to the asset hierarchy
-- ⬜ 🤖 Routing layer (OpenAI tool/function calling): classify → doc-lookup / timeseries-lookup / fusion, then dispatch
-- ⬜ 🤖 Fusion synthesis: combine telemetry + retrieved docs into one grounded, cited answer
-- ⬜ 🤖 Abstention path: low retrieval confidence / out-of-scope → "I don't have enough information"
-- ⬜ 👤 Test 3 fusion questions manually (e.g. "engine 47, sensor 11 elevated — known fault + procedure?")
+- ✅ 🤖 Bounded time-series tools (`sensor_trend`, `sensor_status`, `engine_overview`) over DuckDB + hierarchy (no free-form SQL)
+- ✅ 🤖 Router (`gpt-4o-mini`, structured output): classify → doc/timeseries/fusion/out_of_scope + extract engine/sensors/intent
+- ✅ 🤖 Fusion synthesis: docs + telemetry in one answer; **telemetry citations verified** like doc citations
+- ✅ 🤖 Robust abstention: out-of-scope, no/invalid engine, unknown sensor
+- ✅ 🤖 Tests: 9 offline (tools/validation/dispatch) + 4 live (router acc, timeseries, fusion, abstain) — all green
+- ✅ 👤 Demo: timeseries + flagship fusion query both work end-to-end
 
-**Checkpoint:** a fusion query returns a synthesized answer pulling from **both** sources.
+**Checkpoint:** ✅ fusion query pulls from **both** sensor data and docs, citing both.
+**Artifacts:** `src/rag/` + `timeseries.py`, `router.py`, generalized `synthesize.py`, routed `pipeline.py`, `phase3_seed.jsonl`.
+
+### ⚠️ Findings to fix in Phase 5 (honest failure cases — good README material)
+1. **Fusion retrieval ranks work orders over the canonical procedure.** The engine-47
+   Ps30 question cited `wo-1002-engine47` instead of `manual-hpc`/`FC-HPC-001`, and the
+   answer wrongly said "the manual does not provide specific actions." Retrieval/ranking
+   tuning needed (boost manuals/fault-codes for fusion; raise k so both land in context).
+2. **Router picks `trend` where `status` is better.** "Elevated Ps30 / known fault?"
+   used a trend tool and under-stated the alarm (Ps30 IS in alarm at the last cycle).
+   Consider defaulting fusion/alarm-style questions to a status check.
 
 ---
 
@@ -160,13 +171,14 @@ switching to hybrid retrieval." Record the date + the change that caused each ju
 
 ## 👉 RIGHT NOW, DO THIS NEXT
 
-Phases 0–2 are done. Try the copilot, then start **Phase 3 — Router + time-series tool**:
+Phases 0–3 are done. The system now routes + fuses. Next is **Phase 4 — Golden eval set** (your work):
 
-1. 👤 (optional) Try it: `make embed` then `make ask Q="What does fault code FC-HPC-001 mean?"`
-2. 🤖 Ask Claude Code: *"Plan Phase 3: add the DuckDB time-series query tool, the query router (doc / timeseries / fusion), fusion synthesis, and robust abstention."*
+1. 👤 (optional) Try fusion: `make ask Q="Engine 47 is showing elevated Ps30 — is this a known fault and what does the manual say?"`
+2. 👤 **Phase 4 is mostly yours and unskippable** — hand-label 40–60 Q/A pairs across doc/timeseries/fusion + abstention cases. Claude can scaffold the format and suggest candidates, but you verify every label.
+3. 🤖 Ask Claude Code: *"Plan Phase 4: define the golden eval format and generate candidate questions across all 3 routes for me to label."*
 
-> Phase 3 is the architecturally interesting one — it makes the system answer
-> sensor-data questions and fuse them with the docs, not just look up text.
+> The two Phase-3 findings above are deliberately left for Phase 5 — once the golden
+> set + scoring exist, fixing them gives you a measurable before/after (your best artifact).
 
 > The 3 ways people fail this: (1) rushing the hand-labeled eval set, (2) building the
 > router before the doc-only baseline works, (3) trusting the LLM judge without
