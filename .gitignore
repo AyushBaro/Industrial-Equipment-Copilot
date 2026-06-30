@@ -1,0 +1,27 @@
+# Secrets — never commit
+.env
+.env.*
+!.env.example
+
+# Raw data (large; downloaded separately from NASA)
+Data/raw/
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Vector store / local DBs (regenerated from source)
+*.duckdb
+.chroma/
+chroma/
+.lancedb/
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
