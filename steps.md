@@ -104,13 +104,14 @@ changed in exactly one place.
 **Artifacts:** `src/rag/` + `timeseries.py`, `router.py`, generalized `synthesize.py`, routed `pipeline.py`, `phase3_seed.jsonl`.
 
 ### ⚠️ Findings to fix in Phase 5 (honest failure cases — good README material)
+**Documented with evidence in `Project_Docs/case_study_retrieval_and_routing.md`** (README-ready).
 1. **Fusion retrieval ranks work orders over the canonical procedure.** The engine-47
-   Ps30 question cited `wo-1002-engine47` instead of `manual-hpc`/`FC-HPC-001`, and the
-   answer wrongly said "the manual does not provide specific actions." Retrieval/ranking
-   tuning needed (boost manuals/fault-codes for fusion; raise k so both land in context).
+   Ps30 question cited `wo-1002-engine47` instead of `manual-hpc`/`FC-HPC-001` (which
+   didn't make the top 5), so the answer wrongly said "the manual does not provide
+   specific actions." Fix: boost manual/fault-code types for fusion; raise k.
 2. **Router picks `trend` where `status` is better.** "Elevated Ps30 / known fault?"
-   used a trend tool and under-stated the alarm (Ps30 IS in alarm at the last cycle).
-   Consider defaulting fusion/alarm-style questions to a status check.
+   used a trend tool and under-stated the alarm (Ps30 = 48.28 vs 48.10 threshold = IN
+   ALARM). Fix: bias fusion/alarm-style questions to a status check.
 
 ---
 
