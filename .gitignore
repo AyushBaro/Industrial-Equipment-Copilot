@@ -15,6 +15,9 @@ __pycache__/
 .pytest_cache/
 .ipynb_checkpoints/
 
+# Generated build artifacts (regenerated from source via `make data`)
+build/
+
 # Vector store / local DBs (regenerated from source)
 *.duckdb
 .chroma/

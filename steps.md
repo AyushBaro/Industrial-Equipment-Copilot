@@ -3,7 +3,7 @@
 **Read this anytime to see where you are and what's next.**
 Full spec lives in `Project_Docs/PRD.md`. This file is the living checklist.
 
-- **Status:** Phase 0 (setup) nearly done — starting Phase 1
+- **Status:** ✅ Phase 0 & Phase 1 complete (8/8 tests green) — next: Phase 2
 - **Started:** 2026-06-30 (Tue)
 - **Target finish:** ~Jul 15 (focused) / early Aug (part-time, evenings+weekends)
 - **App LLM stack:** **OpenAI only** — chat model + OpenAI embeddings. (Claude Code is just the tool you build *with*; the app calls OpenAI.)
@@ -39,37 +39,39 @@ changed in exactly one place.
 - ✅ CMAPSS data downloaded → `Data/raw/CMAPSSData/` (FD001–004 train/test/RUL, readme, + `Damage Propagation Modeling.pdf`)
 - ✅ `OPENAI_API_KEY` in `.env`
 - ✅ PRD written → `Project_Docs/PRD.md`
-- ⬜ `git init` + first commit (repo is not yet under version control)
-- ⬜ `CLAUDE.md` at repo root (project context for Claude Code)
-- ⬜ Python env + dependencies
-- ⬜ Verify Node 18+ / Python 3.11+ installed
+- ✅ `git init` + first commit (branch `main`, commit `eb4ac0c`)
+- ✅ `.gitignore` (excludes `.env` + `Data/raw/`) and `.env.example`
+- ✅ `CLAUDE.md` at repo root (project context for Claude Code)
+- ✅ Node v24.2.0 / Python 3.13.4 confirmed
+- ⬜ Python env + dependencies (Phase 1)
 
 ---
 
-## Phase 0 — Setup  (today, ~1 hr)
+## Phase 0 — Setup  ✅ COMPLETE (2026-06-30)
 
 - ✅ 👤 Download CMAPSS into `Data/raw/CMAPSSData/`
 - ✅ 👤 Put `OPENAI_API_KEY` in `.env`
-- ⬜ 👤 Confirm Node 18+ (`node -v`) and Python 3.11+ (`python3 --version`)
-- ⬜ 👤 `git init`, add `.gitignore` (must ignore `.env`, `Data/raw/`, `__pycache__/`, `.venv/`), first commit
-- ⬜ 🤖 Create `CLAUDE.md` from PRD §0/§2/§3 + the OpenAI-only rule + the non-negotiables (forced citation, abstention over guessing, keep eval green)
-- ⬜ 👤 Read `Data/raw/CMAPSSData/readme.txt` once so you know what the 21 sensors physically are
+- ✅ 👤 Confirm Node 18+ (v24.2.0) and Python 3.11+ (3.13.4)
+- ✅ 👤 `git init`, add `.gitignore` (ignores `.env`, `Data/raw/`, `__pycache__/`, `.venv/`), first commit
+- ✅ 🤖 Create `CLAUDE.md` (OpenAI-only rule + non-negotiables: forced citation, abstention, keep eval green)
+- ✅ 👤 Read `Data/raw/CMAPSSData/readme.txt`
 
-**Checkpoint:** repo is committed, `.env` is gitignored, `CLAUDE.md` exists.
+**Checkpoint:** ✅ repo committed (`main`/`eb4ac0c`), `.env` gitignored, `CLAUDE.md` exists.
 
 ---
 
-## Phase 1 — Data foundation  (Jun 30 – Jul 1)
+## Phase 1 — Data foundation  ✅ COMPLETE (2026-06-30)
 
-- ⬜ 🤖 Set up Python project (`pyproject.toml`/`requirements.txt`, `.venv`): `openai`, `duckdb`, `pandas`, `chromadb` (or `lancedb`), `rank_bm25`, `fastapi`, `uvicorn`, `streamlit`, `python-dotenv`, `pytest`, `pypdf`
-- ⬜ 🤖 DuckDB loader for **FD001 only** — parse the space-delimited file into a table (`unit_number`, `time_in_cycles`, `op_setting_1..3`, `sensor_1..21`)
-- ⬜ 🤖 Identify & document the flat/constant sensors in FD001 (drop or flag them)
-- ⬜ 🤖 Build the **asset hierarchy table** (sensor → subsystem → physical quantity → unit → nominal range → alarm threshold) as the single source of truth
-- ⬜ 🤖 Generate **15–25 synthetic maintenance docs** (manuals, work orders, fault-code reference) grounded in the asset hierarchy + `readme.txt`; keep the generation script in the repo
-- ⬜ 🤖 Optionally extract text from `Damage Propagation Modeling.pdf` as a real grounding doc
-- ⬜ 👤 Spot-check: pull one engine's sensor curve and confirm it looks like degradation; skim 2–3 generated docs for consistency with real sensor IDs
+- ✅ 🤖 Python project + `.venv` + pinned `requirements.txt` (OpenAI-only stack)
+- ✅ 🤖 DuckDB loader for **FD001** — train (100 engines, 20631 rows), test, and true RUL tables
+- ✅ 🤖 Flat-sensor detection (SNR / drift-based) → canonical constant set `{1,5,6,10,16,18,19}`
+- ✅ 🤖 **Asset hierarchy** (`build/asset_hierarchy.csv`) — 21 sensors → subsystem, data-derived nominal range + alarm threshold/direction. Single source of truth.
+- ✅ 🤖 **19 Claude-authored maintenance docs** in `data/corpus/` (7 manuals, 3 fault-code, 9 work orders), every cited value asserted against the hierarchy
+- ✅ 🤖 8-test acceptance suite `tests/test_phase1.py` — **all green** (incl. the corpus↔hierarchy consistency lint)
+- ⬜ 👤 (optional) Spot-check: `make data` then eyeball `build/asset_hierarchy.csv`; skim 2–3 docs in `data/corpus/`
 
-**Checkpoint:** you can query "engine 1, sensor 4, last 50 cycles" and get real numbers; docs reference real sensor IDs and consistent thresholds.
+**Checkpoint:** ✅ `make test` → 8/8 pass. Time-series queries work; corpus is consistent with the data.
+**Artifacts:** `src/` (config, llm_client stub, data/, docs_gen/), `data/corpus/`, `tests/`, `Makefile`.
 
 ---
 
@@ -155,9 +157,12 @@ switching to hybrid retrieval." Record the date + the change that caused each ju
 
 ## 👉 RIGHT NOW, DO THIS NEXT
 
-1. 👤 Run `node -v` and `python3 --version` to confirm versions.
-2. 👤 `git init` + add a `.gitignore` that excludes `.env` and `Data/raw/`, then commit.
-3. 🤖 Ask Claude Code: *"Read Project_Docs/PRD.md and steps.md. Create CLAUDE.md, then do Phase 1: set up the Python env (OpenAI-only stack), write the DuckDB loader for FD001, build the asset hierarchy table, and generate the synthetic docs. Show me a plan before writing code."*
+Phases 0 & 1 are done (8/8 tests green). Start **Phase 2 — Baseline RAG (docs only)**:
+
+1. 👤 (optional) Review Phase 1: run `make data && make test`, then skim `build/asset_hierarchy.csv` and a couple of docs in `data/corpus/`.
+2. 🤖 Ask Claude Code: *"Do Phase 2: chunk the corpus, embed with OpenAI text-embedding-3-small into a local vector store, add hybrid (dense+BM25) retrieval, and answer doc-only questions with forced citations. Plan first."*
+
+> Note: Phase 2 is the first phase that **spends OpenAI API** (embeddings + synthesis). The key in `.env` will be used.
 
 > The 3 ways people fail this: (1) rushing the hand-labeled eval set, (2) building the
 > router before the doc-only baseline works, (3) trusting the LLM judge without
