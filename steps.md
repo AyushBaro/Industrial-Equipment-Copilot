@@ -3,7 +3,7 @@
 **Read this anytime to see where you are and what's next.**
 Full spec lives in `Project_Docs/PRD.md`. This file is the living checklist.
 
-- **Status:** ✅ Phase 0 & Phase 1 complete (8/8 tests green) — next: Phase 2
+- **Status:** ✅ Phases 0–2 complete (offline 13/13 green; live 3/3 passed) — next: Phase 3
 - **Started:** 2026-06-30 (Tue)
 - **Target finish:** ~Jul 15 (focused) / early Aug (part-time, evenings+weekends)
 - **App LLM stack:** **OpenAI only** — chat model + OpenAI embeddings. (Claude Code is just the tool you build *with*; the app calls OpenAI.)
@@ -75,16 +75,19 @@ changed in exactly one place.
 
 ---
 
-## Phase 2 — Baseline RAG (documents only)  (Jul 2 – Jul 3)
+## Phase 2 — Baseline RAG (documents only)  ✅ COMPLETE (2026-06-30)
 
-- ⬜ 🤖 Chunk docs; embed with `text-embedding-3-small`; store in Chroma/LanceDB
-- ⬜ 🤖 Hybrid retrieval: dense (embeddings) + BM25 keyword
-- ⬜ 🤖 Synthesis with OpenAI chat model, **forced citations** (every claim → chunk id)
-- ⬜ 👤 Ask 5 doc questions by hand; confirm answers cite real chunks
-- ⬜ ⚠️ Do **NOT** add the router or time-series yet — get this working end-to-end first
+- ✅ 🤖 Chunk docs (73 section chunks); embed with `text-embedding-3-small`; persist in Chroma (`build/chroma/`)
+- ✅ 🤖 Hybrid retrieval: dense (embeddings) + BM25 keyword, fused with RRF
+- ✅ 🤖 Synthesis with `gpt-4o`, **forced + code-verified citations**; basic abstention
+- ✅ 🤖 8-question seed eval set (`Data/eval/phase2_seed.jsonl`) — seeds Phase 4
+- ✅ 🤖 Tests: 5 offline (chunk/BM25/RRF/verifier/abstain) + 3 live (dense/end-to-end/abstain), all green
+- ✅ 👤 Sanity run: **6/6 doc-lookup citation recall**, 2/2 out-of-scope correctly abstained
 
-**Checkpoint:** doc-only Q&A works with citations.
-*(Weekend Jul 4–5: buffer / rest.)*
+**Checkpoint:** ✅ `make ask Q="..."` answers doc questions with verified citations.
+**Artifacts:** `src/rag/` (chunk, embed_store, retrieve, synthesize, pipeline), `src/llm_client.py` (live), seed eval set.
+**Cost:** first API spend, well under $0.25 total.
+*(Note: time-series + router + robust abstention are Phase 3.)*
 
 ---
 
@@ -157,12 +160,13 @@ switching to hybrid retrieval." Record the date + the change that caused each ju
 
 ## 👉 RIGHT NOW, DO THIS NEXT
 
-Phases 0 & 1 are done (8/8 tests green). Start **Phase 2 — Baseline RAG (docs only)**:
+Phases 0–2 are done. Try the copilot, then start **Phase 3 — Router + time-series tool**:
 
-1. 👤 (optional) Review Phase 1: run `make data && make test`, then skim `build/asset_hierarchy.csv` and a couple of docs in `data/corpus/`.
-2. 🤖 Ask Claude Code: *"Do Phase 2: chunk the corpus, embed with OpenAI text-embedding-3-small into a local vector store, add hybrid (dense+BM25) retrieval, and answer doc-only questions with forced citations. Plan first."*
+1. 👤 (optional) Try it: `make embed` then `make ask Q="What does fault code FC-HPC-001 mean?"`
+2. 🤖 Ask Claude Code: *"Plan Phase 3: add the DuckDB time-series query tool, the query router (doc / timeseries / fusion), fusion synthesis, and robust abstention."*
 
-> Note: Phase 2 is the first phase that **spends OpenAI API** (embeddings + synthesis). The key in `.env` will be used.
+> Phase 3 is the architecturally interesting one — it makes the system answer
+> sensor-data questions and fuse them with the docs, not just look up text.
 
 > The 3 ways people fail this: (1) rushing the hand-labeled eval set, (2) building the
 > router before the doc-only baseline works, (3) trusting the LLM judge without

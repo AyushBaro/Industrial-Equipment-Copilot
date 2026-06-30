@@ -1,0 +1,8 @@
+{"question": "What is the recommended inspection interval for the HPC?", "expected_doc_id": "manual-hpc", "type": "doc_lookup"}
+{"question": "What does fault code FC-HPC-001 mean and what is its primary sensor signature?", "expected_doc_id": "fault-FC-HPC-001", "type": "doc_lookup"}
+{"question": "What is the alarm threshold for the LPT outlet temperature T50?", "expected_doc_id": "manual-lpt", "type": "doc_lookup"}
+{"question": "Which work order covers the HPC pressure-loss investigation on engine 47?", "expected_doc_id": "wo-1002-engine47", "type": "doc_lookup"}
+{"question": "What action was taken for engine 24's HPC over-temperature advisory?", "expected_doc_id": "wo-1001-engine24", "type": "doc_lookup"}
+{"question": "Why is the burner fuel-air ratio not used for trend monitoring?", "expected_doc_id": "manual-combustor", "type": "doc_lookup"}
+{"question": "What is the tire pressure of a Boeing 747 main landing gear?", "expected_doc_id": null, "type": "out_of_scope"}
+{"question": "What is the current stock price of the engine manufacturer?", "expected_doc_id": null, "type": "out_of_scope"}
