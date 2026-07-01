@@ -117,15 +117,52 @@ changed in exactly one place.
 
 ## Phase 4 — Golden eval set  (Jul 8 – Jul 9)  👤 YOUR WORK, UNSKIPPABLE
 
-- ⬜ 🤖 Define the eval data format (question, correct answer, correct source ids, category, answerable?)
-- ⬜ 👤 Hand-label **40–60 Q/A pairs** across all 3 query types
-- ⬜ 👤 Add **5–10 out-of-scope / unanswerable** questions (to test abstention)
-- ⬜ 👤 Label the correct source(s) for each (which doc chunk and/or which sensor query)
+**What this is:** a hand-verified answer key of 50–60 questions with the *correct*
+source(s) and key facts labeled. Everything in Phase 5 (every score, every before/after
+delta) is measured against this. If the answer key is wrong or lazy, every number the
+project reports is meaningless — that's why only *you* can sign off on the labels.
 
-> This is tedious and it's the entire differentiator. Claude can suggest *candidate*
-> questions, but **you verify every label.** Block the time; don't rush it.
+**Why it can't be fully automated:** the system under test and I (Claude) share
+authorship of the corpus. If I also wrote the answer key unchecked, we'd be grading the
+system against itself — circular. Your independent verification is what makes it a
+legitimate ground truth. So: I draft, **you decide**.
 
-**Checkpoint:** 40–60 verified labeled pairs + abstention cases committed.
+### The division of labor (this is how it goes fast)
+
+| Step | Who | Time | What happens |
+|------|-----|------|--------------|
+| 1. Define format + validator | 🤖 | — | JSONL schema + a `make eval-validate` that checks every row is well-formed and every cited source id actually exists |
+| 2. Generate 60 **candidate** rows with **pre-filled proposed labels** | 🤖 | — | Balanced across routes; proposed source(s) + key-fact answer + difficulty, each marked `status: unreviewed`. For **timeseries**, the answer is **computed from the data** (objective), not guessed |
+| 3. Include known-hard cases | 🤖 | — | Deliberately add questions the current system gets WRONG (e.g. the Phase-3 fusion/routing findings) so the eval has teeth |
+| 4. **Review & decide** | 👤 | **~45–60 min** | Go row by row: approve, edit, or reject each proposed label. A review helper prints the question + my proposed label + (optionally) what the live system returns, so you're *verifying*, not authoring |
+| 5. Add ~5–10 of your own | 👤 | ~15 min | Your own edge cases / phrasings I wouldn't think of — this is where your judgment adds coverage |
+| 6. Validate + commit | 🤖 | — | Run the validator, flip all rows to `status: approved`, commit |
+
+**Net: ~1 hour of your focused time**, versus a day of writing labels from scratch —
+because you're reviewing pre-filled, source-grounded proposals, and the objective
+(timeseries) answers are auto-computed.
+
+### The label format (one JSON object per line)
+```
+{"id": "g001", "question": "...", "route": "doc|timeseries|fusion|out_of_scope",
+ "expected_sources": ["manual-hpc", "telemetry:engine47/sensor11/status"],
+ "answer_key_facts": ["borescope every 30 cycles", "10 cycles once in alarm"],
+ "answerable": true, "difficulty": "easy|medium|hard", "status": "approved", "notes": ""}
+```
+- `expected_sources`: the doc id(s) and/or telemetry query the correct answer must rest
+  on. **This is the most important label** — Phase 5 scores retrieval against it.
+- `answer_key_facts`: the specific facts a faithful answer must contain (used by the
+  faithfulness judge). Grounded in the source docs/data, **not** copied from the RAG output.
+- `answerable: false` for out-of-scope → the correct behavior is abstention.
+
+### Your review guardrails (so the hour is well spent — don't rubber-stamp)
+- For each row ask: *is this the source I'd actually pull? Are the key facts right and
+  complete?* Open the cited doc if unsure — they're all in `Data/corpus/`.
+- Keep the hard cases even though the system fails them — that's the point.
+- Aim for balance: ~15 doc, ~15 timeseries, ~15 fusion, ~10 out-of-scope.
+
+**Checkpoint:** `Data/eval/golden.jsonl` — 50–60 rows, all `status: approved`,
+validator green, committed.
 
 ---
 
@@ -172,11 +209,11 @@ switching to hybrid retrieval." Record the date + the change that caused each ju
 
 ## 👉 RIGHT NOW, DO THIS NEXT
 
-Phases 0–3 are done. The system now routes + fuses. Next is **Phase 4 — Golden eval set** (your work):
+Phases 0–3 are done. Next is **Phase 4 — Golden eval set** (~1 hr of your time, see the detailed playbook below).
 
-1. 👤 (optional) Try fusion: `make ask Q="Engine 47 is showing elevated Ps30 — is this a known fault and what does the manual say?"`
-2. 👤 **Phase 4 is mostly yours and unskippable** — hand-label 40–60 Q/A pairs across doc/timeseries/fusion + abstention cases. Claude can scaffold the format and suggest candidates, but you verify every label.
-3. 🤖 Ask Claude Code: *"Plan Phase 4: define the golden eval format and generate candidate questions across all 3 routes for me to label."*
+1. 🤖 Ask Claude Code: *"Do Phase 4 step 1–3: define the eval format + validator, and generate 60 candidate rows with pre-filled proposed labels (timeseries answers computed from data, plus known-hard cases)."*
+2. 👤 **Review & decide** (~45–60 min): run the review helper, approve/edit/reject each proposed label row by row. Verify, don't rubber-stamp.
+3. 👤 Add ~5–10 of your own edge cases (~15 min), then 🤖 validate + commit.
 
 > The two Phase-3 findings above are deliberately left for Phase 5 — once the golden
 > set + scoring exist, fixing them gives you a measurable before/after (your best artifact).
