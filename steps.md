@@ -141,11 +141,15 @@ legitimate ground truth. So: I draft, **you decide**.
 > **Current state:** ✅ Steps 1–3 done — `Data/eval/golden.jsonl` has **55 validated
 > candidates** (15 doc / 15 timeseries / 15 fusion / 10 out-of-scope), all
 > `status: unreviewed`. Timeseries answers are data-computed; the known-hard fusion
-> case (`g031`, engine-47 Ps30) is flagged. **Your turn: steps 4–6.**
+> case (`g031`, engine-47 Ps30) is flagged. **Your turn — one command, no JSON editing:**
 >
-> - Review with system comparison: `make eval-review ARGS=--live` (or read-only: `make eval-review`)
-> - Edit `Data/eval/golden.jsonl` in your IDE: set `"status": "approved"` (or fix a field)
-> - When done: `make eval-validate ARGS=--require-approved`
+> ```
+> make eval-triage
+> ```
+> For each row: **tap Enter to approve**, or `v` to view the actual source doc + live
+> data, `e` to edit (opens $EDITOR), `r` to reject, `s` to skip, `q` to quit. It
+> **autosaves after every row** — stop and resume anytime. When done:
+> `make eval-validate ARGS=--require-approved`.
 
 **Net: ~1 hour of your focused time**, versus a day of writing labels from scratch —
 because you're reviewing pre-filled, source-grounded proposals, and the objective
@@ -218,12 +222,11 @@ switching to hybrid retrieval." Record the date + the change that caused each ju
 
 ## 👉 RIGHT NOW, DO THIS NEXT
 
-Phase 4 candidates are generated (55 rows). **It's your turn to review (~1 hr):**
+Phase 4 candidates are generated (55 rows). **It's your turn — one command:**
 
-1. 👤 `make eval-review ARGS=--live` — walks all 55 rows showing the proposed label + what the system answers now.
-2. 👤 In your IDE, edit `Data/eval/golden.jsonl`: set `"status": "approved"` on good rows; fix any wrong source/fact. Keep the hard cases (e.g. `g031`) even though the system fails them.
-3. 👤 (optional) Add ~5–10 of your own edge cases at the end of the file.
-4. 👤 Finish: `make eval-validate ARGS=--require-approved` → then tell me and I'll commit + start Phase 5.
+1. 👤 `make eval-triage` — tap **Enter** to approve each row; `v` to verify against the real doc + live data; `e` to edit; `r` to reject. Autosaves; resume anytime. Keep the hard cases (e.g. `g031`) even though the system fails them.
+2. 👤 (optional) Add ~5–10 of your own edge cases to `Data/eval/golden.jsonl`.
+3. 👤 Finish: `make eval-validate ARGS=--require-approved` → then tell me and I'll commit + start Phase 5.
 
 > The two Phase-3 findings are deliberately left for Phase 5 — once this golden set +
 > scoring exist, fixing them gives you a measurable before/after (your best artifact).

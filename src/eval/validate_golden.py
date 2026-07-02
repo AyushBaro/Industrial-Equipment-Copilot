@@ -73,8 +73,13 @@ def validate(path=None, require_approved: bool = False) -> list[str]:
         if not r["answer_key_facts"]:
             errors.append(f"{tag}: answer_key_facts is empty")
 
-        if require_approved and r["status"] != "approved":
-            errors.append(f"{tag}: status is {r['status']!r} (need 'approved')")
+        if require_approved and r["status"] not in ("approved", "rejected"):
+            errors.append(f"{tag}: status is {r['status']!r} (review it: approve or reject)")
+
+    if require_approved:
+        n_ok = sum(1 for r in rows if r["status"] == "approved")
+        if n_ok < 40:
+            errors.append(f"only {n_ok} approved rows (aim for >=40 after review)")
 
     return errors
 

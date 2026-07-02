@@ -33,7 +33,11 @@ ask:
 eval-generate:
 	$(PY) -m src.eval.generate_candidates
 
-# Review candidates. Add ARGS="--live" to also see what the system answers now.
+# Interactive triage: approve/edit/reject each row with one keypress (autosaves).
+eval-triage:
+	$(PY) -m src.eval.triage $(ARGS)
+
+# Read-only viewer of all candidates. Add ARGS="--live" to compare vs the system.
 eval-review:
 	$(PY) -m src.eval.review $(ARGS)
 
