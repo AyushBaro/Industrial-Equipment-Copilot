@@ -141,14 +141,15 @@ legitimate ground truth. So: I draft, **you decide**.
 > **Current state:** ✅ Steps 1–3 done — `Data/eval/golden.jsonl` has **55 validated
 > candidates** (15 doc / 15 timeseries / 15 fusion / 10 out-of-scope), all
 > `status: unreviewed`. Timeseries answers are data-computed; the known-hard fusion
-> case (`g031`, engine-47 Ps30) is flagged. **Your turn — one command, no JSON editing:**
+> case (`g031`, engine-47 Ps30) is flagged. **Your turn — open the browser review app:**
 >
 > ```
-> make eval-triage
+> make eval-web        # opens http://127.0.0.1:8000
 > ```
-> For each row: **tap Enter to approve**, or `v` to view the actual source doc + live
-> data, `e` to edit (opens $EDITOR), `r` to reject, `s` to skip, `q` to quit. It
-> **autosaves after every row** — stop and resume anytime. When done:
+> Click **✓ Approve** / **✕ Reject** (or keys: ⏎ approve, r reject, s skip, **v verify**,
+> e edit). **Verify** shows the real source doc + live sensor data inline so you can
+> confirm a label in seconds. Autosaves to `golden.jsonl` after every action — stop and
+> resume anytime. (Terminal alternative: `make eval-triage`.) When done:
 > `make eval-validate ARGS=--require-approved`.
 
 **Net: ~1 hour of your focused time**, versus a day of writing labels from scratch —
@@ -224,7 +225,7 @@ switching to hybrid retrieval." Record the date + the change that caused each ju
 
 Phase 4 candidates are generated (55 rows). **It's your turn — one command:**
 
-1. 👤 `make eval-triage` — tap **Enter** to approve each row; `v` to verify against the real doc + live data; `e` to edit; `r` to reject. Autosaves; resume anytime. Keep the hard cases (e.g. `g031`) even though the system fails them.
+1. 👤 `make eval-web` → opens a browser app. Click **Approve/Reject** (or ⏎/r), hit **Verify** to check the real doc + live data inline. Autosaves; resume anytime. Keep the hard cases (e.g. `g031`) even though the system fails them.
 2. 👤 (optional) Add ~5–10 of your own edge cases to `Data/eval/golden.jsonl`.
 3. 👤 Finish: `make eval-validate ARGS=--require-approved` → then tell me and I'll commit + start Phase 5.
 

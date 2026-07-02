@@ -33,7 +33,11 @@ ask:
 eval-generate:
 	$(PY) -m src.eval.generate_candidates
 
-# Interactive triage: approve/edit/reject each row with one keypress (autosaves).
+# Browser review app (easiest): opens http://127.0.0.1:8000, click to approve/reject.
+eval-web:
+	$(PY) -m src.eval.review_server
+
+# Terminal triage: approve/edit/reject each row with one keypress (autosaves).
 eval-triage:
 	$(PY) -m src.eval.triage $(ARGS)
 
