@@ -3,7 +3,7 @@
 **Read this anytime to see where you are and what's next.**
 Full spec lives in `Project_Docs/PRD.md`. This file is the living checklist.
 
-- **Status:** ✅ Phases 0–3 complete (offline 22/22 green; live 7/7 passed) — next: Phase 4
+- **Status:** ✅ Phases 0–3 complete; 🔄 Phase 4 candidates generated (55 rows) — **awaiting your review** (offline 26/26 green)
 - **Started:** 2026-06-30 (Tue)
 - **Target finish:** ~Jul 15 (focused) / early Aug (part-time, evenings+weekends)
 - **App LLM stack:** **OpenAI only** — chat model + OpenAI embeddings. (Claude Code is just the tool you build *with*; the app calls OpenAI.)
@@ -138,6 +138,15 @@ legitimate ground truth. So: I draft, **you decide**.
 | 5. Add ~5–10 of your own | 👤 | ~15 min | Your own edge cases / phrasings I wouldn't think of — this is where your judgment adds coverage |
 | 6. Validate + commit | 🤖 | — | Run the validator, flip all rows to `status: approved`, commit |
 
+> **Current state:** ✅ Steps 1–3 done — `Data/eval/golden.jsonl` has **55 validated
+> candidates** (15 doc / 15 timeseries / 15 fusion / 10 out-of-scope), all
+> `status: unreviewed`. Timeseries answers are data-computed; the known-hard fusion
+> case (`g031`, engine-47 Ps30) is flagged. **Your turn: steps 4–6.**
+>
+> - Review with system comparison: `make eval-review ARGS=--live` (or read-only: `make eval-review`)
+> - Edit `Data/eval/golden.jsonl` in your IDE: set `"status": "approved"` (or fix a field)
+> - When done: `make eval-validate ARGS=--require-approved`
+
 **Net: ~1 hour of your focused time**, versus a day of writing labels from scratch —
 because you're reviewing pre-filled, source-grounded proposals, and the objective
 (timeseries) answers are auto-computed.
@@ -209,14 +218,15 @@ switching to hybrid retrieval." Record the date + the change that caused each ju
 
 ## 👉 RIGHT NOW, DO THIS NEXT
 
-Phases 0–3 are done. Next is **Phase 4 — Golden eval set** (~1 hr of your time, see the detailed playbook below).
+Phase 4 candidates are generated (55 rows). **It's your turn to review (~1 hr):**
 
-1. 🤖 Ask Claude Code: *"Do Phase 4 step 1–3: define the eval format + validator, and generate 60 candidate rows with pre-filled proposed labels (timeseries answers computed from data, plus known-hard cases)."*
-2. 👤 **Review & decide** (~45–60 min): run the review helper, approve/edit/reject each proposed label row by row. Verify, don't rubber-stamp.
-3. 👤 Add ~5–10 of your own edge cases (~15 min), then 🤖 validate + commit.
+1. 👤 `make eval-review ARGS=--live` — walks all 55 rows showing the proposed label + what the system answers now.
+2. 👤 In your IDE, edit `Data/eval/golden.jsonl`: set `"status": "approved"` on good rows; fix any wrong source/fact. Keep the hard cases (e.g. `g031`) even though the system fails them.
+3. 👤 (optional) Add ~5–10 of your own edge cases at the end of the file.
+4. 👤 Finish: `make eval-validate ARGS=--require-approved` → then tell me and I'll commit + start Phase 5.
 
-> The two Phase-3 findings above are deliberately left for Phase 5 — once the golden
-> set + scoring exist, fixing them gives you a measurable before/after (your best artifact).
+> The two Phase-3 findings are deliberately left for Phase 5 — once this golden set +
+> scoring exist, fixing them gives you a measurable before/after (your best artifact).
 
 > The 3 ways people fail this: (1) rushing the hand-labeled eval set, (2) building the
 > router before the doc-only baseline works, (3) trusting the LLM judge without

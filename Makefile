@@ -24,9 +24,22 @@ test:
 test-live:
 	RUN_LLM_TESTS=1 $(PY) -m pytest tests/ -v
 
-# Ask the copilot a question (docs-only RAG). Usage: make ask Q="your question"
+# Ask the copilot a question. Usage: make ask Q="your question"
 ask:
 	$(PY) -m src.rag.pipeline "$(Q)"
+
+# --- Golden eval set (Phase 4) ---
+# Generate candidate rows with pre-filled proposed labels (offline, no API).
+eval-generate:
+	$(PY) -m src.eval.generate_candidates
+
+# Review candidates. Add ARGS="--live" to also see what the system answers now.
+eval-review:
+	$(PY) -m src.eval.review $(ARGS)
+
+# Validate the golden file. Add ARGS=--require-approved once you've reviewed.
+eval-validate:
+	$(PY) -m src.eval.validate_golden $(ARGS)
 
 all: data docs test
 
