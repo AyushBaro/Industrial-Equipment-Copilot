@@ -193,7 +193,7 @@ validator green, committed.
 
 ---
 
-## Phase 5 — Automated scoring + iterate  (Jul 10, 13)
+## Phase 5 — Automated scoring + iterate  (Jul 6, 7)
 
 - ✅ 🤖 Scoring code: retrieval precision/recall@k, routing accuracy, abstention rate (`src/eval/score.py`, `make eval-score`)
 - ✅ 🤖 Faithfulness scorer = LLM-as-judge (`gpt-4o`) — v1 (fact-only; needs source-aware upgrade, see note)
@@ -207,7 +207,7 @@ validator green, committed.
 
 ---
 
-## Phase 6 — Deploy + README  (Jul 14 – Jul 15)
+## Phase 6 — Deploy + README  (Jul 8 – Jul 9)
 
 - ⬜ 🤖 FastAPI backend exposing the copilot
 - ⬜ 🤖 Streamlit/Gradio UI
@@ -223,20 +223,26 @@ validator green, committed.
 
 | Metric | Baseline (2026-07-06) | Final target |
 |---|---|---|
-| Retrieval recall@5 | **0.817** | ≥ 0.80 |
+| Retrieval recall@5 | **0.804** | ≥ 0.80 |
 | Routing accuracy | **0.940** | ≥ 0.90 |
-| Faithfulness (judge) | **0.600** ⚠️ see note | ≥ 0.85 |
-| Fact recall (completeness) | 0.503 | — |
+| Faithfulness (grounding) | **0.975** | ≥ 0.85 |
+| Fact recall (completeness) | 0.473 ⚠️ | — |
 | Correct abstention rate | **1.000** (10/10) | ≥ 0.90 |
-| Over-abstention (in-scope refused) | 0.200 (8/40) | → drive to 0 |
+| Over-abstention (in-scope refused) | 0.250 (10/40) ⚠️ | → drive to 0 |
 | LLM-judge ↔ your hand labels | ___ (not yet validated) | ≥ 0.85 |
 
-> ⚠️ **Faithfulness baseline is a distorted lower bound — validate the judge before
-> trusting it.** The v1 judge sees only the `answer_key_facts`, not the source docs, so
-> it flags any correct-but-unlisted number as "fabricated" (e.g. g011/g017/g021/g023/g027
-> have fact_recall=1.0 yet are marked unfaithful). Real faithfulness is almost certainly
-> higher. Fix options: (a) 👤 hand-label ~15 to measure judge agreement; (b) 🤖 give the
-> judge the retrieved source text so it can actually verify grounding. Do (a) first.
+> **Judge v2 (source-aware).** The faithfulness judge scores grounding against the
+> *retrieved source text* (what the model actually saw), separately from fact coverage
+> against the answer key. Faithfulness is high (**0.975** — the forced-citation design
+> works; only g028 hallucinated a false "T30 in alarm"). The real gaps are **completeness**
+> (fact_recall 0.47) and **over-abstention** (0.25) — and they're largely the *same
+> problem*: 6 of the 8 worst fact_recall rows are answerable doc questions the system
+> wrongly refused, so each covers 0 facts. Fixing over-abstention lifts both.
+> **Still to do:** 👤 hand-label ~15 rows to confirm judge agreement ≥ 0.85.
+>
+> _(A v1 judge that saw only the answer key — not the sources — was tried first and
+> mis-scored faithfulness at 0.60 by calling grounded-but-unlisted values "fabricated";
+> replaced by v2. Good reminder of failure mode #3: never trust the judge unvalidated.)_
 
 **The strongest portfolio artifact is the delta**, e.g. "recall@5 0.62 → 0.84 after
 switching to hybrid retrieval." Record the date + the change that caused each jump.

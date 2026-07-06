@@ -1,5 +1,5 @@
 {
- "generated": "2026-07-06T23:20:54+00:00",
+ "generated": "2026-07-06T23:31:23+00:00",
  "n_rows": 50,
  "metrics": {
   "routing_accuracy": {
@@ -13,22 +13,22 @@
    }
   },
   "retrieval_recall@k": {
-   "value": 0.817,
+   "value": 0.804,
    "n": 40,
-   "precision@k": 0.562,
+   "precision@k": 0.554,
    "k": 5,
    "recall_per_route": {
     "doc": 0.857,
-    "fusion": 0.606,
+    "fusion": 0.561,
     "timeseries": 0.933
    }
   },
   "faithfulness": {
-   "value": 0.6,
+   "value": 0.975,
    "n": 40
   },
   "fact_recall": {
-   "value": 0.503,
+   "value": 0.473,
    "n": 40
   },
   "abstention_correct": {
@@ -36,7 +36,7 @@
    "n": 10
   },
   "over_abstention": {
-   "value": 0.2,
+   "value": 0.25,
    "n": 40
   }
  },
@@ -45,241 +45,241 @@
    "id": "g001",
    "faithful": true,
    "fact_recall": 1.0,
-   "reason": "The answer accurately reflects the required inspection intervals for the HPC."
+   "reason": "All claims in the answer are supported by the sources and all required facts are covered."
   },
   {
    "id": "g002",
    "faithful": true,
    "fact_recall": 1.0,
-   "reason": "All claims are consistent with the required facts and no information is fabricated."
+   "reason": "All claims in the answer are supported by the sources and all required facts are covered."
   },
   {
    "id": "g003",
    "faithful": true,
    "fact_recall": 0.0,
-   "reason": "The answer does not provide any information, so it is faithful but does not cover the required fact."
+   "reason": "The answer is faithful as it makes no claims, but it does not cover the required fact about the T50 alarm threshold."
   },
   {
    "id": "g004",
    "faithful": true,
    "fact_recall": 0.0,
-   "reason": "The answer does not provide any information about the required facts."
+   "reason": "The answer makes no claims and is therefore faithful, but it does not cover any required facts."
   },
   {
    "id": "g005",
    "faithful": true,
    "fact_recall": 0.0,
-   "reason": "The answer does not provide any of the required facts."
+   "reason": "The answer makes no claims and is therefore faithful, but it does not cover any required facts."
   },
   {
    "id": "g006",
    "faithful": true,
-   "fact_recall": 1.0,
-   "reason": "The answer accurately reflects the required fact without any fabrication or contradiction."
+   "fact_recall": 0.0,
+   "reason": "The answer makes no claims, so it is faithful, but it does not cover the required fact."
   },
   {
    "id": "g007",
    "faithful": true,
    "fact_recall": 0.5,
-   "reason": "The answer correctly states the inspection frequency but omits the fact about being inspected with the HPC."
+   "reason": "The answer is grounded in the sources but does not mention inspection with the HPC."
   },
   {
    "id": "g008",
    "faithful": true,
-   "fact_recall": 1.0,
-   "reason": "The answer correctly lists all fault codes and their corresponding subsystems without fabricating any information."
+   "fact_recall": 0.0,
+   "reason": "The answer is faithful but does not cover the required facts about primary signatures and procedures."
   },
   {
    "id": "g009",
    "faithful": true,
    "fact_recall": 0.0,
-   "reason": "The answer does not provide any information, so it is faithful but does not cover any facts."
+   "reason": "The answer makes no claims and is therefore faithful, but it does not cover any required facts."
   },
   {
    "id": "g010",
    "faithful": true,
    "fact_recall": 0.5,
-   "reason": "The answer correctly states the alarm thresholds for Nc and NRc but omits htbleed and epr."
+   "reason": "The answer correctly states the alarm thresholds for Nc and NRc, but does not mention htbleed or epr."
   },
   {
    "id": "g011",
-   "faithful": false,
+   "faithful": true,
    "fact_recall": 1.0,
-   "reason": "The answer includes ungrounded details about T30, Ps30, and RUL tracking."
+   "reason": "All claims in the answer are supported by the sources and all required facts are covered."
   },
   {
    "id": "g012",
-   "faithful": false,
+   "faithful": true,
    "fact_recall": 0.333,
-   "reason": "The answer omits the htBleed value, T30 alarm, and late-life indicator."
+   "reason": "The answer is faithful but does not cover all required facts."
   },
   {
    "id": "g013",
    "faithful": true,
-   "fact_recall": 1.0,
-   "reason": "All claims are consistent with the required facts and all facts are covered."
+   "fact_recall": 0.5,
+   "reason": "The answer is faithful to the sources, but it does not mention exclusion from trend monitoring."
   },
   {
    "id": "g014",
    "faithful": true,
    "fact_recall": 0.0,
-   "reason": "The answer does not provide any information related to the required facts."
+   "reason": "The answer makes no claims and is therefore faithful, but it does not cover any required facts."
   },
   {
    "id": "g016",
    "faithful": true,
    "fact_recall": 1.0,
-   "reason": "The answer accurately reflects the required facts without fabrication."
+   "reason": "All claims are supported by the SOURCES and all required facts are covered."
   },
   {
    "id": "g017",
-   "faithful": false,
+   "faithful": true,
    "fact_recall": 1.0,
-   "reason": "The answer includes an unverified detail about '50 cycles' which is not in the required facts."
+   "reason": "All claims in the answer are supported by the sources and all required facts are covered."
   },
   {
    "id": "g018",
-   "faithful": false,
-   "fact_recall": 0.5,
-   "reason": "The answer includes an unverified claim about 'the last 50 cycles'."
+   "faithful": true,
+   "fact_recall": 1.0,
+   "reason": "The answer accurately reflects the data from the sources and covers all required facts."
   },
   {
    "id": "g019",
    "faithful": true,
    "fact_recall": 1.0,
-   "reason": "All claims are consistent with the required facts and all facts are covered."
+   "reason": "All claims in the answer are supported by the sources and all required facts are covered."
   },
   {
    "id": "g020",
    "faithful": true,
-   "fact_recall": 0.333,
-   "reason": "The answer correctly states that Ps30 is not within the nominal range but does not provide the specific value or the nominal range."
+   "fact_recall": 0.0,
+   "reason": "The answer is faithful but does not cover any required facts."
   },
   {
    "id": "g021",
-   "faithful": false,
+   "faithful": true,
    "fact_recall": 1.0,
-   "reason": "The answer includes fabricated threshold values for the sensors."
+   "reason": "All claims in the answer are supported by the sources and all required facts are covered."
   },
   {
    "id": "g022",
    "faithful": true,
    "fact_recall": 0.0,
-   "reason": "The answer does not provide any information, so it does not contradict the required facts."
+   "reason": "The answer makes no unsupported claims and correctly abstains due to lack of sources."
   },
   {
    "id": "g023",
-   "faithful": false,
+   "faithful": true,
    "fact_recall": 1.0,
-   "reason": "The answer includes fabricated numerical values and thresholds for the sensors."
+   "reason": "All claims in the answer are supported by the sources and all required facts are covered."
   },
   {
    "id": "g024",
    "faithful": true,
    "fact_recall": 1.0,
-   "reason": "All claims are consistent with the required facts."
+   "reason": "The answer accurately reflects the trend and values from the sources."
   },
   {
    "id": "g025",
    "faithful": true,
-   "fact_recall": 0.333,
-   "reason": "The answer correctly states that W31 is not in alarm, but does not mention the specific value or nominal range."
+   "fact_recall": 0.0,
+   "reason": "The answer is faithful but does not cover any required facts."
   },
   {
    "id": "g026",
    "faithful": true,
    "fact_recall": 0.5,
-   "reason": "The answer correctly states the trend is falling but does not mention the specific values."
+   "reason": "The answer is faithful but only mentions the trend as falling, not the specific values."
   },
   {
    "id": "g027",
-   "faithful": false,
+   "faithful": true,
    "fact_recall": 1.0,
-   "reason": "The answer fabricates sensor values and thresholds not present in the required facts."
+   "reason": "All claims in the answer are supported by the sources and all required facts are covered."
   },
   {
    "id": "g028",
-   "faithful": true,
-   "fact_recall": 0.0,
-   "reason": "The answer does not mention any of the required facts."
+   "faithful": false,
+   "fact_recall": 1.0,
+   "reason": "The answer incorrectly states that T30 is in alarm, which contradicts the source indicating it is nominal."
   },
   {
    "id": "g029",
    "faithful": true,
    "fact_recall": 1.0,
-   "reason": "The answer accurately reflects the required facts without adding any ungrounded information."
+   "reason": "The answer accurately reflects the trend and values from the sources."
   },
   {
    "id": "g030",
    "faithful": true,
    "fact_recall": 0.5,
-   "reason": "The answer correctly states the trend is falling but omits the specific NRc values."
+   "reason": "The answer is faithful but only mentions the trend as falling, not the specific NRc values."
   },
   {
    "id": "g031",
-   "faithful": false,
+   "faithful": true,
    "fact_recall": 0.2,
-   "reason": "The answer invents a fault pattern code and omits specific manual actions."
+   "reason": "The answer is grounded in the sources but does not cover all required facts."
   },
   {
    "id": "g033",
    "faithful": true,
    "fact_recall": 0.0,
-   "reason": "The answer does not provide any of the required facts."
+   "reason": "The answer makes no claims, so it is faithful but does not cover any required facts."
   },
   {
    "id": "g034",
-   "faithful": false,
-   "fact_recall": 0.2,
-   "reason": "The answer includes fabricated values and fault codes not present in the required facts."
+   "faithful": true,
+   "fact_recall": 0.4,
+   "reason": "The answer is faithful to the sources but does not cover all required facts."
   },
   {
    "id": "g035",
-   "faithful": false,
+   "faithful": true,
    "fact_recall": 0.4,
-   "reason": "The answer fabricates specific values and thresholds not present in the required facts."
+   "reason": "The answer is faithful to the sources but does not cover all required facts."
   },
   {
    "id": "g039",
    "faithful": true,
    "fact_recall": 0.0,
-   "reason": "The answer does not contain any claims or facts."
+   "reason": "The answer makes no claims, so it is faithful but does not cover any required facts."
   },
   {
    "id": "g040",
-   "faithful": false,
+   "faithful": true,
    "fact_recall": 0.4,
-   "reason": "The answer fabricates a low alarm threshold and does not mention the nominal range or P30 value."
+   "reason": "The answer is faithful to the sources but does not cover all required facts."
   },
   {
    "id": "g041",
-   "faithful": false,
+   "faithful": true,
    "fact_recall": 0.4,
-   "reason": "The answer fabricates the NRc value and alarm threshold, and does not mention the nominal range."
+   "reason": "The answer is faithful to the sources but does not cover all required facts."
   },
   {
    "id": "g042",
-   "faithful": false,
-   "fact_recall": 0.4,
-   "reason": "The answer fabricates BPR value and alarm threshold, and misrepresents HPC status."
+   "faithful": true,
+   "fact_recall": 0.0,
+   "reason": "The answer makes no claims, so it is faithful but does not cover any required facts."
   },
   {
    "id": "g043",
-   "faithful": false,
-   "fact_recall": 0.0,
-   "reason": "The answer contains ungrounded claims and does not cover the required facts."
+   "faithful": true,
+   "fact_recall": 0.2,
+   "reason": "The answer is faithful to the sources but does not cover all required facts."
   },
   {
    "id": "g044",
-   "faithful": false,
+   "faithful": true,
    "fact_recall": 0.6,
-   "reason": "The answer incorrectly states that 23.03 is within the nominal range."
+   "reason": "The answer is faithful to the sources but does not cover all required facts."
   },
   {
    "id": "g045",
-   "faithful": false,
-   "fact_recall": 0.0,
-   "reason": "The answer introduces unverified claims and omits required facts."
+   "faithful": true,
+   "fact_recall": 0.5,
+   "reason": "The answer is faithful to the sources but does not cover all required facts."
   }
  ]
 }

@@ -84,6 +84,7 @@ def run_predictions(rows: list[dict]) -> list[dict]:
                 "citations": res.get("citations", []),
                 "retrieved": sorted(retrieved_sources(res)),
                 "abstained": bool(res.get("abstained")),
+                "sources_text": res.get("sources_text", []),
             })
         except Exception as exc:  # noqa: BLE001 — one bad row shouldn't sink the run
             print(f"       ! error: {exc}")
@@ -155,24 +156,29 @@ def score_abstention(rows, preds) -> tuple[Metric, Metric]:
 # ------------------------------------------------------------------ LLM-as-judge
 
 JUDGE_SYSTEM = """You are a strict evaluator for an industrial-equipment maintenance \
-assistant in a near-zero-hallucination domain. You are given a QUESTION, the list of \
-REQUIRED FACTS a correct answer must convey (the ground-truth answer key), and the \
+assistant in a near-zero-hallucination domain. You are given a QUESTION, the SOURCES the \
+assistant was allowed to use (retrieved doc excerpts and/or telemetry results), the \
+REQUIRED FACTS a complete answer should convey (a reference answer key), and the \
 assistant's ANSWER.
 
-Judge two things independently:
-1. faithfulness: is EVERY claim in the answer grounded / consistent with the required \
-facts, with NO fabricated numbers, thresholds, or actions? (An answer that omits facts \
-can still be faithful; one that invents or contradicts a value is NOT.)
-2. fact coverage: for each required fact, is it present (in meaning, not necessarily \
-wording) in the answer?
+Judge two things INDEPENDENTLY — do not conflate them:
+1. faithfulness (grounding): is EVERY claim in the ANSWER supported by the SOURCES, \
+with NO outside knowledge and NO fabricated or contradicted numbers, thresholds, or \
+actions? Judge grounding ONLY against the SOURCES — a number that is in the SOURCES but \
+absent from the REQUIRED FACTS is still faithful. An abstention ("I don't have enough \
+information") makes no claims and is therefore faithful.
+2. fact coverage: for each REQUIRED FACT, is it present (in meaning, not necessarily \
+wording) in the ANSWER? This measures completeness, not grounding.
 
 Return ONLY JSON:
 {"faithful": bool, "facts_supported": [bool, ...same length/order as required facts...], \
 "reason": "one short sentence"}"""
 
 
-def judge_faithfulness(question: str, required_facts: list[str], answer: str) -> dict:
-    user = (f"QUESTION: {question}\n\nREQUIRED FACTS:\n"
+def judge_faithfulness(question: str, required_facts: list[str], answer: str,
+                       sources_text: list[str] | None = None) -> dict:
+    sources = "\n\n".join(sources_text or []) or "(no sources were retrieved)"
+    user = (f"QUESTION: {question}\n\nSOURCES:\n{sources}\n\nREQUIRED FACTS:\n"
             + "\n".join(f"- {f}" for f in required_facts)
             + f"\n\nANSWER:\n{answer}")
     raw = llm.chat([{"role": "system", "content": JUDGE_SYSTEM},
@@ -193,7 +199,8 @@ def score_faithfulness(rows, preds) -> tuple[Metric, Metric, list[dict]]:
     for i, (r, p) in enumerate(answerable, 1):
         facts = r.get("answer_key_facts", [])
         print(f"  judge [{i:>2}/{len(answerable)}] {r['id']} …", flush=True)
-        v = judge_faithfulness(r["question"], facts, p.get("answer", ""))
+        v = judge_faithfulness(r["question"], facts, p.get("answer", ""),
+                               p.get("sources_text"))
         supported = v.get("facts_supported") or []
         recall = (sum(1 for x in supported if x) / len(facts)) if facts else None
         faithful_flags.append(bool(v.get("faithful")))
@@ -212,7 +219,7 @@ def score_faithfulness(rows, preds) -> tuple[Metric, Metric, list[dict]]:
 # ---------------------------------------------------------------------- reporting
 
 
-def build_report(rows, preds, metrics: list[Metric], verdicts) -> dict:
+def build_report(rows, metrics: list[Metric], verdicts) -> dict:
     return {
         "generated": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "n_rows": len(rows),
@@ -274,7 +281,7 @@ def main():
         faith, frecall, verdicts = score_faithfulness(rows, preds)
         metrics += [faith, frecall, ab_ok, ab_over]
 
-    report = build_report(rows, preds, metrics, verdicts)
+    report = build_report(rows, metrics, verdicts)
     table = render_table(report)
 
     json_path = REPORTS_DIR / f"report-{args.tag}.json"

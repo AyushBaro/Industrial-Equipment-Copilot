@@ -85,7 +85,7 @@ def synthesize(question, retrieved=None, telemetry=None, model: str = MODEL_SYNT
     doc_floor_ok = has_docs and not should_abstain(retrieved)
     if not doc_floor_ok and not has_tel:
         return {"answer": ABSTENTION_MESSAGE, "citations": [], "confidence": "low",
-                "abstained": True, "contexts": []}
+                "abstained": True, "contexts": [], "sources_text": []}
 
     doc_blocks = _format_docs(retrieved if doc_floor_ok else [])
     tel_items = [t for t in (telemetry or []) if t.get("ok")]
@@ -127,4 +127,7 @@ def synthesize(question, retrieved=None, telemetry=None, model: str = MODEL_SYNT
 
     return {"answer": answer, "citations": final_citations,
             "confidence": data.get("confidence", "low"),
-            "abstained": abstained, "contexts": contexts}
+            "abstained": abstained, "contexts": contexts,
+            # the exact grounding material shown to the model — used by the eval judge
+            # to verify faithfulness against real sources, not against the answer key.
+            "sources_text": doc_blocks + tel_blocks}
