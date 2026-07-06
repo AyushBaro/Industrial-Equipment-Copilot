@@ -3,7 +3,7 @@
 **Read this anytime to see where you are and what's next.**
 Full spec lives in `Project_Docs/PRD.md`. This file is the living checklist.
 
-- **Status:** ✅ Phases 0–3 complete; 🔄 Phase 4 candidates generated (55 rows) — **awaiting your review** (offline 26/26 green)
+- **Status:** ✅ Phases 0–4 complete — golden set reviewed (50 approved / 5 rejected, validator green); ⬜ Phase 5 next (automated scoring)
 - **Started:** 2026-06-30 (Tue)
 - **Target finish:** ~Jul 15 (focused) / early Aug (part-time, evenings+weekends)
 - **App LLM stack:** **OpenAI only** — chat model + OpenAI embeddings. (Claude Code is just the tool you build *with*; the app calls OpenAI.)
@@ -115,7 +115,16 @@ changed in exactly one place.
 
 ---
 
-## Phase 4 — Golden eval set  (Jul 8 – Jul 9)  👤 YOUR WORK, UNSKIPPABLE
+## Phase 4 — Golden eval set  ✅ COMPLETE (2026-07-06)
+
+> **✅ Done:** all 55 candidates reviewed via the browser app — **50 approved, 5 rejected**.
+> `make eval-validate ARGS=--require-approved` → *valid and all approved*. Route balance
+> of the full file: 15 doc / 15 timeseries / 15 fusion / 10 out-of-scope (Phase 5 scoring
+> should use the **50 approved** rows and exclude the 5 rejected). The known-hard fusion
+> case (`g031`, engine-47 Ps30) was kept on purpose so the eval has teeth.
+
+<details><summary>Original plan (for reference)</summary>
+
 
 **What this is:** a hand-verified answer key of 50–60 questions with the *correct*
 source(s) and key facts labeled. Everything in Phase 5 (every score, every before/after
@@ -178,6 +187,10 @@ because you're reviewing pre-filled, source-grounded proposals, and the objectiv
 **Checkpoint:** `Data/eval/golden.jsonl` — 50–60 rows, all `status: approved`,
 validator green, committed.
 
+</details>
+
+**Actual result:** ✅ 50 approved + 5 rejected, validator green. Not yet committed.
+
 ---
 
 ## Phase 5 — Automated scoring + iterate  (Jul 10, 13)
@@ -223,14 +236,17 @@ switching to hybrid retrieval." Record the date + the change that caused each ju
 
 ## 👉 RIGHT NOW, DO THIS NEXT
 
-Phase 4 candidates are generated (55 rows). **It's your turn — one command:**
+Phase 4 is done — golden set reviewed (50 approved / 5 rejected), validator green.
+**Next: commit the golden set, then start Phase 5 (automated scoring).**
 
-1. 👤 `make eval-web` → opens a browser app. Click **Approve/Reject** (or ⏎/r), hit **Verify** to check the real doc + live data inline. Autosaves; resume anytime. Keep the hard cases (e.g. `g031`) even though the system fails them.
-2. 👤 (optional) Add ~5–10 of your own edge cases to `Data/eval/golden.jsonl`.
-3. 👤 Finish: `make eval-validate ARGS=--require-approved` → then tell me and I'll commit + start Phase 5.
+1. 🤖 Commit `Data/eval/golden.jsonl` (the reviewed answer key) so the baseline is anchored in history.
+2. 🤖 Build the scoring harness: retrieval precision/recall@k, routing accuracy, abstention rate — over the **50 approved** rows (exclude the 5 rejected).
+3. 🤖 Add the LLM-as-judge faithfulness scorer (`gpt-4o`); 👤 you hand-label ~15 to validate judge agreement (≥0.85).
+4. 🤖 Wire it into a pytest regression test; 👤 record the **baseline** numbers before fixing anything.
+5. 🤖 Then fix the two known Phase-3 findings (fusion ranking, trend-vs-status routing) → report the before/after delta.
 
-> The two Phase-3 findings are deliberately left for Phase 5 — once this golden set +
-> scoring exist, fixing them gives you a measurable before/after (your best artifact).
+> The two Phase-3 findings are deliberately left for Phase 5 — now that the golden set
+> exists, fixing them gives you a measurable before/after (your best artifact).
 
 > The 3 ways people fail this: (1) rushing the hand-labeled eval set, (2) building the
 > router before the doc-only baseline works, (3) trusting the LLM judge without
