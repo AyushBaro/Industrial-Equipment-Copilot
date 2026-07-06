@@ -49,6 +49,12 @@ eval-review:
 eval-validate:
 	$(PY) -m src.eval.validate_golden $(ARGS)
 
+# --- Automated scoring (Phase 5) ---
+# Run all approved rows through the live pipeline + judge; write a timestamped report.
+# ARGS=--no-judge (deterministic only) · ARGS=--reuse (recompute from cached predictions)
+eval-score:
+	$(PY) -m src.eval.score $(ARGS)
+
 all: data docs test
 
 clean:

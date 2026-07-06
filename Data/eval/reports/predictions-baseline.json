@@ -1,0 +1,614 @@
+[
+ {
+  "id": "g001",
+  "route": "doc",
+  "answer": "The recommended inspection interval for the HPC is every 30 operational cycles under nominal conditions, reduced to every 10 cycles if any HPC parameter crosses its alarm threshold.",
+  "citations": [
+   "manual-hpc"
+  ],
+  "retrieved": [
+   "fault-FC-HPC-001",
+   "manual-fan",
+   "manual-hpc",
+   "manual-hpt",
+   "manual-lpc"
+  ],
+  "abstained": false
+ },
+ {
+  "id": "g002",
+  "route": "doc",
+  "answer": "Fault code FC-HPC-001 indicates High-Pressure Compressor (HPC) degradation. Its primary sensor signature requires T30 to be rising and \u2265 1607.89 degR, Ps30 to be rising and \u2265 48.10 psia, P30 to be falling and \u2264 551.16 psia, and phi to be falling and \u2264 519.69 pps/psi.",
+  "citations": [
+   "fault-code-reference",
+   "fault-FC-HPC-001"
+  ],
+  "retrieved": [
+   "fault-FC-HPC-001",
+   "fault-FC-LPT-001",
+   "fault-code-reference",
+   "wo-1002-engine47"
+  ],
+  "abstained": false
+ },
+ {
+  "id": "g003",
+  "route": "doc",
+  "answer": "I don't have enough information to answer that.",
+  "citations": [],
+  "retrieved": [
+   "manual-lpt",
+   "wo-1003-engine76",
+   "wo-1009-engine91"
+  ],
+  "abstained": true
+ },
+ {
+  "id": "g004",
+  "route": "doc",
+  "answer": "I don't have enough information to answer that.",
+  "citations": [],
+  "retrieved": [
+   "wo-1001-engine24",
+   "wo-1006-engine33"
+  ],
+  "abstained": true
+ },
+ {
+  "id": "g005",
+  "route": "out_of_scope",
+  "answer": "I don't have enough information to answer that.",
+  "citations": [],
+  "retrieved": [],
+  "abstained": true
+ },
+ {
+  "id": "g006",
+  "route": "doc",
+  "answer": "The alarm condition for the HPT coolant bleed W31 is when it is less than or equal to 38.35 lbm/s.",
+  "citations": [
+   "manual-hpt",
+   "wo-1008-engine05"
+  ],
+  "retrieved": [
+   "manual-hpt",
+   "manual-lpt",
+   "wo-1008-engine05"
+  ],
+  "abstained": false
+ },
+ {
+  "id": "g007",
+  "route": "doc",
+  "answer": "The Low-Pressure Compressor (LPC) should be inspected every 40 operational cycles.",
+  "citations": [
+   "manual-lpc"
+  ],
+  "retrieved": [
+   "manual-lpc",
+   "manual-lpt"
+  ],
+  "abstained": false
+ },
+ {
+  "id": "g008",
+  "route": "doc",
+  "answer": "The fault codes and their corresponding subsystems are: FC-HPC-001 for the HPC subsystem, FC-LPT-001 for the LPT subsystem, FC-FAN-001 for the Fan subsystem, and FC-HPT-001 for the HPT subsystem.",
+  "citations": [
+   "fault-code-reference"
+  ],
+  "retrieved": [
+   "fault-code-reference",
+   "wo-1005-engine89",
+   "wo-1007-engine58",
+   "wo-1009-engine91"
+  ],
+  "abstained": false
+ },
+ {
+  "id": "g009",
+  "route": "doc",
+  "answer": "I don't have enough information to answer that.",
+  "citations": [],
+  "retrieved": [
+   "fault-FC-HPC-001",
+   "fault-FC-LPT-001",
+   "fault-code-reference",
+   "manual-lpt"
+  ],
+  "abstained": true
+ },
+ {
+  "id": "g010",
+  "route": "doc",
+  "answer": "The alarm thresholds for core speed are Nc \u2265 9092.00 rpm and NRc \u2265 8169.77 rpm.",
+  "citations": [
+   "wo-1004-engine12",
+   "manual-core-engine"
+  ],
+  "retrieved": [
+   "fault-FC-HPC-001",
+   "manual-core-engine",
+   "manual-fan",
+   "wo-1004-engine12"
+  ],
+  "abstained": false
+ },
+ {
+  "id": "g011",
+  "route": "doc",
+  "answer": "Once FC-HPC-001 is confirmed, the recommended procedure is to: 1) Confirm the primary signature on at least the last 5 operational cycles. 2) Reduce HPC borescope inspection interval to every 10 cycles. 3) Perform a compressor wash and re-baseline T30 and Ps30 after the wash. 4) If T30 and Ps30 remain in alarm after the wash, schedule HPC module removal at the next maintenance opportunity and begin RUL tracking for end-of-life planning. 5) Check whether T50 (LPT) has also entered alarm, as co-occurrence indicates degradation has propagated and shortens the remaining-useful-life estimate.",
+  "citations": [
+   "fault-FC-HPC-001"
+  ],
+  "retrieved": [
+   "fault-FC-HPC-001",
+   "fault-FC-LPT-001",
+   "fault-code-reference",
+   "manual-hpc",
+   "wo-1007-engine58"
+  ],
+  "abstained": false
+ },
+ {
+  "id": "g012",
+  "route": "doc",
+  "answer": "The work order for engine 58 found rising bleed enthalpy and raised fault code FC-HPC-001.",
+  "citations": [
+   "wo-1007-engine58"
+  ],
+  "retrieved": [
+   "wo-1005-engine89",
+   "wo-1007-engine58",
+   "wo-1009-engine91"
+  ],
+  "abstained": false
+ },
+ {
+  "id": "g013",
+  "route": "doc",
+  "answer": "Under FD001 conditions, the non-informative fan sensors are: fan inlet temperature (T2, sensor 1), fan inlet pressure (P2, sensor 5), bypass-duct pressure (P15, sensor 6), demanded fan speed (Nf_dmd, sensor 18), and demanded corrected fan speed (PCNfR_dmd, sensor 19).",
+  "citations": [
+   "manual-fan"
+  ],
+  "retrieved": [
+   "fault-code-reference",
+   "manual-combustor",
+   "manual-fan"
+  ],
+  "abstained": false
+ },
+ {
+  "id": "g014",
+  "route": "out_of_scope",
+  "answer": "I don't have enough information to answer that.",
+  "citations": [],
+  "retrieved": [],
+  "abstained": true
+ },
+ {
+  "id": "g016",
+  "route": "timeseries",
+  "answer": "Sensor 4 for engine 23 showed a rising trend over its last 50 cycles, from 1414.62 to 1431.69.",
+  "citations": [
+   "telemetry:engine23/sensor4/trend(last_n=50)"
+  ],
+  "retrieved": [
+   "telemetry:engine23/sensor4/trend"
+  ],
+  "abstained": false
+ },
+ {
+  "id": "g017",
+  "route": "timeseries",
+  "answer": "The Ps30 trend for engine 1 is rising from 47.52 to 48.25 over the last 50 cycles.",
+  "citations": [
+   "telemetry:engine1/sensor11/trend(last_n=50)"
+  ],
+  "retrieved": [
+   "telemetry:engine1/sensor11/trend"
+  ],
+  "abstained": false
+ },
+ {
+  "id": "g018",
+  "route": "timeseries",
+  "answer": "The HPC discharge temperature T30 for engine 5 has increased from 1591.54 to 1597.28 over the last 50 cycles.",
+  "citations": [
+   "telemetry:engine5/sensor3/trend(last_n=50)"
+  ],
+  "retrieved": [
+   "telemetry:engine5/sensor3/trend"
+  ],
+  "abstained": false
+ },
+ {
+  "id": "g019",
+  "route": "timeseries",
+  "answer": "Engine 12's core speed is not in alarm; it is nominal at 9050.4 RPM.",
+  "citations": [
+   "telemetry:engine12/sensor9/status@cycle170"
+  ],
+  "retrieved": [
+   "telemetry:engine12/sensor9/status"
+  ],
+  "abstained": false
+ },
+ {
+  "id": "g020",
+  "route": "timeseries",
+  "answer": "Engine 89's HPC static pressure Ps30 is not within the nominal range.",
+  "citations": [
+   "telemetry:engine89/sensor11/status@cycle217"
+  ],
+  "retrieved": [
+   "telemetry:engine89/sensor11/status"
+  ],
+  "abstained": false
+ },
+ {
+  "id": "g021",
+  "route": "timeseries",
+  "answer": "Engine 76 has completed 210 operational cycles. There are 5 sensors in alarm: T50 (1432.07, threshold 1428.11), P30 (550.94, threshold 551.16), Ps30 (48.24, threshold 48.1), phi (519.41, threshold 519.69), and NRf (2388.28, threshold 2388.28).",
+  "citations": [
+   "telemetry:engine76/overview"
+  ],
+  "retrieved": [
+   "telemetry:engine76/overview"
+  ],
+  "abstained": false
+ },
+ {
+  "id": "g022",
+  "route": "out_of_scope",
+  "answer": "I don't have enough information to answer that.",
+  "citations": [],
+  "retrieved": [],
+  "abstained": true
+ },
+ {
+  "id": "g023",
+  "route": "timeseries",
+  "answer": "Engine 47 has 4 sensors in alarm: T50 (1433.3, threshold 1428.11), Nc (9107.27, threshold 9092.0), Ps30 (48.28, threshold 48.1), NRc (8176.36, threshold 8169.77).",
+  "citations": [
+   "telemetry:engine47/all/status@cycle214"
+  ],
+  "retrieved": [
+   "telemetry:engine47/all/status"
+  ],
+  "abstained": false
+ },
+ {
+  "id": "g024",
+  "route": "timeseries",
+  "answer": "The LPT outlet temperature T50 for engine 91 is showing a rising trend from 1414.52 to 1432.29 over the last 50 cycles.",
+  "citations": [
+   "telemetry:engine91/sensor4/trend(last_n=50)"
+  ],
+  "retrieved": [
+   "telemetry:engine91/sensor4/trend"
+  ],
+  "abstained": false
+ },
+ {
+  "id": "g025",
+  "route": "timeseries",
+  "answer": "The HPT coolant bleed W31 on engine 5 is not in alarm.",
+  "citations": [
+   "telemetry:engine5/sensor20/status@cycle269"
+  ],
+  "retrieved": [
+   "telemetry:engine5/sensor20/status"
+  ],
+  "abstained": false
+ },
+ {
+  "id": "g026",
+  "route": "timeseries",
+  "answer": "The trend of bleed enthalpy htBleed on engine 58 is falling.",
+  "citations": [
+   "telemetry:engine58/sensor17/trend(last_n=50)"
+  ],
+  "retrieved": [
+   "telemetry:engine58/sensor17/trend"
+  ],
+  "abstained": false
+ },
+ {
+  "id": "g027",
+  "route": "timeseries",
+  "answer": "Engine 33 has completed 200 operational cycles. There are 4 sensors in alarm: T50 with a value of 1433.49 (threshold 1428.11), Ps30 with a value of 48.28 (threshold 48.1), NRf with a value of 2388.31 (threshold 2388.28), and W32 with a value of 22.99 (threshold 23.0).",
+  "citations": [
+   "telemetry:engine33/overview"
+  ],
+  "retrieved": [
+   "telemetry:engine33/overview"
+  ],
+  "abstained": false
+ },
+ {
+  "id": "g028",
+  "route": "timeseries",
+  "answer": "Yes, engine 24's HPC discharge temperature T30 is in alarm.",
+  "citations": [
+   "telemetry:engine24/sensor3/status@cycle147"
+  ],
+  "retrieved": [
+   "telemetry:engine24/sensor3/status"
+  ],
+  "abstained": false
+ },
+ {
+  "id": "g029",
+  "route": "timeseries",
+  "answer": "The LPT coolant bleed W32 for engine 91 is showing a falling trend from 23.19 to 23.09 over the last 50 cycles.",
+  "citations": [
+   "telemetry:engine91/sensor21/trend(last_n=50)"
+  ],
+  "retrieved": [
+   "telemetry:engine91/sensor21/trend"
+  ],
+  "abstained": false
+ },
+ {
+  "id": "g030",
+  "route": "timeseries",
+  "answer": "The corrected core speed NRc trend on engine 12 is falling.",
+  "citations": [
+   "telemetry:engine12/sensor14/trend(last_n=50)"
+  ],
+  "retrieved": [
+   "telemetry:engine12/sensor14/trend"
+  ],
+  "abstained": false
+ },
+ {
+  "id": "g031",
+  "route": "fusion",
+  "answer": "Engine 47 is showing elevated Ps30 readings, which is consistent with the FC-HPC-001 fault pattern. The manual indicates that HPC degradation is the dominant fault mode in this fleet, and the presence of this pattern should be evaluated first. The work order for Engine 47 notes a 'pressure-loss-first' presentation of HPC degradation, which aligns with the elevated Ps30 readings. The manual suggests raising a coded fault only when the full primary signature is present to avoid false alarms due to sensor noise.",
+  "citations": [
+   "telemetry:engine47/sensor11/trend(last_n=50)"
+  ],
+  "retrieved": [
+   "fault-code-reference",
+   "telemetry:engine47/sensor11/trend",
+   "wo-1001-engine24",
+   "wo-1002-engine47"
+  ],
+  "abstained": false
+ },
+ {
+  "id": "g033",
+  "route": "fusion",
+  "answer": "I don't have enough information to answer that.",
+  "citations": [],
+  "retrieved": [
+   "telemetry:engine91/sensor4/trend",
+   "wo-1003-engine76",
+   "wo-1009-engine91"
+  ],
+  "abstained": true
+ },
+ {
+  "id": "g034",
+  "route": "fusion",
+  "answer": "Engine 12 is experiencing a rising core speed, which is a known issue related to gas-path efficiency loss. The core speed (Nc) reached 9093.5 rpm, exceeding the alarm threshold of 9092.00 rpm. This is tracked under fault code FC-HPC-001, indicating high-pressure compressor degradation as the root cause.",
+  "citations": [
+   "wo-1004-engine12",
+   "manual-core-engine",
+   "fault-FC-HPC-001"
+  ],
+  "retrieved": [
+   "fault-FC-HPC-001",
+   "manual-core-engine",
+   "telemetry:engine12/sensor9/status",
+   "wo-1004-engine12"
+  ],
+  "abstained": false
+ },
+ {
+  "id": "g035",
+  "route": "fusion",
+  "answer": "Engine 5's HPT coolant bleed W31 is in alarm as it has declined to 38.30 lbm/s, which is below the 38.35 lbm/s low alarm threshold. The manual advises inspecting coolant passages and high-pressure shaft seals when W31 is at or below 38.35 lbm/s.",
+  "citations": [
+   "wo-1008-engine05",
+   "manual-hpt"
+  ],
+  "retrieved": [
+   "manual-hpt",
+   "telemetry:engine5/sensor20/status",
+   "wo-1008-engine05"
+  ],
+  "abstained": false
+ },
+ {
+  "id": "g039",
+  "route": "fusion",
+  "answer": "I don't have enough information to answer that.",
+  "citations": [],
+  "retrieved": [
+   "manual-lpt",
+   "telemetry:engine91/sensor21/status",
+   "wo-1003-engine76",
+   "wo-1008-engine05",
+   "wo-1009-engine91"
+  ],
+  "abstained": true
+ },
+ {
+  "id": "g040",
+  "route": "fusion",
+  "answer": "Yes, the dropping HPC discharge pressure P30 in Engine 47 is a known fault. It is associated with fault code FC-HPC-001, indicating HPC degradation. The pressure fell below the 551.16 psia low alarm threshold, which is part of the 'pressure-loss-first' presentation of HPC degradation.",
+  "citations": [
+   "wo-1002-engine47",
+   "manual-hpc"
+  ],
+  "retrieved": [
+   "manual-hpc",
+   "telemetry:engine47/sensor7/status",
+   "wo-1001-engine24",
+   "wo-1002-engine47"
+  ],
+  "abstained": false
+ },
+ {
+  "id": "g041",
+  "route": "fusion",
+  "answer": "Engine 12's corrected core speed (NRc) is high, recorded at 8171.0 rpm, which is above the alarm threshold of 8169.77 rpm. This indicates that the core is compensating for gas-path efficiency loss, a known issue tracked under FC-HPC-001 with the high-pressure compressor (HPC) identified as the root cause.",
+  "citations": [
+   "wo-1004-engine12",
+   "manual-core-engine"
+  ],
+  "retrieved": [
+   "manual-core-engine",
+   "telemetry:engine12/sensor14/status",
+   "wo-1004-engine12"
+  ],
+  "abstained": false
+ },
+ {
+  "id": "g042",
+  "route": "fusion",
+  "answer": "The elevated BPR in Engine 33 is likely not a fan fault. The BPR drifted to 8.55, which is above the alarm threshold of 8.54. However, the fan manual indicates that a rising BPR without a corresponding HPC alarm is usually a secondary effect rather than a fan fault. The HPC parameters were reviewed and found to be nominal, leading to the issue being logged as an isolated fan advisory, not an HPC fault.",
+  "citations": [
+   "wo-1006-engine33",
+   "manual-fan"
+  ],
+  "retrieved": [
+   "manual-fan",
+   "telemetry:engine33/sensor15/status",
+   "wo-1006-engine33"
+  ],
+  "abstained": false
+ },
+ {
+  "id": "g043",
+  "route": "fusion",
+  "answer": "The fault is identified as HPC degradation, indicated by fault code FC-HPC-001. The procedure involves inspecting for blade fouling, tip-clearance loss, and seal wear. Additionally, a wash and clearance check should be scheduled due to the static discharge pressure (Ps30) exceeding its threshold while the total discharge pressure (P30) is low. If the parameters remain in alarm after these actions, escalate to module removal.",
+  "citations": [
+   "wo-1001-engine24",
+   "manual-hpc"
+  ],
+  "retrieved": [
+   "manual-hpc",
+   "telemetry:engine24/sensor3/trend",
+   "wo-1001-engine24",
+   "wo-1007-engine58"
+  ],
+  "abstained": false
+ },
+ {
+  "id": "g044",
+  "route": "fusion",
+  "answer": "Engine 5's LPT coolant bleed (W32) is nominal at 23.03 lbm/s, within the nominal range of 23.18\u201323.53 lbm/s.",
+  "citations": [
+   "telemetry:engine5/sensor21/status@cycle269"
+  ],
+  "retrieved": [
+   "telemetry:engine5/sensor21/status",
+   "wo-1003-engine76",
+   "wo-1008-engine05",
+   "wo-1009-engine91"
+  ],
+  "abstained": false
+ },
+ {
+  "id": "g045",
+  "route": "fusion",
+  "answer": "Engine 76's elevated LPT outlet temperature (T50) is likely due to thermal degradation, as indicated by the fault code FC-LPT-001. However, it is not confirmed as end-of-life degradation because the HPC parameters are nominal, suggesting the degradation has not propagated downstream. The coolant bleed (W32) is trending toward its low threshold, but not below it, which further supports that this is a primary LPT event rather than end-of-life degradation.",
+  "citations": [
+   "wo-1003-engine76",
+   "manual-lpt",
+   "fault-FC-LPT-001",
+   "telemetry:engine76/sensor4/status@cycle210"
+  ],
+  "retrieved": [
+   "fault-FC-LPT-001",
+   "manual-lpt",
+   "telemetry:engine76/sensor4/status",
+   "wo-1003-engine76",
+   "wo-1009-engine91"
+  ],
+  "abstained": false
+ },
+ {
+  "id": "g046",
+  "route": "out_of_scope",
+  "answer": "I don't have enough information to answer that.",
+  "citations": [],
+  "retrieved": [],
+  "abstained": true
+ },
+ {
+  "id": "g047",
+  "route": "out_of_scope",
+  "answer": "I don't have enough information to answer that.",
+  "citations": [],
+  "retrieved": [],
+  "abstained": true
+ },
+ {
+  "id": "g048",
+  "route": "out_of_scope",
+  "answer": "I don't have enough information to answer that.",
+  "citations": [],
+  "retrieved": [],
+  "abstained": true
+ },
+ {
+  "id": "g049",
+  "route": "out_of_scope",
+  "answer": "I don't have enough information to answer that.",
+  "citations": [],
+  "retrieved": [],
+  "abstained": true
+ },
+ {
+  "id": "g050",
+  "route": "out_of_scope",
+  "answer": "I don't have enough information to answer that.",
+  "citations": [],
+  "retrieved": [],
+  "abstained": true
+ },
+ {
+  "id": "g051",
+  "route": "out_of_scope",
+  "answer": "I don't have enough information to answer that.",
+  "citations": [],
+  "retrieved": [],
+  "abstained": true
+ },
+ {
+  "id": "g052",
+  "route": "out_of_scope",
+  "answer": "I don't have enough information to answer that.",
+  "citations": [],
+  "retrieved": [],
+  "abstained": true
+ },
+ {
+  "id": "g053",
+  "route": "out_of_scope",
+  "answer": "I don't have enough information to answer that.",
+  "citations": [],
+  "retrieved": [],
+  "abstained": true
+ },
+ {
+  "id": "g054",
+  "route": "out_of_scope",
+  "answer": "I don't have enough information to answer that.",
+  "citations": [],
+  "retrieved": [],
+  "abstained": true
+ },
+ {
+  "id": "g055",
+  "route": "out_of_scope",
+  "answer": "I don't have enough information to answer that.",
+  "citations": [],
+  "retrieved": [],
+  "abstained": true
+ }
+]

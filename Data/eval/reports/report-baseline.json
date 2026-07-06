@@ -1,0 +1,285 @@
+{
+ "generated": "2026-07-06T23:20:54+00:00",
+ "n_rows": 50,
+ "metrics": {
+  "routing_accuracy": {
+   "value": 0.94,
+   "n": 50,
+   "per_route": {
+    "doc": 0.857,
+    "fusion": 1.0,
+    "out_of_scope": 1.0,
+    "timeseries": 0.933
+   }
+  },
+  "retrieval_recall@k": {
+   "value": 0.817,
+   "n": 40,
+   "precision@k": 0.562,
+   "k": 5,
+   "recall_per_route": {
+    "doc": 0.857,
+    "fusion": 0.606,
+    "timeseries": 0.933
+   }
+  },
+  "faithfulness": {
+   "value": 0.6,
+   "n": 40
+  },
+  "fact_recall": {
+   "value": 0.503,
+   "n": 40
+  },
+  "abstention_correct": {
+   "value": 1.0,
+   "n": 10
+  },
+  "over_abstention": {
+   "value": 0.2,
+   "n": 40
+  }
+ },
+ "faithfulness_verdicts": [
+  {
+   "id": "g001",
+   "faithful": true,
+   "fact_recall": 1.0,
+   "reason": "The answer accurately reflects the required inspection intervals for the HPC."
+  },
+  {
+   "id": "g002",
+   "faithful": true,
+   "fact_recall": 1.0,
+   "reason": "All claims are consistent with the required facts and no information is fabricated."
+  },
+  {
+   "id": "g003",
+   "faithful": true,
+   "fact_recall": 0.0,
+   "reason": "The answer does not provide any information, so it is faithful but does not cover the required fact."
+  },
+  {
+   "id": "g004",
+   "faithful": true,
+   "fact_recall": 0.0,
+   "reason": "The answer does not provide any information about the required facts."
+  },
+  {
+   "id": "g005",
+   "faithful": true,
+   "fact_recall": 0.0,
+   "reason": "The answer does not provide any of the required facts."
+  },
+  {
+   "id": "g006",
+   "faithful": true,
+   "fact_recall": 1.0,
+   "reason": "The answer accurately reflects the required fact without any fabrication or contradiction."
+  },
+  {
+   "id": "g007",
+   "faithful": true,
+   "fact_recall": 0.5,
+   "reason": "The answer correctly states the inspection frequency but omits the fact about being inspected with the HPC."
+  },
+  {
+   "id": "g008",
+   "faithful": true,
+   "fact_recall": 1.0,
+   "reason": "The answer correctly lists all fault codes and their corresponding subsystems without fabricating any information."
+  },
+  {
+   "id": "g009",
+   "faithful": true,
+   "fact_recall": 0.0,
+   "reason": "The answer does not provide any information, so it is faithful but does not cover any facts."
+  },
+  {
+   "id": "g010",
+   "faithful": true,
+   "fact_recall": 0.5,
+   "reason": "The answer correctly states the alarm thresholds for Nc and NRc but omits htbleed and epr."
+  },
+  {
+   "id": "g011",
+   "faithful": false,
+   "fact_recall": 1.0,
+   "reason": "The answer includes ungrounded details about T30, Ps30, and RUL tracking."
+  },
+  {
+   "id": "g012",
+   "faithful": false,
+   "fact_recall": 0.333,
+   "reason": "The answer omits the htBleed value, T30 alarm, and late-life indicator."
+  },
+  {
+   "id": "g013",
+   "faithful": true,
+   "fact_recall": 1.0,
+   "reason": "All claims are consistent with the required facts and all facts are covered."
+  },
+  {
+   "id": "g014",
+   "faithful": true,
+   "fact_recall": 0.0,
+   "reason": "The answer does not provide any information related to the required facts."
+  },
+  {
+   "id": "g016",
+   "faithful": true,
+   "fact_recall": 1.0,
+   "reason": "The answer accurately reflects the required facts without fabrication."
+  },
+  {
+   "id": "g017",
+   "faithful": false,
+   "fact_recall": 1.0,
+   "reason": "The answer includes an unverified detail about '50 cycles' which is not in the required facts."
+  },
+  {
+   "id": "g018",
+   "faithful": false,
+   "fact_recall": 0.5,
+   "reason": "The answer includes an unverified claim about 'the last 50 cycles'."
+  },
+  {
+   "id": "g019",
+   "faithful": true,
+   "fact_recall": 1.0,
+   "reason": "All claims are consistent with the required facts and all facts are covered."
+  },
+  {
+   "id": "g020",
+   "faithful": true,
+   "fact_recall": 0.333,
+   "reason": "The answer correctly states that Ps30 is not within the nominal range but does not provide the specific value or the nominal range."
+  },
+  {
+   "id": "g021",
+   "faithful": false,
+   "fact_recall": 1.0,
+   "reason": "The answer includes fabricated threshold values for the sensors."
+  },
+  {
+   "id": "g022",
+   "faithful": true,
+   "fact_recall": 0.0,
+   "reason": "The answer does not provide any information, so it does not contradict the required facts."
+  },
+  {
+   "id": "g023",
+   "faithful": false,
+   "fact_recall": 1.0,
+   "reason": "The answer includes fabricated numerical values and thresholds for the sensors."
+  },
+  {
+   "id": "g024",
+   "faithful": true,
+   "fact_recall": 1.0,
+   "reason": "All claims are consistent with the required facts."
+  },
+  {
+   "id": "g025",
+   "faithful": true,
+   "fact_recall": 0.333,
+   "reason": "The answer correctly states that W31 is not in alarm, but does not mention the specific value or nominal range."
+  },
+  {
+   "id": "g026",
+   "faithful": true,
+   "fact_recall": 0.5,
+   "reason": "The answer correctly states the trend is falling but does not mention the specific values."
+  },
+  {
+   "id": "g027",
+   "faithful": false,
+   "fact_recall": 1.0,
+   "reason": "The answer fabricates sensor values and thresholds not present in the required facts."
+  },
+  {
+   "id": "g028",
+   "faithful": true,
+   "fact_recall": 0.0,
+   "reason": "The answer does not mention any of the required facts."
+  },
+  {
+   "id": "g029",
+   "faithful": true,
+   "fact_recall": 1.0,
+   "reason": "The answer accurately reflects the required facts without adding any ungrounded information."
+  },
+  {
+   "id": "g030",
+   "faithful": true,
+   "fact_recall": 0.5,
+   "reason": "The answer correctly states the trend is falling but omits the specific NRc values."
+  },
+  {
+   "id": "g031",
+   "faithful": false,
+   "fact_recall": 0.2,
+   "reason": "The answer invents a fault pattern code and omits specific manual actions."
+  },
+  {
+   "id": "g033",
+   "faithful": true,
+   "fact_recall": 0.0,
+   "reason": "The answer does not provide any of the required facts."
+  },
+  {
+   "id": "g034",
+   "faithful": false,
+   "fact_recall": 0.2,
+   "reason": "The answer includes fabricated values and fault codes not present in the required facts."
+  },
+  {
+   "id": "g035",
+   "faithful": false,
+   "fact_recall": 0.4,
+   "reason": "The answer fabricates specific values and thresholds not present in the required facts."
+  },
+  {
+   "id": "g039",
+   "faithful": true,
+   "fact_recall": 0.0,
+   "reason": "The answer does not contain any claims or facts."
+  },
+  {
+   "id": "g040",
+   "faithful": false,
+   "fact_recall": 0.4,
+   "reason": "The answer fabricates a low alarm threshold and does not mention the nominal range or P30 value."
+  },
+  {
+   "id": "g041",
+   "faithful": false,
+   "fact_recall": 0.4,
+   "reason": "The answer fabricates the NRc value and alarm threshold, and does not mention the nominal range."
+  },
+  {
+   "id": "g042",
+   "faithful": false,
+   "fact_recall": 0.4,
+   "reason": "The answer fabricates BPR value and alarm threshold, and misrepresents HPC status."
+  },
+  {
+   "id": "g043",
+   "faithful": false,
+   "fact_recall": 0.0,
+   "reason": "The answer contains ungrounded claims and does not cover the required facts."
+  },
+  {
+   "id": "g044",
+   "faithful": false,
+   "fact_recall": 0.6,
+   "reason": "The answer incorrectly states that 23.03 is within the nominal range."
+  },
+  {
+   "id": "g045",
+   "faithful": false,
+   "fact_recall": 0.0,
+   "reason": "The answer introduces unverified claims and omits required facts."
+  }
+ ]
+}

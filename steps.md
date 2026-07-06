@@ -195,12 +195,12 @@ validator green, committed.
 
 ## Phase 5 — Automated scoring + iterate  (Jul 10, 13)
 
-- ⬜ 🤖 Scoring code: retrieval precision/recall@k, routing accuracy, abstention rate
-- ⬜ 🤖 Faithfulness scorer = LLM-as-judge (`gpt-4o`)
-- ⬜ 👤 Hand-label faithfulness on ~15 examples; compare to the judge → report agreement rate (≥0.85 = trustworthy)
+- ✅ 🤖 Scoring code: retrieval precision/recall@k, routing accuracy, abstention rate (`src/eval/score.py`, `make eval-score`)
+- ✅ 🤖 Faithfulness scorer = LLM-as-judge (`gpt-4o`) — v1 (fact-only; needs source-aware upgrade, see note)
+- ✅ 👤 Run the first full eval → **baseline recorded** (2026-07-06, table below)
+- ⬜ 👤 Hand-label faithfulness on ~15 examples; compare to the judge → report agreement rate (≥0.85 = trustworthy) **← NEXT**
 - ⬜ 🤖 Wire eval into a **pytest regression test** that runs on every change
-- ⬜ 👤 Run the first full eval → record the **baseline** numbers (don't fix anything yet)
-- ⬜ 🤖 Iterate retrieval on what eval reveals (chunking, hybrid weights, k)
+- ⬜ 🤖 Iterate retrieval + fix the two Phase-3 findings on what eval reveals; report before/after deltas
 - ⬜ 👤 Pick 1–2 real failures to write up as a mini case study
 
 **Checkpoint:** a numbers table exists + at least **one documented before/after improvement**.
@@ -221,13 +221,22 @@ validator green, committed.
 
 ## Benchmarks — measure baseline (Phase 5 first run), then beat it
 
-| Metric | Baseline (just record) | Final target |
+| Metric | Baseline (2026-07-06) | Final target |
 |---|---|---|
-| Retrieval recall@5 | ___ | ≥ 0.80 |
-| Routing accuracy | ___ | ≥ 0.90 |
-| Faithfulness | ___ | ≥ 0.85 |
-| Correct abstention rate | ___ | ≥ 0.90 |
-| LLM-judge ↔ your hand labels | — | ≥ 0.85 |
+| Retrieval recall@5 | **0.817** | ≥ 0.80 |
+| Routing accuracy | **0.940** | ≥ 0.90 |
+| Faithfulness (judge) | **0.600** ⚠️ see note | ≥ 0.85 |
+| Fact recall (completeness) | 0.503 | — |
+| Correct abstention rate | **1.000** (10/10) | ≥ 0.90 |
+| Over-abstention (in-scope refused) | 0.200 (8/40) | → drive to 0 |
+| LLM-judge ↔ your hand labels | ___ (not yet validated) | ≥ 0.85 |
+
+> ⚠️ **Faithfulness baseline is a distorted lower bound — validate the judge before
+> trusting it.** The v1 judge sees only the `answer_key_facts`, not the source docs, so
+> it flags any correct-but-unlisted number as "fabricated" (e.g. g011/g017/g021/g023/g027
+> have fact_recall=1.0 yet are marked unfaithful). Real faithfulness is almost certainly
+> higher. Fix options: (a) 👤 hand-label ~15 to measure judge agreement; (b) 🤖 give the
+> judge the retrieved source text so it can actually verify grounding. Do (a) first.
 
 **The strongest portfolio artifact is the delta**, e.g. "recall@5 0.62 → 0.84 after
 switching to hybrid retrieval." Record the date + the change that caused each jump.
