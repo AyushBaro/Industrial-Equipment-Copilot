@@ -55,6 +55,11 @@ eval-validate:
 eval-score:
 	$(PY) -m src.eval.score $(ARGS)
 
+# Validate the faithfulness judge against your hand labels (browser, port 8001).
+# ARGS=--all (label all 40) · ARGS=--n 20 (custom sample). Reports raw agreement + kappa.
+eval-judge:
+	$(PY) -m src.eval.validate_judge $(ARGS)
+
 all: data docs test
 
 clean:

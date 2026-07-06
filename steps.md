@@ -198,7 +198,8 @@ validator green, committed.
 - ✅ 🤖 Scoring code: retrieval precision/recall@k, routing accuracy, abstention rate (`src/eval/score.py`, `make eval-score`)
 - ✅ 🤖 Faithfulness scorer = LLM-as-judge (`gpt-4o`) — v1 (fact-only; needs source-aware upgrade, see note)
 - ✅ 👤 Run the first full eval → **baseline recorded** (2026-07-06, table below)
-- ⬜ 👤 Hand-label faithfulness on ~15 examples; compare to the judge → report agreement rate (≥0.85 = trustworthy) **← NEXT**
+- ✅ 🤖 Judge-validation helper built (`src/eval/validate_judge.py`, `make eval-judge`) — blind labeling in the browser, reports raw agreement + Cohen's κ
+- ⬜ 👤 Hand-label faithfulness on ~15 examples with `make eval-judge` → confirm agreement ≥0.85 **← NEXT (your turn)**
 - ⬜ 🤖 Wire eval into a **pytest regression test** that runs on every change
 - ⬜ 🤖 Iterate retrieval + fix the two Phase-3 findings on what eval reveals; report before/after deltas
 - ⬜ 👤 Pick 1–2 real failures to write up as a mini case study
@@ -219,7 +220,7 @@ validator green, committed.
 
 ---
 
-## Benchmarks — measure baseline (Phase 5 first run), then beat it
+## Benchmarks — me  asure baseline (Phase 5 first run), then beat it
 
 | Metric | Baseline (2026-07-06) | Final target |
 |---|---|---|
@@ -251,17 +252,20 @@ switching to hybrid retrieval." Record the date + the change that caused each ju
 
 ## 👉 RIGHT NOW, DO THIS NEXT
 
-Phase 4 is done — golden set reviewed (50 approved / 5 rejected), validator green.
-**Next: commit the golden set, then start Phase 5 (automated scoring).**
+Phase 5 is underway: scoring harness + source-aware judge built, **baseline recorded**
+(recall@5 0.804 · routing 0.940 · faithfulness 0.975 · fact_recall 0.473 · over-abstn 0.250).
 
-1. 🤖 Commit `Data/eval/golden.jsonl` (the reviewed answer key) so the baseline is anchored in history.
-2. 🤖 Build the scoring harness: retrieval precision/recall@k, routing accuracy, abstention rate — over the **50 approved** rows (exclude the 5 rejected).
-3. 🤖 Add the LLM-as-judge faithfulness scorer (`gpt-4o`); 👤 you hand-label ~15 to validate judge agreement (≥0.85).
-4. 🤖 Wire it into a pytest regression test; 👤 record the **baseline** numbers before fixing anything.
-5. 🤖 Then fix the two known Phase-3 findings (fusion ranking, trend-vs-status routing) → report the before/after delta.
+1. 👤 **Validate the judge — one command:** `make eval-judge` → browser on :8001. Rule
+   faithful / not-faithful on 15 rows (blind; judge verdict hidden until you decide).
+   It reports raw agreement + Cohen's κ; bar is ≥ 0.85. Autosaves; resume anytime. Then
+   tell me the number and I'll commit your labels as eval evidence.
+2. 🤖 Fix **over-abstention** (relevance floor too strict — 10 answerable Qs refused);
+   this also lifts fact_recall. Re-run `make eval-score` → report the delta.
+3. 🤖 Fix the two Phase-3 findings (fusion ranking, trend-vs-status) + the g028 false
+   alarm → before/after deltas.
+4. 🤖 Wire `make eval-score` into a **pytest regression gate** so changes can't silently regress.
 
-> The two Phase-3 findings are deliberately left for Phase 5 — now that the golden set
-> exists, fixing them gives you a measurable before/after (your best artifact).
+> The Phase-3 findings + g028 are your measurable before/after — the strongest artifact.
 
 > The 3 ways people fail this: (1) rushing the hand-labeled eval set, (2) building the
 > router before the doc-only baseline works, (3) trusting the LLM judge without
