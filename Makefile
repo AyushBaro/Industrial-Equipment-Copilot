@@ -51,7 +51,8 @@ eval-validate:
 
 # --- Automated scoring (Phase 5) ---
 # Run all approved rows through the live pipeline + judge; write a timestamped report.
-# ARGS=--no-judge (deterministic only) · ARGS=--reuse (recompute from cached predictions)
+# ARGS=--no-judge (deterministic only) · ARGS=--reuse (recompute from cache)
+# ARGS="--runs 3" averages out gpt nondeterminism (Value=mean, Range=min–max)
 eval-score:
 	$(PY) -m src.eval.score $(ARGS)
 

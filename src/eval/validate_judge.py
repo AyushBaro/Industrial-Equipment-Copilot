@@ -44,8 +44,9 @@ _STATE: dict = {"items": []}  # populated in main(), read by the API
 
 def build_items(tag: str = "baseline") -> list[dict]:
     """Join golden rows + cached predictions + judge verdicts into review items."""
-    preds = {p["id"]: p for p in
-             json.loads((REPORTS_DIR / f"predictions-{tag}.json").read_text())}
+    raw = json.loads((REPORTS_DIR / f"predictions-{tag}.json").read_text())
+    run0 = raw[0] if raw and isinstance(raw[0], list) else raw  # tolerate list-of-runs
+    preds = {p["id"]: p for p in run0}
     report = json.loads((REPORTS_DIR / f"report-{tag}.json").read_text())
     verdicts = {v["id"]: v for v in report["faithfulness_verdicts"]}
     golden = {json.loads(l)["id"]: json.loads(l)

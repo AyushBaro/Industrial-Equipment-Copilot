@@ -68,13 +68,11 @@ def retrieved_sources(result: dict) -> set[str]:
 # ------------------------------------------------------------------- run / cache
 
 
-def run_predictions(rows: list[dict]) -> list[dict]:
-    """Call the live pipeline once per row. Returns prediction dicts aligned to rows."""
-    from src.rag.pipeline import answer  # local import: builds retriever lazily
-
+def _predict_once(answer, rows: list[dict]) -> list[dict]:
+    """One pass of the live pipeline over every row (aligned to rows)."""
     preds = []
     for i, r in enumerate(rows, 1):
-        print(f"  [{i:>2}/{len(rows)}] {r['id']} ({r['route']}) …", flush=True)
+        print(f"    [{i:>2}/{len(rows)}] {r['id']} ({r['route']}) …", flush=True)
         try:
             res = answer(r["question"])
             preds.append({
@@ -87,9 +85,30 @@ def run_predictions(rows: list[dict]) -> list[dict]:
                 "sources_text": res.get("sources_text", []),
             })
         except Exception as exc:  # noqa: BLE001 — one bad row shouldn't sink the run
-            print(f"       ! error: {exc}")
+            print(f"         ! error: {exc}")
             preds.append({"id": r["id"], "error": str(exc)})
     return preds
+
+
+def run_predictions(rows: list[dict], runs: int = 1) -> list[list[dict]]:
+    """Run the pipeline `runs` times over every row (gpt is not deterministic even at
+    temperature 0, so a single pass is noisy on borderline rows). Returns a list of runs,
+    each a list of per-row prediction dicts aligned to rows."""
+    from src.rag.pipeline import answer  # local import: builds retriever lazily
+
+    all_runs = []
+    for run_i in range(1, runs + 1):
+        print(f"  pipeline run {run_i}/{runs} …", flush=True)
+        all_runs.append(_predict_once(answer, rows))
+    return all_runs
+
+
+def load_runs(pred_path) -> list[list[dict]]:
+    """Load cached predictions, tolerating the old single-run flat-list format."""
+    data = json.loads(pred_path.read_text())
+    if data and isinstance(data[0], dict):  # legacy: a flat list of preds = one run
+        return [data]
+    return data
 
 
 # --------------------------------------------------------------- deterministic metrics
@@ -216,14 +235,46 @@ def score_faithfulness(rows, preds) -> tuple[Metric, Metric, list[dict]]:
     return faith, frecall, verdicts
 
 
+# --------------------------------------------------------------- per-run + aggregate
+
+
+def score_run(rows, preds, judge: bool) -> tuple[list[Metric], list[dict]]:
+    """Compute the full metric set for a single run's predictions."""
+    metrics = [score_routing(rows, preds), score_retrieval(rows, preds)]
+    verdicts = []
+    if judge:
+        faith, frecall, verdicts = score_faithfulness(rows, preds)
+        metrics += [faith, frecall]
+    ab_ok, ab_over = score_abstention(rows, preds)
+    metrics += [ab_ok, ab_over]
+    return metrics, verdicts
+
+
+def aggregate(per_run: list[list[Metric]]) -> dict:
+    """Average each metric across runs; keep the spread (min,max) so noise is visible.
+    Detail (per-route breakdowns etc.) is taken from the first run as illustrative."""
+    names = [m.name for m in per_run[0]]
+    out = {}
+    for name in names:
+        vals = [next(m.value for m in run if m.name == name) for run in per_run]
+        vals = [v for v in vals if v is not None]
+        first = next(m for m in per_run[0] if m.name == name)
+        mean = None if not vals else round(sum(vals) / len(vals), 3)
+        out[name] = {"value": mean, "n": first.n, "runs": len(per_run),
+                     "spread": [round(min(vals), 3), round(max(vals), 3)] if vals else None,
+                     **first.detail}
+    return out
+
+
 # ---------------------------------------------------------------------- reporting
 
 
-def build_report(rows, metrics: list[Metric], verdicts) -> dict:
+def build_report(rows, metrics: dict, verdicts, runs: int) -> dict:
     return {
         "generated": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "n_rows": len(rows),
-        "metrics": {m.name: {"value": m.value, "n": m.n, **m.detail} for m in metrics},
+        "runs": runs,
+        "metrics": metrics,
         "faithfulness_verdicts": verdicts,
     }
 
@@ -234,7 +285,9 @@ TARGETS = {"retrieval_recall@k": 0.80, "routing_accuracy": 0.90,
 
 def render_table(report: dict) -> str:
     m = report["metrics"]
-    lines = ["| Metric | Value | n | Target |", "|---|---|---|---|"]
+    multi = report.get("runs", 1) > 1
+    head = "| Metric | Value | Range | n | Target |" if multi else "| Metric | Value | n | Target |"
+    lines = [head, "|---|---|---|---|---|" if multi else "|---|---|---|---|"]
     order = ["retrieval_recall@k", "routing_accuracy", "faithfulness", "fact_recall",
              "abstention_correct", "over_abstention"]
     for key in order:
@@ -244,7 +297,12 @@ def render_table(report: dict) -> str:
         vs = "—" if v is None else f"{v:.3f}"
         tgt = TARGETS.get(key)
         tgts = "" if tgt is None else f"≥ {tgt:.2f}"
-        lines.append(f"| {key} | {vs} | {m[key]['n']} | {tgts} |")
+        if multi:
+            sp = m[key].get("spread")
+            rng = "—" if not sp else f"{sp[0]:.3f}–{sp[1]:.3f}"
+            lines.append(f"| {key} | {vs} | {rng} | {m[key]['n']} | {tgts} |")
+        else:
+            lines.append(f"| {key} | {vs} | {m[key]['n']} | {tgts} |")
     return "\n".join(lines)
 
 
@@ -253,42 +311,45 @@ def main():
     ap.add_argument("--no-judge", action="store_true", help="skip the LLM faithfulness judge")
     ap.add_argument("--reuse", action="store_true",
                     help="recompute metrics from the latest cached predictions (no API calls)")
+    ap.add_argument("--runs", type=int, default=1,
+                    help="pipeline passes per row; >1 averages out gpt nondeterminism")
     ap.add_argument("--tag", default="baseline", help="report filename tag")
     args = ap.parse_args()
 
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
     rows = load_approved()
-    print(f"Scoring {len(rows)} approved golden rows.")
+    print(f"Scoring {len(rows)} approved golden rows over {args.runs} run(s).")
 
     pred_path = REPORTS_DIR / f"predictions-{args.tag}.json"
     if args.reuse and pred_path.exists():
         print(f"Reusing cached predictions: {pred_path}")
-        preds = json.loads(pred_path.read_text())
+        all_runs = load_runs(pred_path)
     else:
         print("Running live pipeline …")
-        preds = run_predictions(rows)
-        pred_path.write_text(json.dumps(preds, indent=1))
+        all_runs = run_predictions(rows, runs=args.runs)
+        pred_path.write_text(json.dumps(all_runs, indent=1))
         print(f"Cached predictions → {pred_path}")
 
-    metrics = [score_routing(rows, preds), score_retrieval(rows, preds)]
-    ab_ok, ab_over = score_abstention(rows, preds)
+    judge = not args.no_judge
+    per_run, verdicts = [], []
+    for i, preds in enumerate(all_runs):
+        if judge:
+            print(f"Judging faithfulness (run {i + 1}/{len(all_runs)}) …")
+        metrics, run_verdicts = score_run(rows, preds, judge)
+        per_run.append(metrics)
+        if i == 0:
+            verdicts = run_verdicts  # keep run-0 verdicts for the disagreement table
 
-    verdicts = []
-    if args.no_judge:
-        metrics += [ab_ok, ab_over]
-    else:
-        print("Judging faithfulness …")
-        faith, frecall, verdicts = score_faithfulness(rows, preds)
-        metrics += [faith, frecall, ab_ok, ab_over]
-
-    report = build_report(rows, metrics, verdicts)
+    report = build_report(rows, aggregate(per_run), verdicts, len(all_runs))
     table = render_table(report)
 
     json_path = REPORTS_DIR / f"report-{args.tag}.json"
     md_path = REPORTS_DIR / f"report-{args.tag}.md"
     json_path.write_text(json.dumps(report, indent=1))
     md_path.write_text(f"# Eval report ({args.tag})\n\n_{report['generated']}_ · "
-                       f"{report['n_rows']} approved rows\n\n{table}\n")
+                       f"{report['n_rows']} approved rows · {report['runs']} run(s)"
+                       f"{' (Value = mean, Range = min–max across runs)' if report['runs'] > 1 else ''}"
+                       f"\n\n{table}\n")
 
     print("\n" + table)
     print(f"\nReport → {md_path}")
