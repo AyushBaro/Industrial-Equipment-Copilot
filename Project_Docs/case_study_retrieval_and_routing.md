@@ -121,3 +121,67 @@ against the thresholds it already knows.
    before/after delta that proves the engineering, not just the demo.
 
 *Status: baseline captured Phase 3. Fixes + measured before/after to follow in Phase 5.*
+
+---
+
+## Phase 5 addendum — what the human judge-validation review surfaced (2026-07-06)
+
+Findings 1–2 were found by eye. Findings 3–4 below were found *by the eval harness plus
+a human validating the LLM judge* — the exact workflow the project is built around. A
+15-row blind hand-labeling of the faithfulness judge (`make eval-judge`) produced **raw
+agreement 0.867 (13/15), Cohen's κ 0.44**, and — more valuably — two disagreements and a
+set of margin notes that localized three additional bugs.
+
+### The methodology insight (why κ was low, and it's not the judge's fault)
+
+Both human/judge disagreements (`g003`, `g039`) were the **same definitional split**: the
+system *abstained*, the human called that a failure, the judge called it "faithful."
+Both are correct on their own terms — an abstention makes no false claim, so it cannot be
+*unfaithful*; but refusing a question you have the answer to *is* a failure. Conclusion:
+
+> **Faithfulness (grounding) structurally cannot see over-abstention. It must always be
+> reported alongside the over-abstention rate, never as a standalone proxy for answer
+> quality.** The judge is trustworthy for what we use it for (detecting hallucination);
+> κ was depressed by a definition gap, not by judge error.
+
+### Finding 3 — The synthesizer abstains with the answer in its context
+
+**Symptom.** On `g003` ("What is the alarm threshold for T50?") the model replied *"I
+don't have enough information"* — even though `manual-lpt` **§4 Alarm response**
+(`T50 ≥ 1428.11 degR`) and **§2** (the parameter table) were both in its context. Same on
+`g004` ("what action was taken for engine 24?"): the retrieved `wo-1001` **Action taken**
+section literally lists the actions ("reduce HPC borescope interval to 10 cycles,
+compressor wash, begin RUL tracking") and the model still abstained.
+
+**Root cause.** Not the code relevance floor (`should_abstain` can't trigger — RRF scores
+are always > 0). The model itself set `sufficient=false`. The synthesis system prompt
+framed abstention as the safe default ("never guess"), so the model over-refused whenever
+the answer required reading a table or wasn't spoon-fed in prose.
+
+**Why it matters.** This is the single biggest drag on `fact_recall` (0.47 baseline): a
+correct, retrievable answer scored as a total miss. Over-abstention (0.25) and low
+fact-recall are the *same* bug seen through two metrics.
+
+**Fix (this phase).** Rebalance the synthesis prompt: abstain *only* when the sources
+genuinely lack the answer; answer (and cite) when a source contains the fact, even in a
+table or across entries. The anti-hallucination guarantee is unchanged — outside
+knowledge is still forbidden and every claim is still code-verified against a real source.
+
+### Finding 4 — The router false-negatives an in-scope question as out-of-scope
+
+**Symptom.** On `g005` ("Why is the burner fuel-air ratio not used for trend
+monitoring?") the router returned `out_of_scope` ("unrelated to the fleet"), so nothing
+was ever retrieved — yet `manual-combustor` answers the question directly (and dense
+retrieval ranks it #1–#2 when actually run). A human reviewer's margin note ("No source
+retrieved??") caught it; the metric alone would have logged it only as one routing miss.
+
+**Root cause.** The router treats domain-relevant *conceptual* questions (why a sensor
+isn't trend-monitored) as off-topic because they don't name an engine or a fault. It
+conflates "no engine/sensor mentioned" with "out of scope."
+
+**Fix (later this phase).** Tighten the router's out-of-scope criterion to key on *fleet
+relevance*, not on whether a specific engine/sensor is named; add these conceptual
+doc-questions to the routing checks so the fix is measured.
+
+*Findings 3–4 confirmed against the corpus and the cached baseline predictions; fixes and
+before/after deltas follow.*

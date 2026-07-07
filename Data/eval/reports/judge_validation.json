@@ -1,0 +1,62 @@
+{
+ "g001": {
+  "label": "faithful",
+  "notes": ""
+ },
+ "g002": {
+  "label": "faithful",
+  "notes": ""
+ },
+ "g003": {
+  "label": "unfaithful",
+  "notes": "Alarm threshold is stated in the document"
+ },
+ "g004": {
+  "label": "faithful",
+  "notes": "Only listed what happened no actions were listed"
+ },
+ "g005": {
+  "label": "faithful",
+  "notes": "No source was retrieved??"
+ },
+ "g016": {
+  "label": "faithful",
+  "notes": ""
+ },
+ "g017": {
+  "label": "faithful",
+  "notes": ""
+ },
+ "g018": {
+  "label": "faithful",
+  "notes": ""
+ },
+ "g019": {
+  "label": "faithful",
+  "notes": ""
+ },
+ "g028": {
+  "label": "unfaithful",
+  "notes": ""
+ },
+ "g031": {
+  "label": "faithful",
+  "notes": "The model was only given the docs not a manual which is what the question was pertaining to"
+ },
+ "g033": {
+  "label": "faithful",
+  "notes": "The manual was not given to the model"
+ },
+ "g034": {
+  "label": "faithful",
+  "notes": ""
+ },
+ "g035": {
+  "label": "faithful",
+  "notes": ""
+ },
+ "g039": {
+  "label": "unfaithful",
+  "notes": "This doc is maybe not the right doc to look at, but it does have information for this question"
+ }
+}
