@@ -282,6 +282,15 @@ def build_report(rows, metrics: dict, verdicts, runs: int) -> dict:
 TARGETS = {"retrieval_recall@k": 0.80, "routing_accuracy": 0.90,
            "faithfulness": 0.85, "abstention_correct": 0.90}
 
+# Regression gate (tests/test_phase5.py). Floors/ceilings are set with margin below/above
+# the Fix-3 3-run means (recall 0.967, routing 1.000, OOS-abstain 1.000, over-abstn 0.067)
+# so single-run gpt noise doesn't false-alarm, but a real regression — e.g. over-abstention
+# ballooning back toward the 0.250 Phase-5 baseline — trips the gate. Deterministic metrics
+# only (no judge), so the gate is cheap enough to run on every change.
+REGRESSION_FLOORS = {"routing_accuracy": 0.90, "retrieval_recall@k": 0.85,
+                     "abstention_correct": 0.90}
+REGRESSION_CEILINGS = {"over_abstention": 0.20}
+
 
 def render_table(report: dict) -> str:
     m = report["metrics"]

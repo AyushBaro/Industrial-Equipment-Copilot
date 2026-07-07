@@ -61,6 +61,11 @@ eval-score:
 eval-judge:
 	$(PY) -m src.eval.validate_judge $(ARGS)
 
+# Regression gate: score the live system vs the golden set, fail on metric regressions
+# or if a Phase-5 fix creeps back. Spends a few cents (one pipeline pass, no judge).
+eval-gate:
+	RUN_LLM_TESTS=1 $(PY) -m pytest tests/test_phase5.py -v
+
 all: data docs test
 
 clean:

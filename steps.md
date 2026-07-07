@@ -3,7 +3,7 @@
 **Read this anytime to see where you are and what's next.**
 Full spec lives in `Project_Docs/PRD.md`. This file is the living checklist.
 
-- **Status:** ✅ Phases 0–4 complete — golden set reviewed (50 approved / 5 rejected, validator green); ⬜ Phase 5 next (automated scoring)
+- **Status:** ✅ Phases 0–5 complete — eval green, all 4 findings fixed & gated (recall@5 0.967 · routing 1.000 · faithfulness 1.000 · over-abstn 0.067); ⬜ Phase 6 next (deploy + README)
 - **Started:** 2026-06-30 (Tue)
 - **Target finish:** ~Jul 15 (focused) / early Aug (part-time, evenings+weekends)
 - **App LLM stack:** **OpenAI only** — chat model + OpenAI embeddings. (Claude Code is just the tool you build *with*; the app calls OpenAI.)
@@ -193,7 +193,11 @@ validator green, committed.
 
 ---
 
-## Phase 5 — Automated scoring + iterate  (Jul 6, 7)
+## Phase 5 — Automated scoring + iterate  ✅ COMPLETE (Jul 6–7)
+
+> **Outcome:** every headline metric clears target (recall@5 **0.967**, routing **1.000**,
+> faithfulness **1.000**, over-abstn **0.067** ↓ from 0.250). Judge validated (0.867 raw),
+> all four human-review findings fixed with measured before/after, gate locks it in.
 
 - ✅ 🤖 Scoring code: retrieval precision/recall@k, routing accuracy, abstention rate (`src/eval/score.py`, `make eval-score`)
 - ✅ 🤖 Faithfulness scorer = LLM-as-judge (`gpt-4o`) — v1 (fact-only; needs source-aware upgrade, see note)
@@ -204,7 +208,7 @@ validator green, committed.
 - ✅ 🤖 **N-run averaging** in the harness (`make eval-score ARGS="--runs 3"`) — each metric is a mean with a min–max Range so noise is explicit (gpt isn't deterministic at temp 0).
 - ✅ 🤖 **Fix 2 — type-aware fusion retrieval** (Phase-3 finding #1): add a manuals/fault-codes dense list as a 3rd RRF input for fusion. recall@5 **0.813 → 0.867**, faithfulness **0.950 → 1.000**, over-abstn **0.192 → 0.158**; g031 now cites the manual+fault code, g033/g039 stopped abstaining. No routing/OOS regression. (Both 3-run means; see case study.)
 - ✅ 🤖 **Fix 3 — router intent + scope** (findings #2 & #4): prefer `status` for alarm-style Qs (g031 now reports the alarm), treat conceptual in-scope Qs as `doc` (g005/g014), + code-net for invalid sensors; bonus g022 cycle-count fix. routing **0.940 → 1.000**, recall@5 **0.867 → 0.967**, over-abstn **0.158 → 0.067**. No OOS regression. **All four review findings resolved.**
-- ⬜ 🤖 Wire eval into a **pytest regression test** that runs on every change (locks in the Fix-3 numbers) **← NEXT**
+- ✅ 🤖 **Regression gate** (`tests/test_phase5.py`, `make eval-gate`): 4 offline scorer-logic tests (in `make test`) + live metric floors/ceilings (routing ≥0.90, recall ≥0.85, OOS-abstain ≥0.90, over-abstn ≤0.20) + per-fix canaries (g003 answers, g031 cites a manual & uses status, g005 routes doc). All 8 green. Locks in the Fix-1/2/3 numbers.
 - ⬜ 👤 Pick 1–2 real failures to write up as a mini case study (findings 1–4 drafted in `Project_Docs/case_study_retrieval_and_routing.md`)
 
 **Checkpoint:** a numbers table exists + at least **one documented before/after improvement**. ✅ (Fix 1 above.)
@@ -255,21 +259,19 @@ switching to hybrid retrieval." Record the date + the change that caused each ju
 
 ## 👉 RIGHT NOW, DO THIS NEXT
 
-Phase 5 is underway: scoring harness + source-aware judge built, **baseline recorded**
-(recall@5 0.804 · routing 0.940 · faithfulness 0.975 · fact_recall 0.473 · over-abstn 0.250).
+Phase 5 is done — eval harness, validated judge, all 4 findings fixed with measured
+before/after, and a regression gate locking it in. **On to Phase 6 (deploy + README).**
 
-1. 👤 **Validate the judge — one command:** `make eval-judge` → browser on :8001. Rule
-   faithful / not-faithful on 15 rows (blind; judge verdict hidden until you decide).
-   It reports raw agreement + Cohen's κ; bar is ≥ 0.85. Autosaves; resume anytime. Then
-   tell me the number and I'll commit your labels as eval evidence.
-2. 🤖 Fix **over-abstention** (relevance floor too strict — 10 answerable Qs refused);
-   this also lifts fact_recall. Re-run `make eval-score` → report the delta.
-3. 🤖 Fix the two Phase-3 findings (fusion ranking, trend-vs-status) + the g028 false
-   alarm → before/after deltas.
-4. 🤖 Wire `make eval-score` into a **pytest regression gate** so changes can't silently regress.
+1. 🤖 FastAPI backend exposing the copilot (`answer()` → JSON with citations + route).
+2. 🤖 Streamlit/Gradio UI; cost/latency logging per query.
+3. 👤 Write the README intro (Cognite-style problem statement) in your voice; 🤖 assemble
+   README leading with the **eval results table + the 4-finding case study** (the arc from
+   0.804→0.967 recall and 0.250→0.067 over-abstention is the headline artifact).
 
-> The Phase-3 findings + g028 are your measurable before/after — the strongest artifact.
+> Before deploying, optionally run `make eval-gate` once more to confirm green on a clean
+> checkout. The Phase-5 numbers table + `case_study_retrieval_and_routing.md` are the
+> strongest things to put front-and-center in the README.
 
 > The 3 ways people fail this: (1) rushing the hand-labeled eval set, (2) building the
 > router before the doc-only baseline works, (3) trusting the LLM judge without
-> validating it. Don't.
+> validating it. Don't. (All three avoided ✅)
