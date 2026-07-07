@@ -201,8 +201,9 @@ validator green, committed.
 - ✅ 🤖 Judge-validation helper built (`src/eval/validate_judge.py`, `make eval-judge`) — blind labeling in the browser, reports raw agreement + Cohen's κ
 - ✅ 👤 Hand-labeled 15 rows → **raw agreement 0.867, κ 0.44** (passes ≥0.85 bar; low κ is a definition gap — abstention reads "faithful" to the judge but "failure" to a user). Surfaced findings 3–4 (see case study).
 - ✅ 🤖 **Fix 1 — synthesizer over-abstention** (prompt rebalanced): fact_recall **0.473 → 0.598**, over-abstention **0.250 → 0.175**, faithfulness **held 0.975** (no new hallucination), out-of-scope abstention held 1.000. Deterministic fixes: g003/g004/g006 now answer 3/3.
-- ⬜ 🤖 Fix 2 — fusion retrieval ranks work orders over manuals (Phase-3 finding #1); Fix 3 — router false-negatives in-scope questions (finding #4, g005). Both still cause over-abstention on fusion rows (g033/g039).
-- ⬜ 🤖 **Eval is single-run and noisy on borderline cases** (g042/g045 flip run-to-run at temp 0) — add N-run averaging or majority-vote before trusting sub-±2-row deltas.
+- ✅ 🤖 **N-run averaging** in the harness (`make eval-score ARGS="--runs 3"`) — each metric is a mean with a min–max Range so noise is explicit (gpt isn't deterministic at temp 0).
+- ✅ 🤖 **Fix 2 — type-aware fusion retrieval** (Phase-3 finding #1): add a manuals/fault-codes dense list as a 3rd RRF input for fusion. recall@5 **0.813 → 0.867**, faithfulness **0.950 → 1.000**, over-abstn **0.192 → 0.158**; g031 now cites the manual+fault code, g033/g039 stopped abstaining. No routing/OOS regression. (Both 3-run means; see case study.)
+- ⬜ 🤖 Fix 3 — router: prefers `trend` over `status` (finding #2, g031) + false-negatives conceptual in-scope questions (finding #4, g005). Routing-side, untouched by Fixes 1–2.
 - ⬜ 🤖 Wire eval into a **pytest regression test** that runs on every change
 - ⬜ 👤 Pick 1–2 real failures to write up as a mini case study (findings 1–4 drafted in `Project_Docs/case_study_retrieval_and_routing.md`)
 

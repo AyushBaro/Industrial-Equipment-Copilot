@@ -183,5 +183,50 @@ conflates "no engine/sensor mentioned" with "out of scope."
 relevance*, not on whether a specific engine/sensor is named; add these conceptual
 doc-questions to the routing checks so the fix is measured.
 
-*Findings 3–4 confirmed against the corpus and the cached baseline predictions; fixes and
-before/after deltas follow.*
+*Findings 3–4 confirmed against the corpus and the cached baseline predictions.*
+
+---
+
+## Fixes applied and measured (2026-07-07)
+
+All numbers are means over **3 eval runs** (`make eval-score ARGS="--runs 3"`), because
+gpt is not deterministic even at temperature 0 and single-run metrics wobble by ~±1–2
+rows on borderline abstention cases. Ranges below are min–max across the three runs.
+
+### Fix 1 — synthesizer over-abstention (Finding 3)
+
+Rebalanced the synthesis prompt: abstain only when the sources genuinely lack the answer;
+answer + cite when a source contains the fact, even in a table. Anti-hallucination
+guarantee unchanged. `g003`/`g004`/`g006` — flagged in the human review — now answer with
+citations. Biggest single lift on `fact_recall`.
+
+### Fix 2 — type-aware fusion retrieval (Finding 1)
+
+Root cause was that engine-named work orders out-rank the generic canonical procedure in
+both retrievers. Fix: for fusion-route queries, add a **type-restricted dense list
+(manuals + fault codes) as a third RRF input**, so the authoritative doc reliably earns a
+top-k slot — no score hand-tuning, no change for doc-route queries (which may legitimately
+want a work order). The flagship query now retrieves *and cites* `fault-FC-HPC-001` and
+`manual-hpc` (both previously absent from the top 5); `g033`/`g039` stopped abstaining.
+
+**Measured effect (3-run means):**
+
+| Metric | Baseline (Phase 5 start) | After Fix 1 | After Fix 2 | Target |
+|---|---|---|---|---|
+| retrieval recall@5 | 0.804 | 0.813 (0.804–0.817) | **0.867** (0.867) | ≥ 0.80 |
+| routing accuracy | 0.940 | 0.940 | 0.940 | ≥ 0.90 |
+| faithfulness (grounding) | 0.975¹ | 0.950 | **1.000** | ≥ 0.85 |
+| fact_recall (completeness) | 0.473 | 0.563 | 0.595 | — |
+| correct abstention (OOS) | 1.000 | 1.000 | 1.000 | ≥ 0.90 |
+| over-abstention (in-scope refused) | 0.250 | 0.192 (0.175–0.200) | **0.158** (0.125–0.200) | → 0 |
+
+¹ Baseline faithfulness/fact_recall are single-run (the N-run harness landed with Fix 1).
+
+**Why faithfulness rose with Fix 2.** The two ungrounded rows before the fix (`g031`,
+`g034`) were fusion answers resting only on work orders; once the canonical manual/fault
+code entered their context, their claims became fully supported. Better retrieval bought
+better grounding — not just better recall.
+
+**Still open:** Finding 2 (router prefers `trend` over `status` — `g031`'s telemetry is
+still a trend) and Finding 4 (router false-negatives conceptual in-scope questions —
+`g005`). Both are routing-side and untouched by Fixes 1–2.

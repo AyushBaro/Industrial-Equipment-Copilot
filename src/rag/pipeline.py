@@ -51,7 +51,11 @@ def answer(question: str, k: int = config.RETRIEVAL_K, model: str | None = None)
 
     retrieved = telemetry = None
     if route in ("doc", "fusion"):
-        retrieved = get_retriever().hybrid(question, k=k)
+        # Fusion questions ("known fault? what does the manual say?") need the canonical
+        # procedure, but engine-named work orders out-rank it — ensure manuals/fault codes
+        # earn a slot. Doc questions may legitimately want a work order, so leave them be.
+        ensure = ["manual", "fault_code"] if route == "fusion" else None
+        retrieved = get_retriever().hybrid(question, k=k, ensure_types=ensure)
     if route in ("timeseries", "fusion"):
         telemetry = run_timeseries(plan)
 

@@ -43,20 +43,33 @@ class Retriever:
         ranked = sorted(range(len(scores)), key=lambda i: scores[i], reverse=True)
         return [self._chunks[i].id for i in ranked[:k] if scores[i] > 0]
 
-    def dense(self, query: str, k: int = config.RETRIEVAL_K) -> list[str]:
+    def dense(self, query: str, k: int = config.RETRIEVAL_K,
+              doc_types: list[str] | None = None) -> list[str]:
         if self._collection is None:
             from src.rag.embed_store import get_collection
 
             self._collection = get_collection()
         qvec = llm.embed([query])[0]
-        res = self._collection.query(query_embeddings=[qvec], n_results=k)
+        kwargs = {"query_embeddings": [qvec], "n_results": k}
+        if doc_types:
+            kwargs["where"] = {"doc_type": {"$in": list(doc_types)}}
+        res = self._collection.query(**kwargs)
         return list(res["ids"][0])
 
     # --- fusion ---------------------------------------------------------------
-    def hybrid(self, query: str, k: int = config.RETRIEVAL_K) -> list[Retrieved]:
+    def hybrid(self, query: str, k: int = config.RETRIEVAL_K,
+               ensure_types: list[str] | None = None) -> list[Retrieved]:
+        """Dense + sparse fused with RRF. For fusion-route queries the work orders that
+        name the engine ("engine 47", "Ps30") dominate both retrievers and crowd out the
+        canonical procedure docs, which describe the pattern generically. `ensure_types`
+        adds a type-restricted dense list (manuals / fault codes) as a third RRF input so
+        those authoritative docs reliably earn a top-k slot — without score hand-tuning."""
         dense_ids = self.dense(query, k * 2)
         sparse_ids = self.bm25(query, k * 2)
-        fused = rrf_fuse([dense_ids, sparse_ids])
+        lists = [dense_ids, sparse_ids]
+        if ensure_types:
+            lists.append(self.dense(query, k, doc_types=ensure_types))
+        fused = rrf_fuse(lists)
         out: list[Retrieved] = []
         for cid, score in fused[:k]:
             out.append(
