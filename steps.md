@@ -199,12 +199,14 @@ validator green, committed.
 - ✅ 🤖 Faithfulness scorer = LLM-as-judge (`gpt-4o`) — v1 (fact-only; needs source-aware upgrade, see note)
 - ✅ 👤 Run the first full eval → **baseline recorded** (2026-07-06, table below)
 - ✅ 🤖 Judge-validation helper built (`src/eval/validate_judge.py`, `make eval-judge`) — blind labeling in the browser, reports raw agreement + Cohen's κ
-- ⬜ 👤 Hand-label faithfulness on ~15 examples with `make eval-judge` → confirm agreement ≥0.85 **← NEXT (your turn)**
+- ✅ 👤 Hand-labeled 15 rows → **raw agreement 0.867, κ 0.44** (passes ≥0.85 bar; low κ is a definition gap — abstention reads "faithful" to the judge but "failure" to a user). Surfaced findings 3–4 (see case study).
+- ✅ 🤖 **Fix 1 — synthesizer over-abstention** (prompt rebalanced): fact_recall **0.473 → 0.598**, over-abstention **0.250 → 0.175**, faithfulness **held 0.975** (no new hallucination), out-of-scope abstention held 1.000. Deterministic fixes: g003/g004/g006 now answer 3/3.
+- ⬜ 🤖 Fix 2 — fusion retrieval ranks work orders over manuals (Phase-3 finding #1); Fix 3 — router false-negatives in-scope questions (finding #4, g005). Both still cause over-abstention on fusion rows (g033/g039).
+- ⬜ 🤖 **Eval is single-run and noisy on borderline cases** (g042/g045 flip run-to-run at temp 0) — add N-run averaging or majority-vote before trusting sub-±2-row deltas.
 - ⬜ 🤖 Wire eval into a **pytest regression test** that runs on every change
-- ⬜ 🤖 Iterate retrieval + fix the two Phase-3 findings on what eval reveals; report before/after deltas
-- ⬜ 👤 Pick 1–2 real failures to write up as a mini case study
+- ⬜ 👤 Pick 1–2 real failures to write up as a mini case study (findings 1–4 drafted in `Project_Docs/case_study_retrieval_and_routing.md`)
 
-**Checkpoint:** a numbers table exists + at least **one documented before/after improvement**.
+**Checkpoint:** a numbers table exists + at least **one documented before/after improvement**. ✅ (Fix 1 above.)
 
 ---
 

@@ -1,0 +1,843 @@
+[
+ {
+  "id": "g001",
+  "route": "doc",
+  "answer": "The recommended inspection interval for the HPC is every 30 operational cycles under nominal conditions, reduced to every 10 cycles once any HPC parameter crosses its alarm threshold.",
+  "citations": [
+   "manual-hpc"
+  ],
+  "retrieved": [
+   "fault-FC-HPC-001",
+   "manual-fan",
+   "manual-hpc",
+   "manual-hpt",
+   "manual-lpc"
+  ],
+  "abstained": false,
+  "sources_text": [
+   "[doc_id=manual-hpc | section: 3. Inspection interval]\n[High-Pressure Compressor (HPC) Operation & Maintenance Manual \u2014 3. Inspection interval]\nBorescope inspection of the HPC stages is recommended every **30 operational cycles**\nunder nominal conditions, reduced to every **10 cycles** once any HPC parameter\ncrosses its alarm threshold.",
+   "[doc_id=manual-hpt | section: 3. Inspection interval]\n[High-Pressure Turbine (HPT) Operation & Maintenance Manual \u2014 3. Inspection interval]\nHPT clearance and seal inspection every **30 operational cycles**, aligned with the\nHPC schedule since the two are mechanically coupled on the high-pressure shaft.",
+   "[doc_id=manual-fan | section: 3. Inspection interval]\n[Fan Module Operation & Maintenance Manual \u2014 3. Inspection interval]\nFan blade and containment inspection every **50 operational cycles**. Because the fan\nis not the primary fault mode in this fleet, routine intervals are longer than for the\nHPC.",
+   "[doc_id=manual-lpc | section: 3. Inspection interval]\n[Low-Pressure Compressor (LPC) Operation & Maintenance Manual \u2014 3. Inspection interval]\nCombined gas-path inspection every **40 operational cycles**; the LPC is typically\ninspected alongside the HPC because the two share the core gas path.",
+   "[doc_id=fault-FC-HPC-001 | section: Procedure]\n[FC-HPC-001 \u2014 High-Pressure Compressor Degradation \u2014 Procedure]\n1. Confirm the primary signature on at least the last 5 operational cycles (suppress\n   single-cycle noise spikes).\n2. Reduce HPC borescope inspection interval to every 10 cycles.\n3. Perform a compressor wash; re-baseline T30 and Ps30 after the wash.\n4. If T30 and Ps30 remain in alarm after wash, schedule HPC module removal at the next\n   maintenance opportunity and begin RUL tracking for end-of-life planning.\n5. Check whether T50 (LPT) has also entered alarm \u2014 co-occurrence indicates\n   degradation has propagated and shortens the remaining-useful-life estimate."
+  ]
+ },
+ {
+  "id": "g002",
+  "route": "doc",
+  "answer": "Fault code FC-HPC-001 indicates High-Pressure Compressor (HPC) degradation. Its primary sensor signature requires T30 to be rising and \u2265 1607.89 degR, Ps30 to be rising and \u2265 48.10 psia, P30 to be falling and \u2264 551.16 psia, and phi to be falling and \u2264 519.69 pps/psi.",
+  "citations": [
+   "fault-code-reference",
+   "fault-FC-HPC-001"
+  ],
+  "retrieved": [
+   "fault-FC-HPC-001",
+   "fault-FC-LPT-001",
+   "fault-code-reference",
+   "wo-1002-engine47"
+  ],
+  "abstained": false,
+  "sources_text": [
+   "[doc_id=fault-code-reference | section: Usage notes]\n[Fault Code Reference Index \u2014 Usage notes]\n- **HPC degradation (FC-HPC-001) is the dominant fault mode in this fleet.** When in\n  doubt, evaluate the HPC signature first.\n- A single parameter in alarm is an *advisory*, not a fault. Raise a coded fault only\n  when the full primary signature is present, to suppress sensor-noise false alarms.\n- Codes are not mutually exclusive: late-life engines frequently show FC-HPC-001 and\n  FC-LPT-001 together as degradation propagates downstream.",
+   "[doc_id=fault-code-reference | section: overview]\n[Fault Code Reference Index \u2014 overview]\nThis index maps fault codes to their triggering subsystem, the primary sensor\nsignature, and the detailed procedure document. Raise a fault code when the listed\nprimary parameters are simultaneously in alarm.\n\n| Code | Subsystem | Primary signature | Procedure |\n|------|-----------|-------------------|-----------|\n| FC-HPC-001 | HPC | T30 \u2265 1607.89 degR and Ps30 \u2265 48.10 psia, with falling P30 / phi | see `fault-FC-HPC-001` |\n| FC-LPT-001 | LPT | T50 \u2265 1428.11 degR with W32 \u2264 23.00 lbm/s | see `fault-FC-LPT-001` |\n| FC-FAN-001 | Fan | BPR above nominal with no corresponding HPC alarm | manual-fan, \u00a74 |\n| FC-HPT-001 | HPT | W31 below nominal coolant bleed | manual-hpt, \u00a74 |",
+   "[doc_id=fault-FC-HPC-001 | section: Primary signature (all should be present to raise the code)]\n[FC-HPC-001 \u2014 High-Pressure Compressor Degradation \u2014 Primary signature (all should be present to raise the code)]\n| Sensor | Symbol | Direction | Alarm condition |\n|--------|--------|-----------|-----------------|\n| 3  | T30  | rising  | \u2265 1607.89 degR |\n| 11 | Ps30 | rising  | \u2265 48.10 psia   |\n| 7  | P30  | falling | \u2264 551.16 psia  |\n| 12 | phi  | falling | \u2264 519.69 pps/psi |",
+   "[doc_id=wo-1002-engine47 | section: overview]\n[WO-1002 \u2014 Engine 47 HPC pressure-loss investigation \u2014 overview]\n**Engine:** 47 **Date:** 2026-03-18 **Raised by:** prognostics review\n**Fault code:** FC-HPC-001 (HPC degradation)",
+   "[doc_id=fault-FC-LPT-001 | section: Primary signature]\n[FC-LPT-001 \u2014 Low-Pressure Turbine Thermal Degradation \u2014 Primary signature]\n| Sensor | Symbol | Direction | Alarm condition |\n|--------|--------|-----------|-----------------|\n| 4  | T50 | rising  | \u2265 1428.11 degR |\n| 21 | W32 | falling | \u2264 23.00 lbm/s  |"
+  ]
+ },
+ {
+  "id": "g003",
+  "route": "doc",
+  "answer": "The alarm threshold for the LPT outlet temperature T50 is 1428.11 degR.",
+  "citations": [
+   "wo-1003-engine76",
+   "manual-lpt"
+  ],
+  "retrieved": [
+   "manual-lpt",
+   "wo-1003-engine76",
+   "wo-1009-engine91"
+  ],
+  "abstained": false,
+  "sources_text": [
+   "[doc_id=wo-1003-engine76 | section: Observation]\n[WO-1003 \u2014 Engine 76 LPT exhaust over-temperature \u2014 Observation]\nEngine 76's LPT outlet temperature (T50) reached 1430.6 degR, above the **1428.11\ndegR** alarm threshold, sustained over 7 cycles. Coolant bleed (W32) was trending\ntoward its low threshold. HPC parameters were nominal, so this was treated as a\nprimary LPT event rather than propagated HPC degradation.",
+   "[doc_id=manual-lpt | section: 4. Alarm response]\n[Low-Pressure Turbine (LPT) Operation & Maintenance Manual \u2014 4. Alarm response]\n- **T50 \u2265 1428.11 degR:** LPT over-temperature. Inspect for blade distress and\n  exhaust-path blockage. Persistent high T50 is a leading indicator of end-of-life in\n  engines whose primary degradation has propagated downstream.\n- **W32 \u2264 23.00 lbm/s:** falling LPT coolant bleed; inspect the cooling circuit and\n  cross-check W31 (sensor 20) for a shared supply fault. See fault code FC-LPT-001.",
+   "[doc_id=wo-1009-engine91 | section: Observation]\n[WO-1009 \u2014 Engine 91 combined LPT thermal + coolant event \u2014 Observation]\nEngine 91 presented the full FC-LPT-001 signature: LPT outlet temperature (T50) at\n1431.2 degR, above the **1428.11 degR** threshold, with LPT coolant bleed (W32) at\n22.9 lbm/s, below the **23.00 lbm/s** low threshold. HPC parameters were also\nelevated, indicating degradation had propagated downstream from the core gas path.",
+   "[doc_id=manual-lpt | section: 2. Monitored parameters]\n[Low-Pressure Turbine (LPT) Operation & Maintenance Manual \u2014 2. Monitored parameters]\n| Sensor | Symbol | Quantity | Nominal range | Alarm |\n|--------|--------|----------|---------------|-------|\n| 4  | T50 | LPT outlet total temperature (degR) | 1390.08 \u2013 1415.43 | \u2265 1428.11 (high) |\n| 21 | W32 | LPT coolant bleed (lbm/s)           | 23.18 \u2013 23.53     | \u2264 23.00 (low)    |",
+   "[doc_id=wo-1003-engine76 | section: Status]\n[WO-1003 \u2014 Engine 76 LPT exhaust over-temperature \u2014 Status]\nOpen \u2014 monitor T50; co-occurrence with an HPC alarm would shorten the RUL estimate."
+  ]
+ },
+ {
+  "id": "g004",
+  "route": "doc",
+  "answer": "For engine 24's HPC over-temperature advisory, the action taken included reducing the HPC borescope interval to every 10 cycles per FC-HPC-001, scheduling a compressor wash, and beginning RUL tracking. The borescope showed early-stage blade fouling consistent with efficiency loss.",
+  "citations": [
+   "wo-1001-engine24"
+  ],
+  "retrieved": [
+   "wo-1001-engine24",
+   "wo-1006-engine33"
+  ],
+  "abstained": false,
+  "sources_text": [
+   "[doc_id=wo-1001-engine24 | section: Action taken]\n[WO-1001 \u2014 Engine 24 HPC over-temperature advisory \u2014 Action taken]\nReduced HPC borescope interval to every 10 cycles per FC-HPC-001. Compressor wash\nscheduled. Began RUL tracking. Borescope showed early-stage blade fouling consistent\nwith efficiency loss.",
+   "[doc_id=wo-1001-engine24 | section: overview]\n[WO-1001 \u2014 Engine 24 HPC over-temperature advisory \u2014 overview]\n**Engine:** 24 **Date:** 2026-03-04 **Raised by:** line monitoring\n**Fault code:** FC-HPC-001 (HPC degradation)",
+   "[doc_id=wo-1001-engine24 | section: Status]\n[WO-1001 \u2014 Engine 24 HPC over-temperature advisory \u2014 Status]\nOpen \u2014 re-baseline T30/Ps30 after wash; escalate to module removal if still in alarm.",
+   "[doc_id=wo-1006-engine33 | section: Action taken]\n[WO-1006 \u2014 Engine 33 bypass-ratio drift \u2014 Action taken]\nReviewed HPC parameters \u2014 all nominal, so this was logged as an isolated fan advisory,\nnot FC-HPC-001. No hardware action; flagged for re-review in 25 cycles.",
+   "[doc_id=wo-1001-engine24 | section: Observation]\n[WO-1001 \u2014 Engine 24 HPC over-temperature advisory \u2014 Observation]\nTrend review flagged Engine 24's HPC discharge temperature (T30) climbing across the\nlast 12 cycles, reaching 1609.4 degR \u2014 above the **1607.89 degR** alarm threshold.\nStatic discharge pressure (Ps30) reached 48.2 psia, also above its **48.10 psia**\nthreshold. Total discharge pressure (P30) and the fuel-flow ratio (phi) were trending\ndown, consistent with the FC-HPC-001 signature."
+  ]
+ },
+ {
+  "id": "g005",
+  "route": "out_of_scope",
+  "answer": "I don't have enough information to answer that.",
+  "citations": [],
+  "retrieved": [],
+  "abstained": true,
+  "sources_text": []
+ },
+ {
+  "id": "g006",
+  "route": "doc",
+  "answer": "The alarm condition for the HPT coolant bleed W31 is when it is less than or equal to 38.35 lbm/s.",
+  "citations": [
+   "manual-hpt",
+   "wo-1008-engine05"
+  ],
+  "retrieved": [
+   "manual-hpt",
+   "manual-lpt",
+   "wo-1008-engine05"
+  ],
+  "abstained": false,
+  "sources_text": [
+   "[doc_id=wo-1008-engine05 | section: Observation]\n[WO-1008 \u2014 Engine 5 HPT coolant-bleed decline \u2014 Observation]\nEngine 5's HPT coolant bleed (W31) declined to 38.30 lbm/s, below the **38.35 lbm/s**\nlow alarm threshold and under the **38.64** nominal minimum. LPT coolant bleed (W32)\nremained nominal, so this was treated as an HPT-local cooling issue, not a shared\nsupply fault.",
+   "[doc_id=manual-hpt | section: 4. Alarm response]\n[High-Pressure Turbine (HPT) Operation & Maintenance Manual \u2014 4. Alarm response]\n- **W31 \u2264 38.35 lbm/s:** declining HPT coolant bleed. Inspect coolant passages and\n  high-pressure shaft seals. A simultaneous decline in LPT coolant bleed (W32, sensor\n  21) points to a shared cooling-supply problem rather than an isolated HPT fault.",
+   "[doc_id=wo-1008-engine05 | section: Status]\n[WO-1008 \u2014 Engine 5 HPT coolant-bleed decline \u2014 Status]\nOpen \u2014 HPT seal service pending; monitor W31 and watch W32 for any shared-supply signature.",
+   "[doc_id=manual-hpt | section: 2. Monitored parameters]\n[High-Pressure Turbine (HPT) Operation & Maintenance Manual \u2014 2. Monitored parameters]\n| Sensor | Symbol | Quantity | Nominal range | Alarm |\n|--------|--------|----------|---------------|-------|\n| 20 | W31 | HPT coolant bleed (lbm/s) | 38.64 \u2013 39.22 | \u2264 38.35 (low) |",
+   "[doc_id=manual-lpt | section: 4. Alarm response]\n[Low-Pressure Turbine (LPT) Operation & Maintenance Manual \u2014 4. Alarm response]\n- **T50 \u2265 1428.11 degR:** LPT over-temperature. Inspect for blade distress and\n  exhaust-path blockage. Persistent high T50 is a leading indicator of end-of-life in\n  engines whose primary degradation has propagated downstream.\n- **W32 \u2264 23.00 lbm/s:** falling LPT coolant bleed; inspect the cooling circuit and\n  cross-check W31 (sensor 20) for a shared supply fault. See fault code FC-LPT-001."
+  ]
+ },
+ {
+  "id": "g007",
+  "route": "doc",
+  "answer": "The Low-Pressure Compressor (LPC) should be inspected every 40 operational cycles.",
+  "citations": [
+   "manual-lpc"
+  ],
+  "retrieved": [
+   "manual-lpc",
+   "manual-lpt"
+  ],
+  "abstained": false,
+  "sources_text": [
+   "[doc_id=manual-lpc | section: 3. Inspection interval]\n[Low-Pressure Compressor (LPC) Operation & Maintenance Manual \u2014 3. Inspection interval]\nCombined gas-path inspection every **40 operational cycles**; the LPC is typically\ninspected alongside the HPC because the two share the core gas path.",
+   "[doc_id=manual-lpc | section: 4. Alarm response]\n[Low-Pressure Compressor (LPC) Operation & Maintenance Manual \u2014 4. Alarm response]\n- **T24 \u2265 644.15 degR:** rising LPC discharge temperature. On its own this is usually\n  mild; if it accompanies an HPC alarm (see FC-HPC-001) treat it as confirmation of\n  core gas-path degradation rather than an isolated LPC fault.",
+   "[doc_id=manual-lpc | section: 1. Overview]\n[Low-Pressure Compressor (LPC) Operation & Maintenance Manual \u2014 1. Overview]\nThe low-pressure compressor (booster) raises airflow pressure between the fan and the\nHPC. Its health is tracked primarily through the LPC outlet total temperature, which\nrises as booster efficiency degrades.",
+   "[doc_id=manual-lpc | section: 2. Monitored parameters]\n[Low-Pressure Compressor (LPC) Operation & Maintenance Manual \u2014 2. Monitored parameters]\n| Sensor | Symbol | Quantity | Nominal range | Alarm |\n|--------|--------|----------|---------------|-------|\n| 2 | T24 | LPC outlet total temperature (degR) | 641.54 \u2013 643.28 | \u2265 644.15 (high) |",
+   "[doc_id=manual-lpt | section: 3. Inspection interval]\n[Low-Pressure Turbine (LPT) Operation & Maintenance Manual \u2014 3. Inspection interval]\nLPT gas-path and exhaust inspection every **35 operational cycles**."
+  ]
+ },
+ {
+  "id": "g008",
+  "route": "doc",
+  "answer": "The fault codes and their corresponding subsystems are: FC-HPC-001 for the HPC subsystem, FC-LPT-001 for the LPT subsystem, FC-FAN-001 for the Fan subsystem, and FC-HPT-001 for the HPT subsystem.",
+  "citations": [
+   "fault-code-reference"
+  ],
+  "retrieved": [
+   "fault-code-reference",
+   "wo-1005-engine89",
+   "wo-1007-engine58",
+   "wo-1009-engine91"
+  ],
+  "abstained": false,
+  "sources_text": [
+   "[doc_id=fault-code-reference | section: overview]\n[Fault Code Reference Index \u2014 overview]\nThis index maps fault codes to their triggering subsystem, the primary sensor\nsignature, and the detailed procedure document. Raise a fault code when the listed\nprimary parameters are simultaneously in alarm.\n\n| Code | Subsystem | Primary signature | Procedure |\n|------|-----------|-------------------|-----------|\n| FC-HPC-001 | HPC | T30 \u2265 1607.89 degR and Ps30 \u2265 48.10 psia, with falling P30 / phi | see `fault-FC-HPC-001` |\n| FC-LPT-001 | LPT | T50 \u2265 1428.11 degR with W32 \u2264 23.00 lbm/s | see `fault-FC-LPT-001` |\n| FC-FAN-001 | Fan | BPR above nominal with no corresponding HPC alarm | manual-fan, \u00a74 |\n| FC-HPT-001 | HPT | W31 below nominal coolant bleed | manual-hpt, \u00a74 |",
+   "[doc_id=fault-code-reference | section: Usage notes]\n[Fault Code Reference Index \u2014 Usage notes]\n- **HPC degradation (FC-HPC-001) is the dominant fault mode in this fleet.** When in\n  doubt, evaluate the HPC signature first.\n- A single parameter in alarm is an *advisory*, not a fault. Raise a coded fault only\n  when the full primary signature is present, to suppress sensor-noise false alarms.\n- Codes are not mutually exclusive: late-life engines frequently show FC-HPC-001 and\n  FC-LPT-001 together as degradation propagates downstream.",
+   "[doc_id=wo-1005-engine89 | section: overview]\n[WO-1005 \u2014 Engine 89 routine inspection (nominal) \u2014 overview]\n**Engine:** 89 **Date:** 2026-04-22 **Raised by:** scheduled maintenance\n**Fault code:** none",
+   "[doc_id=wo-1007-engine58 | section: overview]\n[WO-1007 \u2014 Engine 58 rising bleed enthalpy \u2014 overview]\n**Engine:** 58 **Date:** 2026-05-13 **Raised by:** prognostics review\n**Fault code:** FC-HPC-001",
+   "[doc_id=wo-1009-engine91 | section: overview]\n[WO-1009 \u2014 Engine 91 combined LPT thermal + coolant event \u2014 overview]\n**Engine:** 91 **Date:** 2026-06-08 **Raised by:** prognostics review\n**Fault code:** FC-LPT-001"
+  ]
+ },
+ {
+  "id": "g009",
+  "route": "doc",
+  "answer": "I don't have enough information to answer that.",
+  "citations": [],
+  "retrieved": [
+   "fault-FC-HPC-001",
+   "fault-FC-LPT-001",
+   "fault-code-reference",
+   "manual-lpt"
+  ],
+  "abstained": true,
+  "sources_text": [
+   "[doc_id=fault-code-reference | section: Usage notes]\n[Fault Code Reference Index \u2014 Usage notes]\n- **HPC degradation (FC-HPC-001) is the dominant fault mode in this fleet.** When in\n  doubt, evaluate the HPC signature first.\n- A single parameter in alarm is an *advisory*, not a fault. Raise a coded fault only\n  when the full primary signature is present, to suppress sensor-noise false alarms.\n- Codes are not mutually exclusive: late-life engines frequently show FC-HPC-001 and\n  FC-LPT-001 together as degradation propagates downstream.",
+   "[doc_id=fault-code-reference | section: overview]\n[Fault Code Reference Index \u2014 overview]\nThis index maps fault codes to their triggering subsystem, the primary sensor\nsignature, and the detailed procedure document. Raise a fault code when the listed\nprimary parameters are simultaneously in alarm.\n\n| Code | Subsystem | Primary signature | Procedure |\n|------|-----------|-------------------|-----------|\n| FC-HPC-001 | HPC | T30 \u2265 1607.89 degR and Ps30 \u2265 48.10 psia, with falling P30 / phi | see `fault-FC-HPC-001` |\n| FC-LPT-001 | LPT | T50 \u2265 1428.11 degR with W32 \u2264 23.00 lbm/s | see `fault-FC-LPT-001` |\n| FC-FAN-001 | Fan | BPR above nominal with no corresponding HPC alarm | manual-fan, \u00a74 |\n| FC-HPT-001 | HPT | W31 below nominal coolant bleed | manual-hpt, \u00a74 |",
+   "[doc_id=fault-FC-LPT-001 | section: Primary signature]\n[FC-LPT-001 \u2014 Low-Pressure Turbine Thermal Degradation \u2014 Primary signature]\n| Sensor | Symbol | Direction | Alarm condition |\n|--------|--------|-----------|-----------------|\n| 4  | T50 | rising  | \u2265 1428.11 degR |\n| 21 | W32 | falling | \u2264 23.00 lbm/s  |",
+   "[doc_id=manual-lpt | section: 4. Alarm response]\n[Low-Pressure Turbine (LPT) Operation & Maintenance Manual \u2014 4. Alarm response]\n- **T50 \u2265 1428.11 degR:** LPT over-temperature. Inspect for blade distress and\n  exhaust-path blockage. Persistent high T50 is a leading indicator of end-of-life in\n  engines whose primary degradation has propagated downstream.\n- **W32 \u2264 23.00 lbm/s:** falling LPT coolant bleed; inspect the cooling circuit and\n  cross-check W31 (sensor 20) for a shared supply fault. See fault code FC-LPT-001.",
+   "[doc_id=fault-FC-HPC-001 | section: Primary signature (all should be present to raise the code)]\n[FC-HPC-001 \u2014 High-Pressure Compressor Degradation \u2014 Primary signature (all should be present to raise the code)]\n| Sensor | Symbol | Direction | Alarm condition |\n|--------|--------|-----------|-----------------|\n| 3  | T30  | rising  | \u2265 1607.89 degR |\n| 11 | Ps30 | rising  | \u2265 48.10 psia   |\n| 7  | P30  | falling | \u2264 551.16 psia  |\n| 12 | phi  | falling | \u2264 519.69 pps/psi |"
+  ]
+ },
+ {
+  "id": "g010",
+  "route": "doc",
+  "answer": "The alarm thresholds for core speed are Nc \u2265 9092.00 rpm and NRc \u2265 8169.77 rpm.",
+  "citations": [
+   "wo-1004-engine12",
+   "manual-core-engine"
+  ],
+  "retrieved": [
+   "fault-FC-HPC-001",
+   "manual-core-engine",
+   "manual-fan",
+   "wo-1004-engine12"
+  ],
+  "abstained": false,
+  "sources_text": [
+   "[doc_id=wo-1004-engine12 | section: Observation]\n[WO-1004 \u2014 Engine 12 core overspeed advisory \u2014 Observation]\nEngine 12's physical core speed (Nc) reached 9093.5 rpm, just above the **9092.00 rpm**\nalarm threshold, with corrected core speed (NRc) at 8171.0 rpm, above its **8169.77\nrpm** threshold. Rising core speed is a system-level symptom: the core is compensating\nfor gas-path efficiency loss.",
+   "[doc_id=manual-core-engine | section: 4. Alarm response]\n[Core Shaft & Engine-Level Monitoring Manual \u2014 4. Alarm response]\n- **Nc \u2265 9092.00 rpm / NRc \u2265 8169.77 rpm:** rising core speed indicates the core is\n  working harder to hold thrust \u2014 a system-level symptom of gas-path degradation.\n  Localize using HPC parameters (FC-HPC-001).\n- **htBleed \u2265 397.50:** rising bleed enthalpy reflects increasing core temperatures\n  overall; a strong end-of-life indicator when combined with rising T30 and T50.",
+   "[doc_id=manual-core-engine | section: 2. Monitored parameters]\n[Core Shaft & Engine-Level Monitoring Manual \u2014 2. Monitored parameters]\n| Sensor | Symbol | Quantity | Nominal range | Alarm |\n|--------|--------|----------|---------------|-------|\n| 9  | Nc      | Physical core speed (rpm)   | 9038.00 \u2013 9074.00 | \u2265 9092.00 (high) |\n| 14 | NRc     | Corrected core speed (rpm)  | 8120.73 \u2013 8153.42 | \u2265 8169.77 (high) |\n| 17 | htBleed | Bleed enthalpy (index)      | 390.00 \u2013 395.00   | \u2265 397.50 (high)  |\n| 10 | epr     | Engine pressure ratio (\u2013)   | constant \u2248 1.30   | non-informative  |",
+   "[doc_id=fault-FC-HPC-001 | section: Secondary / confirming indicators]\n[FC-HPC-001 \u2014 High-Pressure Compressor Degradation \u2014 Secondary / confirming indicators]\n- Core speed Nc rising toward **9092.00 rpm** as the core compensates for lost efficiency.\n- Bleed enthalpy htBleed rising toward **397.50** as overall core temperatures climb.",
+   "[doc_id=manual-fan | section: 4. Alarm response]\n[Fan Module Operation & Maintenance Manual \u2014 4. Alarm response]\n- **BPR \u2265 8.54:** rising bypass ratio indicates the core is passing less of the\n  total flow \u2014 often a secondary symptom of core/HPC degradation rather than a fan\n  fault. Correlate with HPC parameters before attributing to the fan.\n- **Nf \u2265 2388.30 rpm / NRf \u2265 2388.28 rpm:** physical and corrected fan speed creeping\n  above nominal. Confirm against demanded fan speed; a gap suggests control-loop drift."
+  ]
+ },
+ {
+  "id": "g011",
+  "route": "doc",
+  "answer": "Once FC-HPC-001 is confirmed, the recommended procedure is to: 1) Confirm the primary signature on at least the last 5 operational cycles. 2) Reduce HPC borescope inspection interval to every 10 cycles. 3) Perform a compressor wash and re-baseline T30 and Ps30 after the wash. 4) If T30 and Ps30 remain in alarm after the wash, schedule HPC module removal at the next maintenance opportunity and begin RUL tracking for end-of-life planning. 5) Check whether T50 (LPT) has also entered alarm, as co-occurrence indicates degradation has propagated and shortens the remaining-useful-life estimate.",
+  "citations": [
+   "fault-FC-HPC-001"
+  ],
+  "retrieved": [
+   "fault-FC-HPC-001",
+   "fault-FC-LPT-001",
+   "fault-code-reference",
+   "manual-hpc",
+   "wo-1007-engine58"
+  ],
+  "abstained": false,
+  "sources_text": [
+   "[doc_id=fault-code-reference | section: Usage notes]\n[Fault Code Reference Index \u2014 Usage notes]\n- **HPC degradation (FC-HPC-001) is the dominant fault mode in this fleet.** When in\n  doubt, evaluate the HPC signature first.\n- A single parameter in alarm is an *advisory*, not a fault. Raise a coded fault only\n  when the full primary signature is present, to suppress sensor-noise false alarms.\n- Codes are not mutually exclusive: late-life engines frequently show FC-HPC-001 and\n  FC-LPT-001 together as degradation propagates downstream.",
+   "[doc_id=fault-FC-LPT-001 | section: Procedure]\n[FC-LPT-001 \u2014 Low-Pressure Turbine Thermal Degradation \u2014 Procedure]\n1. Confirm sustained T50 rise over at least 5 cycles, with W32 trending down.\n2. Inspect LPT blades and exhaust path for distress and blockage.\n3. Inspect the LPT coolant circuit; if W31 (HPT coolant, sensor 20) is also low,\n   treat as a shared cooling-supply fault rather than an isolated LPT problem.\n4. When FC-LPT-001 co-occurs with FC-HPC-001, prioritize end-of-life planning \u2014 the\n   combination is a strong late-life indicator.",
+   "[doc_id=wo-1007-engine58 | section: Action taken]\n[WO-1007 \u2014 Engine 58 rising bleed enthalpy \u2014 Action taken]\nRaised FC-HPC-001. Compressor wash performed; began close RUL tracking given the\ncombined late-life signature. Recommended end-of-life planning review.",
+   "[doc_id=manual-hpc | section: 4. Alarm response]\n[High-Pressure Compressor (HPC) Operation & Maintenance Manual \u2014 4. Alarm response]\n- **T30 \u2265 1607.89 degR:** HPC discharge over-temperature. Inspect for blade fouling,\n  tip-clearance loss, and seal wear. Correlate with Ps30 and phi.\n- **Ps30 \u2265 48.10 psia** with **P30 \u2264 551.16 psia:** classic HPC efficiency loss\n  signature \u2014 the stage is generating more static rise but less recoverable total\n  pressure. Schedule wash and clearance check.\n- **phi \u2264 519.69 pps/psi:** fuel-flow-to-pressure ratio falling; cross-check fuel\n  metering and confirm against T30 trend before acting.\n\nWhen two or more HPC parameters are simultaneously in alarm, raise fault code\n**FC-HPC-001** (HPC degradation) and follow that procedure.",
+   "[doc_id=fault-FC-HPC-001 | section: Procedure]\n[FC-HPC-001 \u2014 High-Pressure Compressor Degradation \u2014 Procedure]\n1. Confirm the primary signature on at least the last 5 operational cycles (suppress\n   single-cycle noise spikes).\n2. Reduce HPC borescope inspection interval to every 10 cycles.\n3. Perform a compressor wash; re-baseline T30 and Ps30 after the wash.\n4. If T30 and Ps30 remain in alarm after wash, schedule HPC module removal at the next\n   maintenance opportunity and begin RUL tracking for end-of-life planning.\n5. Check whether T50 (LPT) has also entered alarm \u2014 co-occurrence indicates\n   degradation has propagated and shortens the remaining-useful-life estimate."
+  ]
+ },
+ {
+  "id": "g012",
+  "route": "doc",
+  "answer": "The work order for engine 58 found rising bleed enthalpy, with T30 and htBleed both in alarm. The fault code raised was FC-HPC-001.",
+  "citations": [
+   "wo-1007-engine58"
+  ],
+  "retrieved": [
+   "wo-1005-engine89",
+   "wo-1007-engine58",
+   "wo-1009-engine91"
+  ],
+  "abstained": false,
+  "sources_text": [
+   "[doc_id=wo-1007-engine58 | section: overview]\n[WO-1007 \u2014 Engine 58 rising bleed enthalpy \u2014 overview]\n**Engine:** 58 **Date:** 2026-05-13 **Raised by:** prognostics review\n**Fault code:** FC-HPC-001",
+   "[doc_id=wo-1005-engine89 | section: overview]\n[WO-1005 \u2014 Engine 89 routine inspection (nominal) \u2014 overview]\n**Engine:** 89 **Date:** 2026-04-22 **Raised by:** scheduled maintenance\n**Fault code:** none",
+   "[doc_id=wo-1007-engine58 | section: Status]\n[WO-1007 \u2014 Engine 58 rising bleed enthalpy \u2014 Status]\nOpen \u2014 late-life engine; T30 and htBleed both in alarm. Prioritized for removal planning.",
+   "[doc_id=wo-1009-engine91 | section: overview]\n[WO-1009 \u2014 Engine 91 combined LPT thermal + coolant event \u2014 overview]\n**Engine:** 91 **Date:** 2026-06-08 **Raised by:** prognostics review\n**Fault code:** FC-LPT-001",
+   "[doc_id=wo-1007-engine58 | section: Action taken]\n[WO-1007 \u2014 Engine 58 rising bleed enthalpy \u2014 Action taken]\nRaised FC-HPC-001. Compressor wash performed; began close RUL tracking given the\ncombined late-life signature. Recommended end-of-life planning review."
+  ]
+ },
+ {
+  "id": "g013",
+  "route": "doc",
+  "answer": "The non-informative fan sensors under FD001 conditions are: fan inlet temperature (T2, sensor 1), fan inlet pressure (P2, sensor 5), bypass-duct pressure (P15, sensor 6), demanded fan speed (Nf_dmd, sensor 18), and demanded corrected fan speed (PCNfR_dmd, sensor 19).",
+  "citations": [
+   "manual-fan"
+  ],
+  "retrieved": [
+   "fault-code-reference",
+   "manual-combustor",
+   "manual-fan"
+  ],
+  "abstained": false,
+  "sources_text": [
+   "[doc_id=manual-fan | section: 1. Overview]\n[Fan Module Operation & Maintenance Manual \u2014 1. Overview]\nThe fan provides bypass thrust and feeds the core. Under the single sea-level\noperating condition of this fleet (FD001), several fan-related channels are held\neffectively constant by the control system and carry **no degradation signal**:\nfan inlet temperature (T2, sensor 1), fan inlet pressure (P2, sensor 5), bypass-duct\npressure (P15, sensor 6), demanded fan speed (Nf_dmd, sensor 18) and demanded\ncorrected fan speed (PCNfR_dmd, sensor 19). These are recorded for completeness but\nare **excluded from trend monitoring**.",
+   "[doc_id=manual-fan | section: 2. Monitored parameters (informative)]\n[Fan Module Operation & Maintenance Manual \u2014 2. Monitored parameters (informative)]\n| Sensor | Symbol | Quantity | Nominal range | Alarm |\n|--------|--------|----------|---------------|-------|\n| 8  | Nf  | Physical fan speed (rpm)   | 2387.94 \u2013 2388.18 | \u2265 2388.30 (high) |\n| 13 | NRf | Corrected fan speed (rpm)  | 2387.94 \u2013 2388.17 | \u2265 2388.28 (high) |\n| 15 | BPR | Bypass ratio (\u2013)           | 8.36 \u2013 8.48       | \u2265 8.54 (high)    |",
+   "[doc_id=manual-fan | section: 3. Inspection interval]\n[Fan Module Operation & Maintenance Manual \u2014 3. Inspection interval]\nFan blade and containment inspection every **50 operational cycles**. Because the fan\nis not the primary fault mode in this fleet, routine intervals are longer than for the\nHPC.",
+   "[doc_id=manual-combustor | section: 2. Monitored parameters]\n[Combustor Operation & Maintenance Manual \u2014 2. Monitored parameters]\n| Sensor | Symbol | Quantity | Behaviour |\n|--------|--------|----------|-----------|\n| 16 | farB | Burner fuel-air ratio (\u2013) | Constant \u2248 0.03; non-informative for trending |",
+   "[doc_id=fault-code-reference | section: overview]\n[Fault Code Reference Index \u2014 overview]\nThis index maps fault codes to their triggering subsystem, the primary sensor\nsignature, and the detailed procedure document. Raise a fault code when the listed\nprimary parameters are simultaneously in alarm.\n\n| Code | Subsystem | Primary signature | Procedure |\n|------|-----------|-------------------|-----------|\n| FC-HPC-001 | HPC | T30 \u2265 1607.89 degR and Ps30 \u2265 48.10 psia, with falling P30 / phi | see `fault-FC-HPC-001` |\n| FC-LPT-001 | LPT | T50 \u2265 1428.11 degR with W32 \u2264 23.00 lbm/s | see `fault-FC-LPT-001` |\n| FC-FAN-001 | Fan | BPR above nominal with no corresponding HPC alarm | manual-fan, \u00a74 |\n| FC-HPT-001 | HPT | W31 below nominal coolant bleed | manual-hpt, \u00a74 |"
+  ]
+ },
+ {
+  "id": "g014",
+  "route": "out_of_scope",
+  "answer": "I don't have enough information to answer that.",
+  "citations": [],
+  "retrieved": [],
+  "abstained": true,
+  "sources_text": []
+ },
+ {
+  "id": "g016",
+  "route": "timeseries",
+  "answer": "Sensor 4's trend for engine 23 over its last 50 cycles was rising from 1414.62 to 1431.69.",
+  "citations": [
+   "telemetry:engine23/sensor4/trend(last_n=50)"
+  ],
+  "retrieved": [
+   "telemetry:engine23/sensor4/trend"
+  ],
+  "abstained": false,
+  "sources_text": [
+   "[TS1 | telemetry:engine23/sensor4/trend(last_n=50)]\nEngine 23 T50 (sensor 4) over last 50 cycles: 1414.62 \u2192 1431.69 (rising)."
+  ]
+ },
+ {
+  "id": "g017",
+  "route": "timeseries",
+  "answer": "The Ps30 trend for engine 1 over the last 50 cycles is rising from 47.52 to 48.25.",
+  "citations": [
+   "telemetry:engine1/sensor11/trend(last_n=50)"
+  ],
+  "retrieved": [
+   "telemetry:engine1/sensor11/trend"
+  ],
+  "abstained": false,
+  "sources_text": [
+   "[TS1 | telemetry:engine1/sensor11/trend(last_n=50)]\nEngine 1 Ps30 (sensor 11) over last 50 cycles: 47.52 \u2192 48.25 (rising)."
+  ]
+ },
+ {
+  "id": "g018",
+  "route": "timeseries",
+  "answer": "The HPC discharge temperature T30 for engine 5 has increased from 1591.54 to 1597.28 over the last 50 cycles.",
+  "citations": [
+   "telemetry:engine5/sensor3/trend(last_n=50)"
+  ],
+  "retrieved": [
+   "telemetry:engine5/sensor3/trend"
+  ],
+  "abstained": false,
+  "sources_text": [
+   "[TS1 | telemetry:engine5/sensor3/trend(last_n=50)]\nEngine 5 T30 (sensor 3) over last 50 cycles: 1591.54 \u2192 1597.28 (rising)."
+  ]
+ },
+ {
+  "id": "g019",
+  "route": "timeseries",
+  "answer": "Engine 12's core speed is not in alarm right now; it is nominal.",
+  "citations": [
+   "telemetry:engine12/sensor9/status@cycle170"
+  ],
+  "retrieved": [
+   "telemetry:engine12/sensor9/status"
+  ],
+  "abstained": false,
+  "sources_text": [
+   "[TS1 | telemetry:engine12/sensor9/status@cycle170]\nEngine 12 Nc at cycle 170: 9050.4 (nominal; nominal 9038.0\u20139074.0)."
+  ]
+ },
+ {
+  "id": "g020",
+  "route": "timeseries",
+  "answer": "Engine 89's HPC static pressure Ps30 is not within the nominal range.",
+  "citations": [
+   "telemetry:engine89/sensor11/status@cycle217"
+  ],
+  "retrieved": [
+   "telemetry:engine89/sensor11/status"
+  ],
+  "abstained": false,
+  "sources_text": [
+   "[TS1 | telemetry:engine89/sensor11/status@cycle217]\nEngine 89 Ps30 at cycle 217: 48.39 (IN ALARM; nominal 46.98\u201347.73). In-alarm: Ps30=48.39(thr 48.1)"
+  ]
+ },
+ {
+  "id": "g021",
+  "route": "timeseries",
+  "answer": "Engine 76 has completed 210 operational cycles. Currently, 5 sensors are in alarm: T50, P30, Ps30, phi, and NRf. The specific values and thresholds are as follows: T50 is at 1432.07 (threshold 1428.11), P30 is at 550.94 (threshold 551.16), Ps30 is at 48.24 (threshold 48.1), phi is at 519.41 (threshold 519.69), and NRf is at 2388.28 (threshold 2388.28).",
+  "citations": [
+   "telemetry:engine76/overview"
+  ],
+  "retrieved": [
+   "telemetry:engine76/overview"
+  ],
+  "abstained": false,
+  "sources_text": [
+   "[TS1 | telemetry:engine76/overview]\nEngine 76: 210 operational cycles recorded; 5 sensors in alarm at last cycle (T50, P30, Ps30, phi, NRf). In-alarm: T50=1432.07(thr 1428.11), P30=550.94(thr 551.16), Ps30=48.24(thr 48.1), phi=519.41(thr 519.69), NRf=2388.28(thr 2388.28)"
+  ]
+ },
+ {
+  "id": "g022",
+  "route": "out_of_scope",
+  "answer": "I don't have enough information to answer that.",
+  "citations": [],
+  "retrieved": [],
+  "abstained": true,
+  "sources_text": []
+ },
+ {
+  "id": "g023",
+  "route": "timeseries",
+  "answer": "4 of 14 informative sensors on engine 47 are in alarm: T50, Nc, Ps30, NRc. The specific values and thresholds are: T50=1433.3 (threshold 1428.11), Nc=9107.27 (threshold 9092.0), Ps30=48.28 (threshold 48.1), NRc=8176.36 (threshold 8169.77).",
+  "citations": [
+   "telemetry:engine47/all/status@cycle214"
+  ],
+  "retrieved": [
+   "telemetry:engine47/all/status"
+  ],
+  "abstained": false,
+  "sources_text": [
+   "[TS1 | telemetry:engine47/all/status@cycle214]\nEngine 47 at cycle 214: 4 of 14 informative sensors in alarm: T50, Nc, Ps30, NRc In-alarm: T50=1433.3(thr 1428.11), Nc=9107.27(thr 9092.0), Ps30=48.28(thr 48.1), NRc=8176.36(thr 8169.77)"
+  ]
+ },
+ {
+  "id": "g024",
+  "route": "timeseries",
+  "answer": "The LPT outlet temperature T50 for engine 91 is showing a rising trend from 1414.52 to 1432.29 over the last 50 cycles.",
+  "citations": [
+   "telemetry:engine91/sensor4/trend(last_n=50)"
+  ],
+  "retrieved": [
+   "telemetry:engine91/sensor4/trend"
+  ],
+  "abstained": false,
+  "sources_text": [
+   "[TS1 | telemetry:engine91/sensor4/trend(last_n=50)]\nEngine 91 T50 (sensor 4) over last 50 cycles: 1414.52 \u2192 1432.29 (rising)."
+  ]
+ },
+ {
+  "id": "g025",
+  "route": "timeseries",
+  "answer": "The HPT coolant bleed W31 on engine 5 is not in alarm.",
+  "citations": [
+   "telemetry:engine5/sensor20/status@cycle269"
+  ],
+  "retrieved": [
+   "telemetry:engine5/sensor20/status"
+  ],
+  "abstained": false,
+  "sources_text": [
+   "[TS1 | telemetry:engine5/sensor20/status@cycle269]\nEngine 5 W31 at cycle 269: 38.45 (nominal; nominal 38.64\u201339.22)."
+  ]
+ },
+ {
+  "id": "g026",
+  "route": "timeseries",
+  "answer": "The trend of bleed enthalpy htBleed on engine 58 is falling.",
+  "citations": [
+   "telemetry:engine58/sensor17/trend(last_n=50)"
+  ],
+  "retrieved": [
+   "telemetry:engine58/sensor17/trend"
+  ],
+  "abstained": false,
+  "sources_text": [
+   "[TS1 | telemetry:engine58/sensor17/trend(last_n=50)]\nEngine 58 htBleed (sensor 17) over last 50 cycles: 396.00 \u2192 395.00 (falling)."
+  ]
+ },
+ {
+  "id": "g027",
+  "route": "timeseries",
+  "answer": "Engine 33 has recorded 200 operational cycles. During the last cycle, four sensors were in alarm: T50 with a value of 1433.49 (threshold 1428.11), Ps30 with a value of 48.28 (threshold 48.1), NRf with a value of 2388.31 (threshold 2388.28), and W32 with a value of 22.99 (threshold 23.0).",
+  "citations": [
+   "telemetry:engine33/overview"
+  ],
+  "retrieved": [
+   "telemetry:engine33/overview"
+  ],
+  "abstained": false,
+  "sources_text": [
+   "[TS1 | telemetry:engine33/overview]\nEngine 33: 200 operational cycles recorded; 4 sensors in alarm at last cycle (T50, Ps30, NRf, W32). In-alarm: T50=1433.49(thr 1428.11), Ps30=48.28(thr 48.1), NRf=2388.31(thr 2388.28), W32=22.99(thr 23.0)"
+  ]
+ },
+ {
+  "id": "g028",
+  "route": "timeseries",
+  "answer": "Yes, engine 24's HPC discharge temperature T30 is in alarm because it is 1601.33, which is outside the nominal range of 1576.37\u20131597.38.",
+  "citations": [
+   "telemetry:engine24/sensor3/status@cycle147"
+  ],
+  "retrieved": [
+   "telemetry:engine24/sensor3/status"
+  ],
+  "abstained": false,
+  "sources_text": [
+   "[TS1 | telemetry:engine24/sensor3/status@cycle147]\nEngine 24 T30 at cycle 147: 1601.33 (nominal; nominal 1576.37\u20131597.38)."
+  ]
+ },
+ {
+  "id": "g029",
+  "route": "timeseries",
+  "answer": "The LPT coolant bleed W32 trend for engine 91 is falling, from 23.19 to 23.09 over the last 50 cycles.",
+  "citations": [
+   "telemetry:engine91/sensor21/trend(last_n=50)"
+  ],
+  "retrieved": [
+   "telemetry:engine91/sensor21/trend"
+  ],
+  "abstained": false,
+  "sources_text": [
+   "[TS1 | telemetry:engine91/sensor21/trend(last_n=50)]\nEngine 91 W32 (sensor 21) over last 50 cycles: 23.19 \u2192 23.09 (falling)."
+  ]
+ },
+ {
+  "id": "g030",
+  "route": "timeseries",
+  "answer": "The corrected core speed NRc trend on engine 12 is falling.",
+  "citations": [
+   "telemetry:engine12/sensor14/trend(last_n=50)"
+  ],
+  "retrieved": [
+   "telemetry:engine12/sensor14/trend"
+  ],
+  "abstained": false,
+  "sources_text": [
+   "[TS1 | telemetry:engine12/sensor14/trend(last_n=50)]\nEngine 12 NRc (sensor 14) over last 50 cycles: 8128.04 \u2192 8122.87 (falling)."
+  ]
+ },
+ {
+  "id": "g031",
+  "route": "fusion",
+  "answer": "Engine 47 is showing a known fault pattern associated with HPC degradation, as indicated by the fault code FC-HPC-001. The manual suggests evaluating the HPC signature first when in doubt. The observation notes that Engine 47's Ps30 readings are rising, but the P30 and fuel-flow ratio are below their respective thresholds, consistent with the 'pressure-loss-first' presentation of HPC degradation. The manual does not provide specific corrective actions for elevated Ps30 readings alone, but the fault code reference suggests focusing on the HPC signature.",
+  "citations": [
+   "wo-1002-engine47",
+   "fault-code-reference",
+   "telemetry:engine47/sensor11/trend(last_n=50)"
+  ],
+  "retrieved": [
+   "fault-code-reference",
+   "telemetry:engine47/sensor11/trend",
+   "wo-1001-engine24",
+   "wo-1002-engine47"
+  ],
+  "abstained": false,
+  "sources_text": [
+   "[doc_id=wo-1002-engine47 | section: Observation]\n[WO-1002 \u2014 Engine 47 HPC pressure-loss investigation \u2014 Observation]\nEngine 47 showed HPC total discharge pressure (P30) falling to 550.8 psia, below the\n**551.16 psia** low alarm threshold, with the fuel-flow ratio (phi) at 519.4 pps/psi,\nunder its **519.69** low threshold. T30 was elevated but not yet in alarm. This is the\n\"pressure-loss-first\" presentation of HPC degradation.",
+   "[doc_id=wo-1002-engine47 | section: overview]\n[WO-1002 \u2014 Engine 47 HPC pressure-loss investigation \u2014 overview]\n**Engine:** 47 **Date:** 2026-03-18 **Raised by:** prognostics review\n**Fault code:** FC-HPC-001 (HPC degradation)",
+   "[doc_id=wo-1001-engine24 | section: Observation]\n[WO-1001 \u2014 Engine 24 HPC over-temperature advisory \u2014 Observation]\nTrend review flagged Engine 24's HPC discharge temperature (T30) climbing across the\nlast 12 cycles, reaching 1609.4 degR \u2014 above the **1607.89 degR** alarm threshold.\nStatic discharge pressure (Ps30) reached 48.2 psia, also above its **48.10 psia**\nthreshold. Total discharge pressure (P30) and the fuel-flow ratio (phi) were trending\ndown, consistent with the FC-HPC-001 signature.",
+   "[doc_id=wo-1001-engine24 | section: Status]\n[WO-1001 \u2014 Engine 24 HPC over-temperature advisory \u2014 Status]\nOpen \u2014 re-baseline T30/Ps30 after wash; escalate to module removal if still in alarm.",
+   "[doc_id=fault-code-reference | section: Usage notes]\n[Fault Code Reference Index \u2014 Usage notes]\n- **HPC degradation (FC-HPC-001) is the dominant fault mode in this fleet.** When in\n  doubt, evaluate the HPC signature first.\n- A single parameter in alarm is an *advisory*, not a fault. Raise a coded fault only\n  when the full primary signature is present, to suppress sensor-noise false alarms.\n- Codes are not mutually exclusive: late-life engines frequently show FC-HPC-001 and\n  FC-LPT-001 together as degradation propagates downstream.",
+   "[TS1 | telemetry:engine47/sensor11/trend(last_n=50)]\nEngine 47 Ps30 (sensor 11) over last 50 cycles: 47.55 \u2192 48.28 (rising)."
+  ]
+ },
+ {
+  "id": "g033",
+  "route": "fusion",
+  "answer": "I don't have enough information to answer that.",
+  "citations": [],
+  "retrieved": [
+   "telemetry:engine91/sensor4/trend",
+   "wo-1003-engine76",
+   "wo-1009-engine91"
+  ],
+  "abstained": true,
+  "sources_text": [
+   "[doc_id=wo-1009-engine91 | section: overview]\n[WO-1009 \u2014 Engine 91 combined LPT thermal + coolant event \u2014 overview]\n**Engine:** 91 **Date:** 2026-06-08 **Raised by:** prognostics review\n**Fault code:** FC-LPT-001",
+   "[doc_id=wo-1009-engine91 | section: Observation]\n[WO-1009 \u2014 Engine 91 combined LPT thermal + coolant event \u2014 Observation]\nEngine 91 presented the full FC-LPT-001 signature: LPT outlet temperature (T50) at\n1431.2 degR, above the **1428.11 degR** threshold, with LPT coolant bleed (W32) at\n22.9 lbm/s, below the **23.00 lbm/s** low threshold. HPC parameters were also\nelevated, indicating degradation had propagated downstream from the core gas path.",
+   "[doc_id=wo-1003-engine76 | section: Observation]\n[WO-1003 \u2014 Engine 76 LPT exhaust over-temperature \u2014 Observation]\nEngine 76's LPT outlet temperature (T50) reached 1430.6 degR, above the **1428.11\ndegR** alarm threshold, sustained over 7 cycles. Coolant bleed (W32) was trending\ntoward its low threshold. HPC parameters were nominal, so this was treated as a\nprimary LPT event rather than propagated HPC degradation.",
+   "[doc_id=wo-1009-engine91 | section: Status]\n[WO-1009 \u2014 Engine 91 combined LPT thermal + coolant event \u2014 Status]\nOpen \u2014 late-life engine with combined HPC + LPT degradation; removal planning initiated.",
+   "[doc_id=wo-1009-engine91 | section: Action taken]\n[WO-1009 \u2014 Engine 91 combined LPT thermal + coolant event \u2014 Action taken]\nRaised FC-LPT-001 alongside the existing HPC advisory. Given co-occurrence of HPC and\nLPT signatures, prioritized end-of-life planning and tightened RUL tracking.",
+   "[TS1 | telemetry:engine91/sensor4/trend(last_n=50)]\nEngine 91 T50 (sensor 4) over last 50 cycles: 1414.52 \u2192 1432.29 (rising)."
+  ]
+ },
+ {
+  "id": "g034",
+  "route": "fusion",
+  "answer": "Engine 12 is experiencing a rising core speed, which is a known issue. The core speed (Nc) reached 9093.5 rpm, exceeding the alarm threshold of 9092.00 rpm. This is a system-level symptom indicating the core is compensating for gas-path efficiency loss, with the High-Pressure Compressor (HPC) identified as the root cause. The issue is being tracked under fault code FC-HPC-001.",
+  "citations": [
+   "wo-1004-engine12",
+   "manual-core-engine",
+   "fault-FC-HPC-001"
+  ],
+  "retrieved": [
+   "fault-FC-HPC-001",
+   "manual-core-engine",
+   "telemetry:engine12/sensor9/status",
+   "wo-1004-engine12"
+  ],
+  "abstained": false,
+  "sources_text": [
+   "[doc_id=wo-1004-engine12 | section: Observation]\n[WO-1004 \u2014 Engine 12 core overspeed advisory \u2014 Observation]\nEngine 12's physical core speed (Nc) reached 9093.5 rpm, just above the **9092.00 rpm**\nalarm threshold, with corrected core speed (NRc) at 8171.0 rpm, above its **8169.77\nrpm** threshold. Rising core speed is a system-level symptom: the core is compensating\nfor gas-path efficiency loss.",
+   "[doc_id=wo-1004-engine12 | section: Status]\n[WO-1004 \u2014 Engine 12 core overspeed advisory \u2014 Status]\nOpen \u2014 core speed is the symptom; HPC is the root cause. Tracking under FC-HPC-001.",
+   "[doc_id=manual-core-engine | section: 4. Alarm response]\n[Core Shaft & Engine-Level Monitoring Manual \u2014 4. Alarm response]\n- **Nc \u2265 9092.00 rpm / NRc \u2265 8169.77 rpm:** rising core speed indicates the core is\n  working harder to hold thrust \u2014 a system-level symptom of gas-path degradation.\n  Localize using HPC parameters (FC-HPC-001).\n- **htBleed \u2265 397.50:** rising bleed enthalpy reflects increasing core temperatures\n  overall; a strong end-of-life indicator when combined with rising T30 and T50.",
+   "[doc_id=fault-FC-HPC-001 | section: Secondary / confirming indicators]\n[FC-HPC-001 \u2014 High-Pressure Compressor Degradation \u2014 Secondary / confirming indicators]\n- Core speed Nc rising toward **9092.00 rpm** as the core compensates for lost efficiency.\n- Bleed enthalpy htBleed rising toward **397.50** as overall core temperatures climb.",
+   "[doc_id=wo-1004-engine12 | section: overview]\n[WO-1004 \u2014 Engine 12 core overspeed advisory \u2014 overview]\n**Engine:** 12 **Date:** 2026-04-15 **Raised by:** trend review\n**Fault code:** FC-HPC-001 (suspected, pending HPC confirmation)",
+   "[TS1 | telemetry:engine12/sensor9/status@cycle170]\nEngine 12 Nc at cycle 170: 9050.4 (nominal; nominal 9038.0\u20139074.0)."
+  ]
+ },
+ {
+  "id": "g035",
+  "route": "fusion",
+  "answer": "Engine 5's HPT coolant bleed W31 is in alarm as it has declined to 38.30 lbm/s, which is below the low alarm threshold of 38.35 lbm/s. The manual advises inspecting coolant passages and high-pressure shaft seals when W31 is at or below 38.35 lbm/s.",
+  "citations": [
+   "wo-1008-engine05",
+   "manual-hpt"
+  ],
+  "retrieved": [
+   "manual-hpt",
+   "telemetry:engine5/sensor20/status",
+   "wo-1008-engine05"
+  ],
+  "abstained": false,
+  "sources_text": [
+   "[doc_id=wo-1008-engine05 | section: Observation]\n[WO-1008 \u2014 Engine 5 HPT coolant-bleed decline \u2014 Observation]\nEngine 5's HPT coolant bleed (W31) declined to 38.30 lbm/s, below the **38.35 lbm/s**\nlow alarm threshold and under the **38.64** nominal minimum. LPT coolant bleed (W32)\nremained nominal, so this was treated as an HPT-local cooling issue, not a shared\nsupply fault.",
+   "[doc_id=wo-1008-engine05 | section: Status]\n[WO-1008 \u2014 Engine 5 HPT coolant-bleed decline \u2014 Status]\nOpen \u2014 HPT seal service pending; monitor W31 and watch W32 for any shared-supply signature.",
+   "[doc_id=wo-1008-engine05 | section: overview]\n[WO-1008 \u2014 Engine 5 HPT coolant-bleed decline \u2014 overview]\n**Engine:** 5 **Date:** 2026-05-26 **Raised by:** line monitoring\n**Fault code:** FC-HPT-001",
+   "[doc_id=manual-hpt | section: 4. Alarm response]\n[High-Pressure Turbine (HPT) Operation & Maintenance Manual \u2014 4. Alarm response]\n- **W31 \u2264 38.35 lbm/s:** declining HPT coolant bleed. Inspect coolant passages and\n  high-pressure shaft seals. A simultaneous decline in LPT coolant bleed (W32, sensor\n  21) points to a shared cooling-supply problem rather than an isolated HPT fault.",
+   "[doc_id=manual-hpt | section: 2. Monitored parameters]\n[High-Pressure Turbine (HPT) Operation & Maintenance Manual \u2014 2. Monitored parameters]\n| Sensor | Symbol | Quantity | Nominal range | Alarm |\n|--------|--------|----------|---------------|-------|\n| 20 | W31 | HPT coolant bleed (lbm/s) | 38.64 \u2013 39.22 | \u2264 38.35 (low) |",
+   "[TS1 | telemetry:engine5/sensor20/status@cycle269]\nEngine 5 W31 at cycle 269: 38.45 (nominal; nominal 38.64\u201339.22)."
+  ]
+ },
+ {
+  "id": "g039",
+  "route": "fusion",
+  "answer": "I don't have enough information to answer that.",
+  "citations": [],
+  "retrieved": [
+   "manual-lpt",
+   "telemetry:engine91/sensor21/status",
+   "wo-1003-engine76",
+   "wo-1008-engine05",
+   "wo-1009-engine91"
+  ],
+  "abstained": true,
+  "sources_text": [
+   "[doc_id=wo-1008-engine05 | section: Observation]\n[WO-1008 \u2014 Engine 5 HPT coolant-bleed decline \u2014 Observation]\nEngine 5's HPT coolant bleed (W31) declined to 38.30 lbm/s, below the **38.35 lbm/s**\nlow alarm threshold and under the **38.64** nominal minimum. LPT coolant bleed (W32)\nremained nominal, so this was treated as an HPT-local cooling issue, not a shared\nsupply fault.",
+   "[doc_id=wo-1009-engine91 | section: overview]\n[WO-1009 \u2014 Engine 91 combined LPT thermal + coolant event \u2014 overview]\n**Engine:** 91 **Date:** 2026-06-08 **Raised by:** prognostics review\n**Fault code:** FC-LPT-001",
+   "[doc_id=wo-1009-engine91 | section: Observation]\n[WO-1009 \u2014 Engine 91 combined LPT thermal + coolant event \u2014 Observation]\nEngine 91 presented the full FC-LPT-001 signature: LPT outlet temperature (T50) at\n1431.2 degR, above the **1428.11 degR** threshold, with LPT coolant bleed (W32) at\n22.9 lbm/s, below the **23.00 lbm/s** low threshold. HPC parameters were also\nelevated, indicating degradation had propagated downstream from the core gas path.",
+   "[doc_id=wo-1003-engine76 | section: Observation]\n[WO-1003 \u2014 Engine 76 LPT exhaust over-temperature \u2014 Observation]\nEngine 76's LPT outlet temperature (T50) reached 1430.6 degR, above the **1428.11\ndegR** alarm threshold, sustained over 7 cycles. Coolant bleed (W32) was trending\ntoward its low threshold. HPC parameters were nominal, so this was treated as a\nprimary LPT event rather than propagated HPC degradation.",
+   "[doc_id=manual-lpt | section: 4. Alarm response]\n[Low-Pressure Turbine (LPT) Operation & Maintenance Manual \u2014 4. Alarm response]\n- **T50 \u2265 1428.11 degR:** LPT over-temperature. Inspect for blade distress and\n  exhaust-path blockage. Persistent high T50 is a leading indicator of end-of-life in\n  engines whose primary degradation has propagated downstream.\n- **W32 \u2264 23.00 lbm/s:** falling LPT coolant bleed; inspect the cooling circuit and\n  cross-check W31 (sensor 20) for a shared supply fault. See fault code FC-LPT-001.",
+   "[TS1 | telemetry:engine91/sensor21/status@cycle135]\nEngine 91 W32 at cycle 135: 23.09 (nominal; nominal 23.18\u201323.53)."
+  ]
+ },
+ {
+  "id": "g040",
+  "route": "fusion",
+  "answer": "Yes, the dropping HPC discharge pressure P30 in Engine 47 is a known fault. It is associated with fault code FC-HPC-001, indicating HPC degradation. The observed P30 of 550.8 psia is below the 551.16 psia low alarm threshold, confirming the fault signature.",
+  "citations": [
+   "wo-1002-engine47",
+   "manual-hpc"
+  ],
+  "retrieved": [
+   "manual-hpc",
+   "telemetry:engine47/sensor7/status",
+   "wo-1001-engine24",
+   "wo-1002-engine47"
+  ],
+  "abstained": false,
+  "sources_text": [
+   "[doc_id=wo-1002-engine47 | section: Observation]\n[WO-1002 \u2014 Engine 47 HPC pressure-loss investigation \u2014 Observation]\nEngine 47 showed HPC total discharge pressure (P30) falling to 550.8 psia, below the\n**551.16 psia** low alarm threshold, with the fuel-flow ratio (phi) at 519.4 pps/psi,\nunder its **519.69** low threshold. T30 was elevated but not yet in alarm. This is the\n\"pressure-loss-first\" presentation of HPC degradation.",
+   "[doc_id=wo-1002-engine47 | section: overview]\n[WO-1002 \u2014 Engine 47 HPC pressure-loss investigation \u2014 overview]\n**Engine:** 47 **Date:** 2026-03-18 **Raised by:** prognostics review\n**Fault code:** FC-HPC-001 (HPC degradation)",
+   "[doc_id=wo-1001-engine24 | section: Observation]\n[WO-1001 \u2014 Engine 24 HPC over-temperature advisory \u2014 Observation]\nTrend review flagged Engine 24's HPC discharge temperature (T30) climbing across the\nlast 12 cycles, reaching 1609.4 degR \u2014 above the **1607.89 degR** alarm threshold.\nStatic discharge pressure (Ps30) reached 48.2 psia, also above its **48.10 psia**\nthreshold. Total discharge pressure (P30) and the fuel-flow ratio (phi) were trending\ndown, consistent with the FC-HPC-001 signature.",
+   "[doc_id=manual-hpc | section: 4. Alarm response]\n[High-Pressure Compressor (HPC) Operation & Maintenance Manual \u2014 4. Alarm response]\n- **T30 \u2265 1607.89 degR:** HPC discharge over-temperature. Inspect for blade fouling,\n  tip-clearance loss, and seal wear. Correlate with Ps30 and phi.\n- **Ps30 \u2265 48.10 psia** with **P30 \u2264 551.16 psia:** classic HPC efficiency loss\n  signature \u2014 the stage is generating more static rise but less recoverable total\n  pressure. Schedule wash and clearance check.\n- **phi \u2264 519.69 pps/psi:** fuel-flow-to-pressure ratio falling; cross-check fuel\n  metering and confirm against T30 trend before acting.\n\nWhen two or more HPC parameters are simultaneously in alarm, raise fault code\n**FC-HPC-001** (HPC degradation) and follow that procedure.",
+   "[doc_id=wo-1002-engine47 | section: Action taken]\n[WO-1002 \u2014 Engine 47 HPC pressure-loss investigation \u2014 Action taken]\nConfirmed signature over 6 consecutive cycles to rule out sensor noise. Performed\ncompressor wash; P30 recovered partially to 552.0 psia. Continued monitoring.",
+   "[TS1 | telemetry:engine47/sensor7/status@cycle214]\nEngine 47 P30 at cycle 214: 551.7 (nominal; nominal 552.51\u2013555.21)."
+  ]
+ },
+ {
+  "id": "g041",
+  "route": "fusion",
+  "answer": "Engine 12's corrected core speed (NRc) is high, reaching 8171.0 rpm, which is above the alarm threshold of 8169.77 rpm. This indicates that the core is working harder to maintain thrust due to gas-path efficiency loss. The issue is known and is being tracked under FC-HPC-001, with the high-pressure compressor (HPC) identified as the root cause.",
+  "citations": [
+   "wo-1004-engine12",
+   "manual-core-engine"
+  ],
+  "retrieved": [
+   "manual-core-engine",
+   "telemetry:engine12/sensor14/status",
+   "wo-1004-engine12"
+  ],
+  "abstained": false,
+  "sources_text": [
+   "[doc_id=wo-1004-engine12 | section: Observation]\n[WO-1004 \u2014 Engine 12 core overspeed advisory \u2014 Observation]\nEngine 12's physical core speed (Nc) reached 9093.5 rpm, just above the **9092.00 rpm**\nalarm threshold, with corrected core speed (NRc) at 8171.0 rpm, above its **8169.77\nrpm** threshold. Rising core speed is a system-level symptom: the core is compensating\nfor gas-path efficiency loss.",
+   "[doc_id=manual-core-engine | section: 2. Monitored parameters]\n[Core Shaft & Engine-Level Monitoring Manual \u2014 2. Monitored parameters]\n| Sensor | Symbol | Quantity | Nominal range | Alarm |\n|--------|--------|----------|---------------|-------|\n| 9  | Nc      | Physical core speed (rpm)   | 9038.00 \u2013 9074.00 | \u2265 9092.00 (high) |\n| 14 | NRc     | Corrected core speed (rpm)  | 8120.73 \u2013 8153.42 | \u2265 8169.77 (high) |\n| 17 | htBleed | Bleed enthalpy (index)      | 390.00 \u2013 395.00   | \u2265 397.50 (high)  |\n| 10 | epr     | Engine pressure ratio (\u2013)   | constant \u2248 1.30   | non-informative  |",
+   "[doc_id=wo-1004-engine12 | section: Status]\n[WO-1004 \u2014 Engine 12 core overspeed advisory \u2014 Status]\nOpen \u2014 core speed is the symptom; HPC is the root cause. Tracking under FC-HPC-001.",
+   "[doc_id=manual-core-engine | section: 4. Alarm response]\n[Core Shaft & Engine-Level Monitoring Manual \u2014 4. Alarm response]\n- **Nc \u2265 9092.00 rpm / NRc \u2265 8169.77 rpm:** rising core speed indicates the core is\n  working harder to hold thrust \u2014 a system-level symptom of gas-path degradation.\n  Localize using HPC parameters (FC-HPC-001).\n- **htBleed \u2265 397.50:** rising bleed enthalpy reflects increasing core temperatures\n  overall; a strong end-of-life indicator when combined with rising T30 and T50.",
+   "[doc_id=manual-core-engine | section: 1. Overview]\n[Core Shaft & Engine-Level Monitoring Manual \u2014 1. Overview]\nThis manual covers shaft speeds and engine-level indicators that span subsystems. Core\nspeed rises as the engine compensates for gas-path efficiency loss; bleed enthalpy\nrises with overall thermal degradation. Engine pressure ratio (epr, sensor 10) is held\nconstant at **1.30** under FD001 conditions and is non-informative for trending.",
+   "[TS1 | telemetry:engine12/sensor14/status@cycle170]\nEngine 12 NRc at cycle 170: 8122.87 (nominal; nominal 8120.73\u20138153.42)."
+  ]
+ },
+ {
+  "id": "g042",
+  "route": "fusion",
+  "answer": "The elevated bypass ratio (BPR) for Engine 33 is likely not a fan fault. The BPR drifted to 8.55, which is above the alarm threshold of 8.54. According to the fan manual, a rising BPR without a corresponding HPC alarm is usually a secondary effect rather than a fan fault. The HPC parameters were reviewed and found to be nominal, leading to the issue being logged as an isolated fan advisory, not an HPC fault.",
+  "citations": [
+   "wo-1006-engine33",
+   "manual-fan"
+  ],
+  "retrieved": [
+   "manual-fan",
+   "telemetry:engine33/sensor15/trend",
+   "wo-1006-engine33"
+  ],
+  "abstained": false,
+  "sources_text": [
+   "[doc_id=wo-1006-engine33 | section: Observation]\n[WO-1006 \u2014 Engine 33 bypass-ratio drift \u2014 Observation]\nEngine 33's bypass ratio (BPR) drifted to 8.55, just over the **8.54** alarm threshold\nand above the **8.48** nominal maximum. Per the fan manual, rising BPR with no\ncorresponding HPC alarm is usually a secondary effect rather than a fan fault.",
+   "[doc_id=wo-1006-engine33 | section: overview]\n[WO-1006 \u2014 Engine 33 bypass-ratio drift \u2014 overview]\n**Engine:** 33 **Date:** 2026-05-01 **Raised by:** trend review\n**Fault code:** FC-FAN-001 (advisory)",
+   "[doc_id=manual-fan | section: 4. Alarm response]\n[Fan Module Operation & Maintenance Manual \u2014 4. Alarm response]\n- **BPR \u2265 8.54:** rising bypass ratio indicates the core is passing less of the\n  total flow \u2014 often a secondary symptom of core/HPC degradation rather than a fan\n  fault. Correlate with HPC parameters before attributing to the fan.\n- **Nf \u2265 2388.30 rpm / NRf \u2265 2388.28 rpm:** physical and corrected fan speed creeping\n  above nominal. Confirm against demanded fan speed; a gap suggests control-loop drift.",
+   "[doc_id=wo-1006-engine33 | section: Action taken]\n[WO-1006 \u2014 Engine 33 bypass-ratio drift \u2014 Action taken]\nReviewed HPC parameters \u2014 all nominal, so this was logged as an isolated fan advisory,\nnot FC-HPC-001. No hardware action; flagged for re-review in 25 cycles.",
+   "[doc_id=manual-fan | section: 2. Monitored parameters (informative)]\n[Fan Module Operation & Maintenance Manual \u2014 2. Monitored parameters (informative)]\n| Sensor | Symbol | Quantity | Nominal range | Alarm |\n|--------|--------|----------|---------------|-------|\n| 8  | Nf  | Physical fan speed (rpm)   | 2387.94 \u2013 2388.18 | \u2265 2388.30 (high) |\n| 13 | NRf | Corrected fan speed (rpm)  | 2387.94 \u2013 2388.17 | \u2265 2388.28 (high) |\n| 15 | BPR | Bypass ratio (\u2013)           | 8.36 \u2013 8.48       | \u2265 8.54 (high)    |",
+   "[TS1 | telemetry:engine33/sensor15/trend(last_n=50)]\nEngine 33 BPR (sensor 15) over last 50 cycles: 8.43 \u2192 8.51 (rising)."
+  ]
+ },
+ {
+  "id": "g043",
+  "route": "fusion",
+  "answer": "The fault for Engine 24 is identified as HPC degradation, indicated by fault code FC-HPC-001. The procedure involves inspecting for blade fouling, tip-clearance loss, and seal wear, correlating with Ps30 and phi. If Ps30 is above 48.10 psia and P30 is below 551.16 psia, it suggests HPC efficiency loss, requiring a wash and clearance check. If the issue persists after these actions, escalate to module removal.",
+  "citations": [
+   "wo-1001-engine24",
+   "manual-hpc"
+  ],
+  "retrieved": [
+   "manual-hpc",
+   "telemetry:engine24/sensor3/trend",
+   "wo-1001-engine24",
+   "wo-1007-engine58"
+  ],
+  "abstained": false,
+  "sources_text": [
+   "[doc_id=wo-1001-engine24 | section: Observation]\n[WO-1001 \u2014 Engine 24 HPC over-temperature advisory \u2014 Observation]\nTrend review flagged Engine 24's HPC discharge temperature (T30) climbing across the\nlast 12 cycles, reaching 1609.4 degR \u2014 above the **1607.89 degR** alarm threshold.\nStatic discharge pressure (Ps30) reached 48.2 psia, also above its **48.10 psia**\nthreshold. Total discharge pressure (P30) and the fuel-flow ratio (phi) were trending\ndown, consistent with the FC-HPC-001 signature.",
+   "[doc_id=wo-1007-engine58 | section: Observation]\n[WO-1007 \u2014 Engine 58 rising bleed enthalpy \u2014 Observation]\nEngine 58's bleed enthalpy (htBleed) reached 398.1, above the **397.50** alarm\nthreshold, accompanied by HPC discharge temperature (T30) at 1608.7 degR, over its\n**1607.89 degR** threshold. Rising bleed enthalpy plus rising T30 is a strong late-life\nHPC-degradation indicator.",
+   "[doc_id=wo-1001-engine24 | section: overview]\n[WO-1001 \u2014 Engine 24 HPC over-temperature advisory \u2014 overview]\n**Engine:** 24 **Date:** 2026-03-04 **Raised by:** line monitoring\n**Fault code:** FC-HPC-001 (HPC degradation)",
+   "[doc_id=manual-hpc | section: 4. Alarm response]\n[High-Pressure Compressor (HPC) Operation & Maintenance Manual \u2014 4. Alarm response]\n- **T30 \u2265 1607.89 degR:** HPC discharge over-temperature. Inspect for blade fouling,\n  tip-clearance loss, and seal wear. Correlate with Ps30 and phi.\n- **Ps30 \u2265 48.10 psia** with **P30 \u2264 551.16 psia:** classic HPC efficiency loss\n  signature \u2014 the stage is generating more static rise but less recoverable total\n  pressure. Schedule wash and clearance check.\n- **phi \u2264 519.69 pps/psi:** fuel-flow-to-pressure ratio falling; cross-check fuel\n  metering and confirm against T30 trend before acting.\n\nWhen two or more HPC parameters are simultaneously in alarm, raise fault code\n**FC-HPC-001** (HPC degradation) and follow that procedure.",
+   "[doc_id=wo-1001-engine24 | section: Status]\n[WO-1001 \u2014 Engine 24 HPC over-temperature advisory \u2014 Status]\nOpen \u2014 re-baseline T30/Ps30 after wash; escalate to module removal if still in alarm.",
+   "[TS1 | telemetry:engine24/sensor3/trend(last_n=50)]\nEngine 24 T30 (sensor 3) over last 50 cycles: 1598.05 \u2192 1601.33 (rising)."
+  ]
+ },
+ {
+  "id": "g044",
+  "route": "fusion",
+  "answer": "Engine 5's LPT coolant bleed (W32) is nominal, with a value of 23.03 lbm/s, which is within the nominal range of 23.18\u201323.53 lbm/s.",
+  "citations": [
+   "telemetry:engine5/sensor21/status@cycle269"
+  ],
+  "retrieved": [
+   "telemetry:engine5/sensor21/status",
+   "wo-1003-engine76",
+   "wo-1008-engine05",
+   "wo-1009-engine91"
+  ],
+  "abstained": false,
+  "sources_text": [
+   "[doc_id=wo-1008-engine05 | section: Observation]\n[WO-1008 \u2014 Engine 5 HPT coolant-bleed decline \u2014 Observation]\nEngine 5's HPT coolant bleed (W31) declined to 38.30 lbm/s, below the **38.35 lbm/s**\nlow alarm threshold and under the **38.64** nominal minimum. LPT coolant bleed (W32)\nremained nominal, so this was treated as an HPT-local cooling issue, not a shared\nsupply fault.",
+   "[doc_id=wo-1009-engine91 | section: Observation]\n[WO-1009 \u2014 Engine 91 combined LPT thermal + coolant event \u2014 Observation]\nEngine 91 presented the full FC-LPT-001 signature: LPT outlet temperature (T50) at\n1431.2 degR, above the **1428.11 degR** threshold, with LPT coolant bleed (W32) at\n22.9 lbm/s, below the **23.00 lbm/s** low threshold. HPC parameters were also\nelevated, indicating degradation had propagated downstream from the core gas path.",
+   "[doc_id=wo-1008-engine05 | section: Status]\n[WO-1008 \u2014 Engine 5 HPT coolant-bleed decline \u2014 Status]\nOpen \u2014 HPT seal service pending; monitor W31 and watch W32 for any shared-supply signature.",
+   "[doc_id=wo-1003-engine76 | section: Observation]\n[WO-1003 \u2014 Engine 76 LPT exhaust over-temperature \u2014 Observation]\nEngine 76's LPT outlet temperature (T50) reached 1430.6 degR, above the **1428.11\ndegR** alarm threshold, sustained over 7 cycles. Coolant bleed (W32) was trending\ntoward its low threshold. HPC parameters were nominal, so this was treated as a\nprimary LPT event rather than propagated HPC degradation.",
+   "[doc_id=wo-1008-engine05 | section: overview]\n[WO-1008 \u2014 Engine 5 HPT coolant-bleed decline \u2014 overview]\n**Engine:** 5 **Date:** 2026-05-26 **Raised by:** line monitoring\n**Fault code:** FC-HPT-001",
+   "[TS1 | telemetry:engine5/sensor21/status@cycle269]\nEngine 5 W32 at cycle 269: 23.03 (nominal; nominal 23.18\u201323.53)."
+  ]
+ },
+ {
+  "id": "g045",
+  "route": "fusion",
+  "answer": "I don't have enough information to answer that.",
+  "citations": [],
+  "retrieved": [
+   "fault-FC-LPT-001",
+   "manual-lpt",
+   "telemetry:engine76/sensor4/status",
+   "wo-1003-engine76",
+   "wo-1009-engine91"
+  ],
+  "abstained": true,
+  "sources_text": [
+   "[doc_id=wo-1003-engine76 | section: Observation]\n[WO-1003 \u2014 Engine 76 LPT exhaust over-temperature \u2014 Observation]\nEngine 76's LPT outlet temperature (T50) reached 1430.6 degR, above the **1428.11\ndegR** alarm threshold, sustained over 7 cycles. Coolant bleed (W32) was trending\ntoward its low threshold. HPC parameters were nominal, so this was treated as a\nprimary LPT event rather than propagated HPC degradation.",
+   "[doc_id=wo-1003-engine76 | section: overview]\n[WO-1003 \u2014 Engine 76 LPT exhaust over-temperature \u2014 overview]\n**Engine:** 76 **Date:** 2026-04-02 **Raised by:** line monitoring\n**Fault code:** FC-LPT-001 (LPT thermal degradation)",
+   "[doc_id=wo-1009-engine91 | section: Observation]\n[WO-1009 \u2014 Engine 91 combined LPT thermal + coolant event \u2014 Observation]\nEngine 91 presented the full FC-LPT-001 signature: LPT outlet temperature (T50) at\n1431.2 degR, above the **1428.11 degR** threshold, with LPT coolant bleed (W32) at\n22.9 lbm/s, below the **23.00 lbm/s** low threshold. HPC parameters were also\nelevated, indicating degradation had propagated downstream from the core gas path.",
+   "[doc_id=manual-lpt | section: 4. Alarm response]\n[Low-Pressure Turbine (LPT) Operation & Maintenance Manual \u2014 4. Alarm response]\n- **T50 \u2265 1428.11 degR:** LPT over-temperature. Inspect for blade distress and\n  exhaust-path blockage. Persistent high T50 is a leading indicator of end-of-life in\n  engines whose primary degradation has propagated downstream.\n- **W32 \u2264 23.00 lbm/s:** falling LPT coolant bleed; inspect the cooling circuit and\n  cross-check W31 (sensor 20) for a shared supply fault. See fault code FC-LPT-001.",
+   "[doc_id=fault-FC-LPT-001 | section: Procedure]\n[FC-LPT-001 \u2014 Low-Pressure Turbine Thermal Degradation \u2014 Procedure]\n1. Confirm sustained T50 rise over at least 5 cycles, with W32 trending down.\n2. Inspect LPT blades and exhaust path for distress and blockage.\n3. Inspect the LPT coolant circuit; if W31 (HPT coolant, sensor 20) is also low,\n   treat as a shared cooling-supply fault rather than an isolated LPT problem.\n4. When FC-LPT-001 co-occurs with FC-HPC-001, prioritize end-of-life planning \u2014 the\n   combination is a strong late-life indicator.",
+   "[TS1 | telemetry:engine76/sensor4/status@cycle210]\nEngine 76 T50 at cycle 210: 1432.07 (IN ALARM; nominal 1390.08\u20131415.43). In-alarm: T50=1432.07(thr 1428.11)"
+  ]
+ },
+ {
+  "id": "g046",
+  "route": "out_of_scope",
+  "answer": "I don't have enough information to answer that.",
+  "citations": [],
+  "retrieved": [],
+  "abstained": true,
+  "sources_text": []
+ },
+ {
+  "id": "g047",
+  "route": "out_of_scope",
+  "answer": "I don't have enough information to answer that.",
+  "citations": [],
+  "retrieved": [],
+  "abstained": true,
+  "sources_text": []
+ },
+ {
+  "id": "g048",
+  "route": "out_of_scope",
+  "answer": "I don't have enough information to answer that.",
+  "citations": [],
+  "retrieved": [],
+  "abstained": true,
+  "sources_text": []
+ },
+ {
+  "id": "g049",
+  "route": "out_of_scope",
+  "answer": "I don't have enough information to answer that.",
+  "citations": [],
+  "retrieved": [],
+  "abstained": true,
+  "sources_text": []
+ },
+ {
+  "id": "g050",
+  "route": "out_of_scope",
+  "answer": "I don't have enough information to answer that.",
+  "citations": [],
+  "retrieved": [],
+  "abstained": true,
+  "sources_text": []
+ },
+ {
+  "id": "g051",
+  "route": "out_of_scope",
+  "answer": "I don't have enough information to answer that.",
+  "citations": [],
+  "retrieved": [],
+  "abstained": true,
+  "sources_text": []
+ },
+ {
+  "id": "g052",
+  "route": "out_of_scope",
+  "answer": "I don't have enough information to answer that.",
+  "citations": [],
+  "retrieved": [],
+  "abstained": true,
+  "sources_text": []
+ },
+ {
+  "id": "g053",
+  "route": "out_of_scope",
+  "answer": "I don't have enough information to answer that.",
+  "citations": [],
+  "retrieved": [],
+  "abstained": true,
+  "sources_text": []
+ },
+ {
+  "id": "g054",
+  "route": "out_of_scope",
+  "answer": "I don't have enough information to answer that.",
+  "citations": [],
+  "retrieved": [],
+  "abstained": true,
+  "sources_text": []
+ },
+ {
+  "id": "g055",
+  "route": "out_of_scope",
+  "answer": "I don't have enough information to answer that.",
+  "citations": [],
+  "retrieved": [],
+  "abstained": true,
+  "sources_text": []
+ }
+]
