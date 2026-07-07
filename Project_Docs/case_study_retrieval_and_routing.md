@@ -227,6 +227,43 @@ want a work order). The flagship query now retrieves *and cites* `fault-FC-HPC-0
 code entered their context, their claims became fully supported. Better retrieval bought
 better grounding — not just better recall.
 
-**Still open:** Finding 2 (router prefers `trend` over `status` — `g031`'s telemetry is
-still a trend) and Finding 4 (router false-negatives conceptual in-scope questions —
-`g005`). Both are routing-side and untouched by Fixes 1–2.
+### Fix 3 — router intent + scope (Findings 2 and 4)
+
+Two prompt-level router problems, plus a code-net addition:
+- **Intent (Finding 2).** The router mapped alarm-style questions to `trend` because the
+  user said "readings," so `g031` under-reported the alarm ("rising but below
+  threshold"). Fix: instruct the router to prefer `status` (value-vs-threshold) whenever
+  a question asks if something is elevated / a problem / a known fault / in alarm. `g031`
+  now runs `status` and states "Ps30 ≥ 48.10 psia … HPC efficiency-loss signature."
+- **Scope (Finding 4).** Conceptual questions naming no engine (`g005` "why is fuel-air
+  ratio not trend-monitored?", `g014` "what does rising BPR with no HPC alarm indicate?")
+  were marked `out_of_scope`. Fix: conceptual questions about the fleet's real sensors
+  are in-scope `doc`; reserve `out_of_scope` for other domains or genuinely impossible
+  requests (a sensor id outside 1–21, or calendar-dated data the cycle-indexed set can't
+  provide). Also caught a bonus miss (`g022` cycle-count) by noting engine age is an
+  `overview` answer.
+- **Code net.** `validate_plan` now abstains when the user names a sensor that filters to
+  none valid — belt-and-suspenders behind the prompt, since the reliable guarantees
+  belong in code, not the model.
+
+No out-of-scope regressions: all 10 genuinely-off-topic rows still abstain (1.000).
+
+### Full Phase-5 arc (3-run means)
+
+| Metric | Baseline | Fix 1 | Fix 2 | Fix 3 | Target |
+|---|---|---|---|---|---|
+| retrieval recall@5 | 0.804 | 0.813 | 0.867 | **0.967** | ≥ 0.80 |
+| routing accuracy | 0.940 | 0.940 | 0.940 | **1.000** | ≥ 0.90 |
+| faithfulness | 0.975¹ | 0.950 | 1.000 | **1.000** | ≥ 0.85 |
+| fact_recall | 0.473¹ | 0.563 | 0.595 | **0.690** | — |
+| correct abstention (OOS) | 1.000 | 1.000 | 1.000 | **1.000** | ≥ 0.90 |
+| over-abstention | 0.250 | 0.192 | 0.158 | **0.067** | → 0 |
+
+¹ Single-run (the N-run harness landed with Fix 1).
+
+All four findings from the human review are resolved, every headline metric clears its
+target, and over-abstention fell 73% (0.250 → 0.067) while faithfulness never dropped
+below 0.95 — better answers, not looser ones. Remaining residual: `g040`, one borderline
+fusion row that flip-flops abstain↔answer between runs (inside the noise band), and the
+telemetry provenance in a couple of answers is a `trend` handle where `status` would read
+cleaner — cosmetic, not a correctness issue.

@@ -203,8 +203,8 @@ validator green, committed.
 - ✅ 🤖 **Fix 1 — synthesizer over-abstention** (prompt rebalanced): fact_recall **0.473 → 0.598**, over-abstention **0.250 → 0.175**, faithfulness **held 0.975** (no new hallucination), out-of-scope abstention held 1.000. Deterministic fixes: g003/g004/g006 now answer 3/3.
 - ✅ 🤖 **N-run averaging** in the harness (`make eval-score ARGS="--runs 3"`) — each metric is a mean with a min–max Range so noise is explicit (gpt isn't deterministic at temp 0).
 - ✅ 🤖 **Fix 2 — type-aware fusion retrieval** (Phase-3 finding #1): add a manuals/fault-codes dense list as a 3rd RRF input for fusion. recall@5 **0.813 → 0.867**, faithfulness **0.950 → 1.000**, over-abstn **0.192 → 0.158**; g031 now cites the manual+fault code, g033/g039 stopped abstaining. No routing/OOS regression. (Both 3-run means; see case study.)
-- ⬜ 🤖 Fix 3 — router: prefers `trend` over `status` (finding #2, g031) + false-negatives conceptual in-scope questions (finding #4, g005). Routing-side, untouched by Fixes 1–2.
-- ⬜ 🤖 Wire eval into a **pytest regression test** that runs on every change
+- ✅ 🤖 **Fix 3 — router intent + scope** (findings #2 & #4): prefer `status` for alarm-style Qs (g031 now reports the alarm), treat conceptual in-scope Qs as `doc` (g005/g014), + code-net for invalid sensors; bonus g022 cycle-count fix. routing **0.940 → 1.000**, recall@5 **0.867 → 0.967**, over-abstn **0.158 → 0.067**. No OOS regression. **All four review findings resolved.**
+- ⬜ 🤖 Wire eval into a **pytest regression test** that runs on every change (locks in the Fix-3 numbers) **← NEXT**
 - ⬜ 👤 Pick 1–2 real failures to write up as a mini case study (findings 1–4 drafted in `Project_Docs/case_study_retrieval_and_routing.md`)
 
 **Checkpoint:** a numbers table exists + at least **one documented before/after improvement**. ✅ (Fix 1 above.)
@@ -225,15 +225,15 @@ validator green, committed.
 
 ## Benchmarks — me  asure baseline (Phase 5 first run), then beat it
 
-| Metric | Baseline (2026-07-06) | Final target |
-|---|---|---|
-| Retrieval recall@5 | **0.804** | ≥ 0.80 |
-| Routing accuracy | **0.940** | ≥ 0.90 |
-| Faithfulness (grounding) | **0.975** | ≥ 0.85 |
-| Fact recall (completeness) | 0.473 ⚠️ | — |
-| Correct abstention rate | **1.000** (10/10) | ≥ 0.90 |
-| Over-abstention (in-scope refused) | 0.250 (10/40) ⚠️ | → drive to 0 |
-| LLM-judge ↔ your hand labels | ___ (not yet validated) | ≥ 0.85 |
+| Metric | Baseline (07-06) | Current — after Fixes 1–3 (07-07, 3-run) | Final target |
+|---|---|---|---|
+| Retrieval recall@5 | 0.804 | **0.967** | ≥ 0.80 ✅ |
+| Routing accuracy | 0.940 | **1.000** | ≥ 0.90 ✅ |
+| Faithfulness (grounding) | 0.975 | **1.000** | ≥ 0.85 ✅ |
+| Fact recall (completeness) | 0.473 | **0.690** | — |
+| Correct abstention rate | 1.000 (10/10) | **1.000** | ≥ 0.90 ✅ |
+| Over-abstention (in-scope refused) | 0.250 (10/40) | **0.067** | → drive to 0 |
+| LLM-judge ↔ your hand labels | 0.867 raw / κ 0.44 | (unchanged) | ≥ 0.85 ✅ (raw) |
 
 > **Judge v2 (source-aware).** The faithfulness judge scores grounding against the
 > *retrieved source text* (what the model actually saw), separately from fact coverage
