@@ -11,6 +11,7 @@ from __future__ import annotations
 import sys
 
 from src import config
+from src.llm_client import track_usage
 from src.rag.retrieve import get_retriever
 from src.rag.router import route as route_question
 from src.rag.synthesize import ABSTENTION_MESSAGE, synthesize
@@ -40,6 +41,14 @@ def run_timeseries(plan: dict) -> list[dict]:
 
 
 def answer(question: str, k: int = config.RETRIEVAL_K, model: str | None = None) -> dict:
+    """Route → dispatch → synthesize, tallying OpenAI token cost for this query."""
+    with track_usage() as meter:
+        result = _answer(question, k=k, model=model)
+    result["usage"] = meter.as_dict()
+    return result
+
+
+def _answer(question: str, k: int = config.RETRIEVAL_K, model: str | None = None) -> dict:
     plan = route_question(question)
     route = plan["route"]
     syn_kwargs = {"model": model} if model else {}
@@ -77,6 +86,9 @@ def _print(result: dict) -> None:
         print("\nContext used:")
         for c in result["contexts"]:
             print(f"  - {c}")
+    u = result.get("usage")
+    if u:
+        print(f"\n[cost: ${u['cost_usd']:.6f} · {u['total_tokens']} tokens · {u['n_calls']} calls]")
 
 
 if __name__ == "__main__":

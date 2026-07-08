@@ -57,6 +57,7 @@ class AskResponse(BaseModel):
     confidence: str
     abstained: bool
     latency_ms: int
+    usage: dict                    # token counts + OpenAI cost (USD) for this query
 
 
 @app.get("/health")
@@ -80,8 +81,10 @@ def ask(req: AskRequest):
     result = answer(req.question, k=k)
     latency_ms = int((time.perf_counter() - t0) * 1000)
 
-    log.info("ask route=%s abstained=%s k=%d latency_ms=%d q=%r",
-             result.get("route"), result.get("abstained"), k, latency_ms, req.question[:120])
+    usage = result.get("usage", {})
+    log.info("ask route=%s abstained=%s k=%d latency_ms=%d cost_usd=%.6f tokens=%d q=%r",
+             result.get("route"), result.get("abstained"), k, latency_ms,
+             usage.get("cost_usd", 0.0), usage.get("total_tokens", 0), req.question[:120])
 
     return AskResponse(
         question=req.question,
@@ -92,6 +95,7 @@ def ask(req: AskRequest):
         confidence=result.get("confidence", "low"),
         abstained=bool(result.get("abstained")),
         latency_ms=latency_ms,
+        usage=usage,
     )
 
 

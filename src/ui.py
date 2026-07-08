@@ -136,12 +136,16 @@ def main() -> None:
     abstained = result.get("abstained", False)
     label, blurb = ROUTE_LABELS.get(route, (route, ""))
 
-    # Headline row: route + confidence + latency
-    c1, c2, c3 = st.columns(3)
+    # Headline row: route + confidence + latency + cost
+    usage = result.get("usage", {})
+    c1, c2, c3, c4 = st.columns(4)
     c1.metric("Route", label.split(" ", 1)[-1] if " " in label else label)
     conf = result.get("confidence", "low")
     c2.metric("Confidence", f"{CONFIDENCE_ICON.get(conf, '')} {conf}")
     c3.metric("Latency", f"{result.get('latency_ms', 0)} ms")
+    cost = usage.get("cost_usd", 0.0)
+    c4.metric("Cost", f"${cost:.5f}", help=f"{usage.get('total_tokens', 0)} tokens · "
+                                           f"{usage.get('n_calls', 0)} OpenAI calls")
     st.caption(blurb)
 
     st.divider()
@@ -160,6 +164,16 @@ def main() -> None:
 
     with st.expander("Provenance — what the answer is grounded in", expanded=not abstained):
         render_contexts(result.get("contexts", []))
+        by_model = usage.get("by_model", {})
+        if by_model:
+            st.divider()
+            st.markdown("**OpenAI cost breakdown**")
+            for model, m in by_model.items():
+                st.caption(
+                    f"`{model}` — {m['calls']} call(s) · "
+                    f"{m['prompt_tokens']}+{m['completion_tokens']} tokens · "
+                    f"${m['cost_usd']:.6f}"
+                )
 
 
 if __name__ == "__main__":
