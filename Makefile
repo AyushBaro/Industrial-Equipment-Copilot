@@ -1,6 +1,6 @@
 PY := ./.venv/bin/python
 
-.PHONY: data docs test all clean
+.PHONY: data docs test all clean serve ui embed ask
 
 # Build DuckDB + flat-sensor evidence + asset hierarchy from raw FD001 data.
 data:
@@ -31,6 +31,11 @@ ask:
 # Serve the copilot over HTTP (FastAPI + uvicorn). Interactive docs at /docs.
 serve:
 	$(PY) -m src.api
+
+# Streamlit UI (calls the FastAPI backend). Run `make serve` first (separate terminal).
+# Opens http://127.0.0.1:8501; renders answer + citations + provenance.
+ui:
+	$(PY) -m streamlit run src/ui.py
 
 # --- Golden eval set (Phase 4) ---
 # Generate candidate rows with pre-filled proposed labels (offline, no API).

@@ -218,7 +218,7 @@ validator green, committed.
 ## Phase 6 — Deploy + README  (Jul 8 – Jul 9)
 
 - ✅ 🤖 **FastAPI backend** (`src/api.py`, `make serve` → :8100, docs at `/docs`): `POST /ask` → grounded answer + citations + contexts + route + latency_ms; `/health`, `/`. Warms the index at startup; per-query latency logging. 4 offline + 1 live test (`tests/test_phase6.py`).
-- ⬜ 🤖 Streamlit/Gradio UI (calls `POST /ask`, renders answer + citations + provenance)
+- ✅ 🤖 **Streamlit UI** (`src/ui.py`, `make ui` → :8501): question box + example prompts + k slider; renders route/confidence/latency, the grounded answer, citations, and a provenance expander (retrieved chunks + telemetry handles). Abstentions shown honestly. Verified end-to-end against the live API (doc/fusion/out-of-scope all render correctly).
 - ⬜ 🤖 Cost logging per query — thread OpenAI token `usage` through `llm_client` (latency already logged)
 - ⬜ 👤 Write README intro (Cognite-style problem statement) + the failure case study in your own voice
 - ⬜ 🤖 Assemble README: eval table + architecture diagram **front and center**, then setup/run + synthetic-data transparency note
