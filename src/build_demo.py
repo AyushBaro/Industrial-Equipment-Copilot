@@ -47,6 +47,7 @@ def main() -> None:
         r = answer(question)
         latency_ms = int((time.perf_counter() - t0) * 1000)
         usage = r.get("usage", {})
+        plan = r.get("plan", {}) or {}
         out.append({
             "id": qid,
             "question": question,
@@ -62,15 +63,41 @@ def main() -> None:
             "cost_usd": usage.get("cost_usd", 0.0),
             "total_tokens": usage.get("total_tokens", 0),
             "n_calls": usage.get("n_calls", 0),
+            # what the router decided (route internals shown in the demo)
+            "plan": {k: plan.get(k) for k in ("route", "engine", "sensors", "intent", "rationale")},
+            # the exact grounding text the model saw (trimmed) — lets the demo show
+            # *what* each answer rests on, not just the source ids.
+            "sources_text": [s[:700] for s in r.get("sources_text", [])],
         })
         tag = "ABSTAINED" if out[-1]["abstained"] else f'{len(out[-1]["citations"])} cites'
         print(f'{qid} [{out[-1]["route"]:12}] {tag} · ${out[-1]["cost_usd"]:.5f} · {latency_ms}ms')
 
-    dest = Path(config.ROOT) / "Data" / "demo" / "demo_qa.json"
-    dest.parent.mkdir(parents=True, exist_ok=True)
-    dest.write_text(json.dumps(out, indent=2))
+    demo_dir = Path(config.ROOT) / "Data" / "demo"
+    demo_dir.mkdir(parents=True, exist_ok=True)
+    (demo_dir / "demo_qa.json").write_text(json.dumps(out, indent=2))
     total = sum(r["cost_usd"] for r in out)
-    print(f"\nWrote {len(out)} demo Q/A → {dest}  (total generation cost ${total:.4f})")
+    print(f"\nWrote {len(out)} demo Q/A → {demo_dir/'demo_qa.json'}  (cost ${total:.4f})")
+
+    # Before/after showcase for the flagship fusion case (g031). "Before" is the cached
+    # pre-fix baseline (free — read from the eval report); "after" is this run's g031.
+    baseline = json.loads((config.EVAL_DIR / "reports" / "predictions-baseline.json").read_text())
+    base_runs = baseline if isinstance(baseline[0], list) else [baseline]
+    b31 = next(x for x in base_runs[0] if x.get("id") == "g031")
+    a31 = next(x for x in out if x["id"] == "g031")
+    showcase = {
+        "id": "g031",
+        "question": a31["question"],
+        "before": {"answer": b31["answer"], "citations": b31["citations"]},
+        "after": {"answer": a31["answer"], "citations": a31["citations"]},
+        "fix_note": (
+            "Baseline retrieved an engine-named work order and a sensor *trend*, so it "
+            "missed the manual/fault-code and under-reported the alarm. Two fixes — "
+            "type-aware fusion retrieval and status-preferring routing — make it cite the "
+            "canonical procedure and read the live alarm correctly."
+        ),
+    }
+    (demo_dir / "showcase.json").write_text(json.dumps(showcase, indent=2))
+    print(f"Wrote before/after showcase → {demo_dir/'showcase.json'}")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,19 @@
+{
+  "id": "g031",
+  "question": "Engine 47 is showing elevated Ps30 readings \u2014 is this a known fault pattern, and what does the manual say to do?",
+  "before": {
+    "answer": "Engine 47 is showing elevated Ps30 readings, which is consistent with the FC-HPC-001 fault pattern. The manual indicates that HPC degradation is the dominant fault mode in this fleet, and the 'pressure-loss-first' presentation is a known signature of HPC degradation. The work order for Engine 47 notes a similar pattern with P30 falling below the threshold, which aligns with the FC-HPC-001 signature. The manual suggests evaluating the HPC signature first when in doubt.",
+    "citations": [
+      "telemetry:engine47/sensor11/trend(last_n=50)"
+    ]
+  },
+  "after": {
+    "answer": "Engine 47 is showing a known fault pattern of HPC degradation. The elevated Ps30 reading is part of the primary signature for fault code FC-HPC-001, which indicates HPC efficiency loss. The manual advises scheduling a wash and clearance check when Ps30 is \u2265 48.10 psia and P30 is \u2264 551.16 psia, which matches the current conditions of Engine 47.",
+    "citations": [
+      "fault-FC-HPC-001",
+      "manual-hpc",
+      "telemetry:engine47/sensor11/status@cycle214"
+    ]
+  },
+  "fix_note": "Baseline retrieved an engine-named work order and a sensor *trend*, so it missed the manual/fault-code and under-reported the alarm. Two fixes \u2014 type-aware fusion retrieval and status-preferring routing \u2014 make it cite the canonical procedure and read the live alarm correctly."
+}
