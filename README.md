@@ -22,6 +22,40 @@ made 73% fewer wrong refusals — without ever making an ungrounded claim.
 
 ---
 
+## Try it
+
+**▶ Live demo:** _<!-- paste your Streamlit Cloud URL here after deploying, e.g. https://industrial-equipment-copilot.streamlit.app -->_
+
+The hosted demo is a **cached** showcase — real, frozen pipeline outputs for a set of
+curated questions — so it needs no API key and can't run up a bill. For a live
+*ask-anything* version, run it locally (see [Quickstart](#quickstart)).
+
+Three representative interactions (verbatim system output):
+
+**📄 Document lookup** — *"What is the recommended inspection interval for the HPC?"*
+> The recommended inspection interval for the HPC is every 30 operational cycles under
+> nominal conditions, reduced to every 10 cycles once any HPC parameter crosses its alarm
+> threshold.
+>
+> **Sources:** `manual-hpc`
+
+**🔗 Fusion (sensors + docs)** — *"Engine 47 is showing elevated Ps30 readings — is this a
+known fault pattern, and what does the manual say to do?"*
+> Engine 47 is showing a known fault pattern of HPC degradation, as indicated by elevated
+> Ps30 readings. The manual advises that when Ps30 is ≥ 48.10 psia with P30 ≤ 551.16 psia,
+> it is a classic HPC efficiency loss signature. The recommended action is to schedule a
+> wash and clearance check. Since multiple parameters are in alarm, fault code FC-HPC-001
+> should be raised, which has already been done for Engine 47.
+>
+> **Sources:** `fault-FC-HPC-001` · `manual-hpc` · `wo-1002-engine47` · `telemetry:engine47/sensor11/status@cycle214`
+
+**🚫 Out of scope** — *"Show me the sensor trend for engine 999."*
+> I don't have enough information to answer that.
+>
+> _(Engine 999 doesn't exist in the fleet — the system abstains instead of inventing data.)_
+
+---
+
 ## Results first
 
 Every headline metric clears its target. Numbers are **means over 3 eval runs**
@@ -270,7 +304,9 @@ curl -s localhost:8100/ask -H 'content-type: application/json' \
 | `make embed` | Embed the corpus into Chroma (cached unless the corpus changed) |
 | `make ask Q="…"` | Ask the copilot one question from the CLI |
 | `make serve` | FastAPI backend on `:8100` (`/ask`, `/health`, `/docs`) |
-| `make ui` | Streamlit UI on `:8501` |
+| `make ui` | Streamlit UI on `:8501` (live; calls the backend) |
+| `make demo` | Cached demo app (no API key) — the version hosted publicly |
+| `make demo-data` | Regenerate the cached demo answers from the live pipeline |
 | `make test` | Offline test suite (free, no API) |
 | `make test-live` | Full suite including live API tests (spends a few cents) |
 | `make eval-score` | Score the live system vs. the golden set (`ARGS="--runs 3"` to average) |

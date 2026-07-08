@@ -1,0 +1,396 @@
+[
+  {
+    "id": "g001",
+    "question": "What is the recommended inspection interval for the HPC?",
+    "route": "doc",
+    "route_blurb": "Answered from the maintenance corpus.",
+    "difficulty": "easy",
+    "answer": "The recommended inspection interval for the HPC is every 30 operational cycles under nominal conditions, reduced to every 10 cycles once any HPC parameter crosses its alarm threshold.",
+    "citations": [
+      "manual-hpc"
+    ],
+    "contexts": [
+      {
+        "doc_id": "manual-hpc",
+        "section": "3. Inspection interval",
+        "score": 0.03279
+      },
+      {
+        "doc_id": "manual-hpt",
+        "section": "3. Inspection interval",
+        "score": 0.03175
+      },
+      {
+        "doc_id": "manual-fan",
+        "section": "3. Inspection interval",
+        "score": 0.03175
+      },
+      {
+        "doc_id": "manual-lpc",
+        "section": "3. Inspection interval",
+        "score": 0.03175
+      },
+      {
+        "doc_id": "fault-FC-HPC-001",
+        "section": "Procedure",
+        "score": 0.03031
+      }
+    ],
+    "confidence": "high",
+    "abstained": false,
+    "latency_ms": 5490,
+    "cost_usd": 0.002895,
+    "total_tokens": 2018,
+    "n_calls": 3
+  },
+  {
+    "id": "g011",
+    "question": "What is the recommended procedure once FC-HPC-001 is confirmed?",
+    "route": "doc",
+    "route_blurb": "Answered from the maintenance corpus.",
+    "difficulty": "hard",
+    "answer": "Once FC-HPC-001 is confirmed, the recommended procedure is to: 1) Confirm the primary signature on at least the last 5 operational cycles. 2) Reduce HPC borescope inspection interval to every 10 cycles. 3) Perform a compressor wash and re-baseline T30 and Ps30 after the wash. 4) If T30 and Ps30 remain in alarm after the wash, schedule HPC module removal at the next maintenance opportunity and begin RUL tracking for end-of-life planning. 5) Check whether T50 (LPT) has also entered alarm, as co-occurrence indicates degradation has propagated and shortens the remaining-useful-life estimate.",
+    "citations": [
+      "fault-FC-HPC-001"
+    ],
+    "contexts": [
+      {
+        "doc_id": "fault-code-reference",
+        "section": "Usage notes",
+        "score": 0.03128
+      },
+      {
+        "doc_id": "fault-FC-LPT-001",
+        "section": "Procedure",
+        "score": 0.03125
+      },
+      {
+        "doc_id": "wo-1007-engine58",
+        "section": "Action taken",
+        "score": 0.03083
+      },
+      {
+        "doc_id": "manual-hpc",
+        "section": "4. Alarm response",
+        "score": 0.03058
+      },
+      {
+        "doc_id": "fault-FC-HPC-001",
+        "section": "Procedure",
+        "score": 0.01639
+      }
+    ],
+    "confidence": "high",
+    "abstained": false,
+    "latency_ms": 3587,
+    "cost_usd": 0.004668,
+    "total_tokens": 2406,
+    "n_calls": 3
+  },
+  {
+    "id": "g014",
+    "question": "What does a rising bypass ratio (BPR) with no HPC alarm indicate?",
+    "route": "doc",
+    "route_blurb": "Answered from the maintenance corpus.",
+    "difficulty": "hard",
+    "answer": "A rising bypass ratio (BPR) with no HPC alarm usually indicates a secondary effect rather than a fan fault, often related to core or HPC degradation.",
+    "citations": [
+      "wo-1006-engine33",
+      "manual-fan"
+    ],
+    "contexts": [
+      {
+        "doc_id": "wo-1006-engine33",
+        "section": "Observation",
+        "score": 0.03279
+      },
+      {
+        "doc_id": "manual-fan",
+        "section": "4. Alarm response",
+        "score": 0.03226
+      },
+      {
+        "doc_id": "wo-1006-engine33",
+        "section": "Status",
+        "score": 0.03126
+      },
+      {
+        "doc_id": "wo-1006-engine33",
+        "section": "Action taken",
+        "score": 0.03126
+      },
+      {
+        "doc_id": "wo-1007-engine58",
+        "section": "Observation",
+        "score": 0.02899
+      }
+    ],
+    "confidence": "high",
+    "abstained": false,
+    "latency_ms": 7058,
+    "cost_usd": 0.003059,
+    "total_tokens": 2087,
+    "n_calls": 3
+  },
+  {
+    "id": "g017",
+    "question": "Show me the Ps30 trend for engine 1.",
+    "route": "timeseries",
+    "route_blurb": "Answered from live sensor data.",
+    "difficulty": "easy",
+    "answer": "The Ps30 trend for engine 1 over the last 50 cycles is rising from 47.52 to 48.25.",
+    "citations": [
+      "telemetry:engine1/sensor11/trend(last_n=50)"
+    ],
+    "contexts": [
+      {
+        "telemetry": "telemetry:engine1/sensor11/trend(last_n=50)"
+      }
+    ],
+    "confidence": "high",
+    "abstained": false,
+    "latency_ms": 2309,
+    "cost_usd": 0.001872,
+    "total_tokens": 1619,
+    "n_calls": 2
+  },
+  {
+    "id": "g019",
+    "question": "Is engine 12's core speed in alarm right now?",
+    "route": "timeseries",
+    "route_blurb": "Answered from live sensor data.",
+    "difficulty": "medium",
+    "answer": "Engine 12's core speed is not in alarm right now; it is nominal.",
+    "citations": [
+      "telemetry:engine12/sensor9/status@cycle170"
+    ],
+    "contexts": [
+      {
+        "telemetry": "telemetry:engine12/sensor9/status@cycle170"
+      }
+    ],
+    "confidence": "high",
+    "abstained": false,
+    "latency_ms": 2093,
+    "cost_usd": 0.001776,
+    "total_tokens": 1617,
+    "n_calls": 2
+  },
+  {
+    "id": "g021",
+    "question": "Give me an overview of engine 76's current status.",
+    "route": "timeseries",
+    "route_blurb": "Answered from live sensor data.",
+    "difficulty": "easy",
+    "answer": "Engine 76 has completed 210 operational cycles. Currently, 5 sensors are in alarm: T50, P30, Ps30, phi, and NRf. The T50 sensor is reading 1432.07, exceeding its threshold of 1428.11. The P30 sensor is reading 550.94, which is below its threshold of 551.16. The Ps30 sensor is reading 48.24, exceeding its threshold of 48.1. The phi sensor is reading 519.41, which is below its threshold of 519.69. The NRf sensor is reading exactly at its threshold of 2388.28.",
+    "citations": [
+      "telemetry:engine76/overview"
+    ],
+    "contexts": [
+      {
+        "telemetry": "telemetry:engine76/overview"
+      }
+    ],
+    "confidence": "high",
+    "abstained": false,
+    "latency_ms": 3812,
+    "cost_usd": 0.003139,
+    "total_tokens": 1802,
+    "n_calls": 2
+  },
+  {
+    "id": "g031",
+    "question": "Engine 47 is showing elevated Ps30 readings \u2014 is this a known fault pattern, and what does the manual say to do?",
+    "route": "fusion",
+    "route_blurb": "Answered from documents and sensor telemetry together.",
+    "difficulty": "hard",
+    "answer": "Engine 47 is showing a known fault pattern of HPC degradation, as indicated by elevated Ps30 readings. The manual advises that when Ps30 is \u2265 48.10 psia with P30 \u2264 551.16 psia, it is a classic HPC efficiency loss signature. The recommended action is to schedule a wash and clearance check. Since multiple parameters are in alarm, fault code FC-HPC-001 should be raised, which has already been done for Engine 47.",
+    "citations": [
+      "fault-FC-HPC-001",
+      "manual-hpc",
+      "wo-1002-engine47",
+      "telemetry:engine47/sensor11/status@cycle214"
+    ],
+    "contexts": [
+      {
+        "doc_id": "fault-FC-HPC-001",
+        "section": "Primary signature (all should be present to raise the code)",
+        "score": 0.03227
+      },
+      {
+        "doc_id": "wo-1002-engine47",
+        "section": "Observation",
+        "score": 0.03178
+      },
+      {
+        "doc_id": "fault-code-reference",
+        "section": "Usage notes",
+        "score": 0.03175
+      },
+      {
+        "doc_id": "manual-hpc",
+        "section": "4. Alarm response",
+        "score": 0.03105
+      },
+      {
+        "doc_id": "wo-1002-engine47",
+        "section": "overview",
+        "score": 0.03101
+      },
+      {
+        "telemetry": "telemetry:engine47/sensor11/status@cycle214"
+      }
+    ],
+    "confidence": "high",
+    "abstained": false,
+    "latency_ms": 4240,
+    "cost_usd": 0.004541,
+    "total_tokens": 2489,
+    "n_calls": 4
+  },
+  {
+    "id": "g043",
+    "question": "Engine 24's HPC discharge temperature T30 is high \u2014 what's the fault and the procedure?",
+    "route": "fusion",
+    "route_blurb": "Answered from documents and sensor telemetry together.",
+    "difficulty": "medium",
+    "answer": "The fault for Engine 24 is HPC degradation, indicated by the fault code FC-HPC-001. The procedure involves inspecting for blade fouling, tip-clearance loss, and seal wear, correlating with Ps30 and phi. If two or more HPC parameters are in alarm, as they are here, the procedure is to re-baseline T30/Ps30 after a wash and escalate to module removal if still in alarm.",
+    "citations": [
+      "manual-hpc",
+      "wo-1001-engine24"
+    ],
+    "contexts": [
+      {
+        "doc_id": "manual-hpc",
+        "section": "4. Alarm response",
+        "score": 0.04717
+      },
+      {
+        "doc_id": "wo-1001-engine24",
+        "section": "Observation",
+        "score": 0.03279
+      },
+      {
+        "doc_id": "wo-1007-engine58",
+        "section": "Observation",
+        "score": 0.03128
+      },
+      {
+        "doc_id": "wo-1001-engine24",
+        "section": "overview",
+        "score": 0.03126
+      },
+      {
+        "doc_id": "wo-1001-engine24",
+        "section": "Status",
+        "score": 0.03041
+      },
+      {
+        "telemetry": "telemetry:engine24/sensor3/status@cycle147"
+      }
+    ],
+    "confidence": "high",
+    "abstained": false,
+    "latency_ms": 3519,
+    "cost_usd": 0.00402,
+    "total_tokens": 2331,
+    "n_calls": 4
+  },
+  {
+    "id": "g033",
+    "question": "Engine 91's LPT outlet temperature is elevated \u2014 what fault is this and what should we do?",
+    "route": "fusion",
+    "route_blurb": "Answered from documents and sensor telemetry together.",
+    "difficulty": "hard",
+    "answer": "The elevated LPT outlet temperature in Engine 91 is identified as an LPT over-temperature fault. The fault code associated with this condition is FC-LPT-001. The recommended action is to inspect for blade distress and exhaust-path blockage, as persistent high T50 is a leading indicator of end-of-life in engines with downstream degradation. Additionally, the LPT coolant bleed is below the threshold, indicating a need to inspect the cooling circuit and cross-check for a shared supply fault.",
+    "citations": [
+      "manual-lpt",
+      "wo-1009-engine91",
+      "telemetry:engine91/sensor4/status@cycle135"
+    ],
+    "contexts": [
+      {
+        "doc_id": "manual-lpt",
+        "section": "4. Alarm response",
+        "score": 0.04559
+      },
+      {
+        "doc_id": "wo-1009-engine91",
+        "section": "overview",
+        "score": 0.03252
+      },
+      {
+        "doc_id": "wo-1009-engine91",
+        "section": "Observation",
+        "score": 0.03227
+      },
+      {
+        "doc_id": "wo-1003-engine76",
+        "section": "Observation",
+        "score": 0.0315
+      },
+      {
+        "doc_id": "manual-lpt",
+        "section": "2. Monitored parameters",
+        "score": 0.03102
+      },
+      {
+        "telemetry": "telemetry:engine91/sensor4/status@cycle135"
+      }
+    ],
+    "confidence": "high",
+    "abstained": false,
+    "latency_ms": 2955,
+    "cost_usd": 0.004249,
+    "total_tokens": 2384,
+    "n_calls": 4
+  },
+  {
+    "id": "g048",
+    "question": "Show me the sensor trend for engine 999.",
+    "route": "out_of_scope",
+    "route_blurb": "Outside the copilot's knowledge \u2014 correctly abstained.",
+    "difficulty": "easy",
+    "answer": "I don't have enough information to answer that.",
+    "citations": [],
+    "contexts": [],
+    "confidence": "low",
+    "abstained": true,
+    "latency_ms": 856,
+    "cost_usd": 0.00019,
+    "total_tokens": 1099,
+    "n_calls": 1
+  },
+  {
+    "id": "g055",
+    "question": "What is sensor 45's reading on engine 10?",
+    "route": "out_of_scope",
+    "route_blurb": "Outside the copilot's knowledge \u2014 correctly abstained.",
+    "difficulty": "easy",
+    "answer": "I don't have enough information to answer that.",
+    "citations": [],
+    "contexts": [],
+    "confidence": "low",
+    "abstained": true,
+    "latency_ms": 869,
+    "cost_usd": 0.000189,
+    "total_tokens": 1098,
+    "n_calls": 1
+  },
+  {
+    "id": "g051",
+    "question": "Who won the 2022 World Cup?",
+    "route": "out_of_scope",
+    "route_blurb": "Outside the copilot's knowledge \u2014 correctly abstained.",
+    "difficulty": "easy",
+    "answer": "I don't have enough information to answer that.",
+    "citations": [],
+    "contexts": [],
+    "confidence": "low",
+    "abstained": true,
+    "latency_ms": 1207,
+    "cost_usd": 0.000189,
+    "total_tokens": 1096,
+    "n_calls": 1
+  }
+]

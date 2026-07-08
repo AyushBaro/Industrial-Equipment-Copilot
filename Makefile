@@ -1,6 +1,6 @@
 PY := ./.venv/bin/python
 
-.PHONY: data docs test all clean serve ui embed ask
+.PHONY: data docs test all clean serve ui demo demo-data embed ask
 
 # Build DuckDB + flat-sensor evidence + asset hierarchy from raw FD001 data.
 data:
@@ -36,6 +36,15 @@ serve:
 # Opens http://127.0.0.1:8501; renders answer + citations + provenance.
 ui:
 	$(PY) -m streamlit run src/ui.py
+
+# Cached public demo (no API key, no backend). Reads Data/demo/demo_qa.json.
+# This is what Streamlit Community Cloud serves. Opens http://127.0.0.1:8501.
+demo:
+	$(PY) -m streamlit run streamlit_app.py
+
+# Regenerate the cached demo dataset by running curated Qs through the live pipeline.
+demo-data:
+	$(PY) -m src.build_demo
 
 # --- Golden eval set (Phase 4) ---
 # Generate candidate rows with pre-filled proposed labels (offline, no API).
