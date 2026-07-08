@@ -1,32 +1,24 @@
 # Industrial Equipment Copilot
 
-**What it is.** An AI assistant that answers maintenance and troubleshooting questions
-about industrial equipment (jet engines, in this demo) by drawing on three very different
-kinds of data at once — live sensor readings, an equipment reference table, and written
-maintenance manuals and work orders. Every answer comes with citations to exactly where
-it came from.
+A maintenance question about a machine rarely has its answer in one place. Some of it is
+in the live sensor readings, some in an equipment spec sheet, and the rest is buried in
+manuals and old repair logs — three systems that don't talk to each other. Answering
+something like *"this sensor looks high, is it a known fault, and what do we do?"* usually
+means checking all three by hand.
 
-**The problem it solves.** In industrial settings, the information needed to answer a
-single question is scattered across systems that don't talk to each other: time-series
-sensor data in one place, equipment specs in another, and manuals and repair logs
-somewhere else. Answering something like *"this sensor looks high — is it a known fault,
-and what do we do?"* normally means cross-referencing all three by hand. This copilot does
-that fusion automatically. And because a wrong answer about equipment can be costly or
-dangerous, it is built to **say "I don't have enough information" when it isn't sure**
-instead of guessing.
+This is a copilot for industrial equipment (jet engines, in this demo) that does that
+cross-referencing for you and answers in one place, with a citation for every claim so you
+can check where it came from. Because a confident wrong answer about equipment can be
+expensive or unsafe, it's built to say *"I don't have enough information"* when the
+evidence is thin rather than guess.
 
-**What's technically interesting.** It routes each question to the right data source(s),
-combines database queries with hybrid document search (semantic + keyword), forces every
-claim to cite a real source, and then verifies those citations in code so it cannot
-fabricate one. When the evidence is weak, it abstains. All of it is wrapped in an
-automated evaluation harness with a hand-labeled answer key, so every change is measured
-rather than guessed at.
-
-**The measurable result.** Against a 50-question hand-labeled test set, it finds the right
-source **97% of the time (up from 80%)**, routes every question to the correct data source
-(**100%**), never makes an ungrounded claim (**100% faithful**), and **cut wrongful
-refusals by 73%** — all locked in by a regression test that blocks any change which would
-make these numbers worse.
+Under the hood it decides which sources a question needs, searches the documents by both
+meaning and exact keyword, and verifies in code that every citation points to something it
+actually retrieved — so it can't invent a source. What I care about most is that none of
+this is asserted on vibes: the whole system is graded against a hand-labeled set of 50
+questions, and a regression test blocks any change that makes it worse. On that set it now
+finds the right source 97% of the time (up from 80%), routes every question correctly, and
+made 73% fewer wrong refusals — without ever making an ungrounded claim.
 
 ---
 
