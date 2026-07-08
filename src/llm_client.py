@@ -13,7 +13,7 @@ from dataclasses import dataclass, field
 
 from dotenv import load_dotenv
 
-# Model assignments (see CLAUDE.md). Change here only.
+# Model assignments (OpenAI only). Change here only.
 MODEL_SYNTHESIS = "gpt-4o"
 MODEL_ROUTING = "gpt-4o-mini"
 MODEL_JUDGE = "gpt-4o"
