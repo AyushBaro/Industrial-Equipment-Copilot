@@ -28,3 +28,9 @@ chroma/
 .DS_Store
 .vscode/
 .idea/
+
+# Docs & notes — kept local; the only .md published is README.md.
+# (Data/corpus/*.md are the retrieval dataset, not docs — re-included below.)
+*.md
+!README.md
+!Data/corpus/*.md

@@ -1,23 +1,32 @@
-# Industrial Equipment RAG Copilot
+# Industrial Equipment Copilot
 
-A retrieval-augmented copilot that answers maintenance and troubleshooting questions by
-**fusing three heterogeneous industrial data sources** — real sensor telemetry, a
-structured asset hierarchy, and unstructured maintenance documents — into single,
-**grounded, cited** answers. It is built for a domain with **near-zero tolerance for
-hallucination**: every claim traces to a specific source, and when the evidence is thin
-the system **abstains** ("I don't have enough information") rather than guessing.
+**What it is.** An AI assistant that answers maintenance and troubleshooting questions
+about industrial equipment (jet engines, in this demo) by drawing on three very different
+kinds of data at once — live sensor readings, an equipment reference table, and written
+maintenance manuals and work orders. Every answer comes with citations to exactly where
+it came from.
 
-This is deliberately modeled on [Cognite's](https://www.cognite.com/) product problem:
-industrial data (sensors, work orders, manuals, asset models) stays fragmented and hard
-to query as a fused whole, and the valuable questions — *"is this sensor anomaly a known
-fault, and what's the procedure?"* — require combining live telemetry with documentation,
-cross-referenced through an asset model. The differentiator here is not the RAG plumbing;
-it is **trustworthiness you can measure**: forced citation, explicit abstention, and an
-evaluation harness wired into a regression test so every change produces a before/after
-number.
+**The problem it solves.** In industrial settings, the information needed to answer a
+single question is scattered across systems that don't talk to each other: time-series
+sensor data in one place, equipment specs in another, and manuals and repair logs
+somewhere else. Answering something like *"this sensor looks high — is it a known fault,
+and what do we do?"* normally means cross-referencing all three by hand. This copilot does
+that fusion automatically. And because a wrong answer about equipment can be costly or
+dangerous, it is built to **say "I don't have enough information" when it isn't sure**
+instead of guessing.
 
-> _(Author's note: this opening paragraph is a draft — rewrite it in your own voice for
-> the final portfolio version.)_
+**What's technically interesting.** It routes each question to the right data source(s),
+combines database queries with hybrid document search (semantic + keyword), forces every
+claim to cite a real source, and then verifies those citations in code so it cannot
+fabricate one. When the evidence is weak, it abstains. All of it is wrapped in an
+automated evaluation harness with a hand-labeled answer key, so every change is measured
+rather than guessed at.
+
+**The measurable result.** Against a 50-question hand-labeled test set, it finds the right
+source **97% of the time (up from 80%)**, routes every question to the correct data source
+(**100%**), never makes an ungrounded claim (**100% faithful**), and **cut wrongful
+refusals by 73%** — all locked in by a regression test that blocks any change which would
+make these numbers worse.
 
 ---
 
@@ -194,8 +203,7 @@ fails the build if any metric regresses below its floor or if a fixed bug creeps
 
 ## Failure case study
 
-The strongest evidence of real engineering is the honest failure analysis. Full writeup:
-**[`Project_Docs/case_study_retrieval_and_routing.md`](Project_Docs/case_study_retrieval_and_routing.md)**.
+The strongest evidence of real engineering is the honest failure analysis.
 
 The flagship fusion query — *"Engine 47 shows elevated Ps30 — is this a known fault and
 what does the manual say to do?"* — exposed four distinct bugs, each fixed with a measured
@@ -233,7 +241,7 @@ python3 -m venv .venv && ./.venv/bin/pip install -r requirements.txt
 cp .env.example .env        # then add your key: OPENAI_API_KEY=sk-...
 
 # 2. Get the data (gitignored) — NASA CMAPSS FD001 into Data/raw/CMAPSSData/
-#    See Project_Docs/PRD.md §3.1 for sources.
+#    Download from the NASA Prognostics Data Repository (search "CMAPSS").
 
 # 3. Build the data foundation + vector index
 make data        # DuckDB load · flat-sensor detection · asset hierarchy
@@ -313,13 +321,13 @@ src/
   eval/              golden-set generation, review, scoring, judge validation
   api.py             FastAPI backend
   ui.py              Streamlit UI
-tests/               phase 1–6 acceptance + regression suites
+  tests/             phase 1–6 acceptance + regression suites
+Data/corpus/         the 19 synthetic maintenance documents (the retrieval corpus)
 Data/eval/           golden.jsonl + scored reports
-Project_Docs/        PRD + failure case study
 ```
 
 ## Scope
 
 Single fault mode (FD001), single tenant, no auth or streaming, thin UI — this is a
 portfolio demonstration of trustworthy retrieval and rigorous evaluation, not a production
-system. See `Project_Docs/PRD.md` for the full spec and `steps.md` for the build log.
+system.
