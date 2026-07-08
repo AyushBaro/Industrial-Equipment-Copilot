@@ -27,6 +27,11 @@ RETRIEVAL_K = 5            # chunks returned by hybrid retrieval
 RRF_K = 60                 # reciprocal-rank-fusion constant
 ABSTAIN_MIN_RRF = 0.0      # if best fused score <= this, abstain (no chunks retrieved)
 
+# --- API (Phase 6) -----------------------------------------------------------
+APP_VERSION = "0.6.0"
+API_HOST = "127.0.0.1"
+API_PORT = 8100
+
 # --- CMAPSS (Phase 1 uses FD001 only) ---------------------------------------
 DATASET = "FD001"
 TRAIN_FILE = DATA_RAW / f"train_{DATASET}.txt"

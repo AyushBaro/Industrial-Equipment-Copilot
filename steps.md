@@ -217,9 +217,9 @@ validator green, committed.
 
 ## Phase 6 — Deploy + README  (Jul 8 – Jul 9)
 
-- ⬜ 🤖 FastAPI backend exposing the copilot
-- ⬜ 🤖 Streamlit/Gradio UI
-- ⬜ 🤖 Cost/latency logging per query (track OpenAI token usage)
+- ✅ 🤖 **FastAPI backend** (`src/api.py`, `make serve` → :8100, docs at `/docs`): `POST /ask` → grounded answer + citations + contexts + route + latency_ms; `/health`, `/`. Warms the index at startup; per-query latency logging. 4 offline + 1 live test (`tests/test_phase6.py`).
+- ⬜ 🤖 Streamlit/Gradio UI (calls `POST /ask`, renders answer + citations + provenance)
+- ⬜ 🤖 Cost logging per query — thread OpenAI token `usage` through `llm_client` (latency already logged)
 - ⬜ 👤 Write README intro (Cognite-style problem statement) + the failure case study in your own voice
 - ⬜ 🤖 Assemble README: eval table + architecture diagram **front and center**, then setup/run + synthetic-data transparency note
 

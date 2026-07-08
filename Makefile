@@ -28,6 +28,10 @@ test-live:
 ask:
 	$(PY) -m src.rag.pipeline "$(Q)"
 
+# Serve the copilot over HTTP (FastAPI + uvicorn). Interactive docs at /docs.
+serve:
+	$(PY) -m src.api
+
 # --- Golden eval set (Phase 4) ---
 # Generate candidate rows with pre-filled proposed labels (offline, no API).
 eval-generate:
