@@ -53,6 +53,30 @@ make eval-gate      # scores the live system vs. the golden set; fails on any re
 
 ## Architecture
 
+```mermaid
+flowchart TD
+    Q(["User query"]) --> R{{"Query router<br/>gpt-4o-mini · structured output<br/>+ extract engine / sensors / intent"}}
+
+    R -->|doc / fusion| DOC["Hybrid document retrieval<br/>dense (text-embedding-3-small) + BM25, fused with RRF<br/>fusion adds a manual / fault-code list as a 3rd RRF input"]
+    R -->|timeseries / fusion| TS["Bounded telemetry tools<br/>sensor_trend · sensor_status · engine_overview<br/>validated tool calls, no free-form SQL"]
+    R -->|out_of_scope| ABS["Abstain"]
+
+    DOC -. reads .-> CORPUS[("Chroma<br/>19 docs → 73 chunks<br/>manuals · fault codes · work orders")]
+    TS -. reads .-> DUCK[("DuckDB — CMAPSS FD001<br/>+ asset hierarchy")]
+
+    DOC --> SYN["Synthesis · gpt-4o<br/>grounded · citations REQUIRED<br/>every citation code-verified vs. retrieved context"]
+    TS --> SYN
+    SYN --> OUT(["Answer + citations + confidence + cost + latency"])
+    ABS --> OUT
+
+    classDef store fill:#eaeeff,stroke:#7d8cc4,color:#1b2447;
+    classDef guard fill:#e9f7ef,stroke:#5aa17f,color:#12341f;
+    class CORPUS,DUCK store;
+    class SYN,ABS guard;
+```
+
+<details><summary>Plain-text version (fallback if Mermaid doesn't render)</summary>
+
 ```
 User query
    │
@@ -78,6 +102,8 @@ Synthesis  (gpt-4o, grounded, citations REQUIRED)
    ▼
 Answer + citations (doc ids / telemetry handles) + confidence + cost + latency
 ```
+
+</details>
 
 ### Deliberate engineering decisions
 
