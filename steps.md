@@ -220,10 +220,10 @@ validator green, committed.
 - ✅ 🤖 **FastAPI backend** (`src/api.py`, `make serve` → :8100, docs at `/docs`): `POST /ask` → grounded answer + citations + contexts + route + latency_ms; `/health`, `/`. Warms the index at startup; per-query latency logging. 4 offline + 1 live test (`tests/test_phase6.py`).
 - ✅ 🤖 **Streamlit UI** (`src/ui.py`, `make ui` → :8501): question box + example prompts + k slider; renders route/confidence/latency, the grounded answer, citations, and a provenance expander (retrieved chunks + telemetry handles). Abstentions shown honestly. Verified end-to-end against the live API (doc/fusion/out-of-scope all render correctly).
 - ✅ 🤖 **Cost logging per query** — `llm_client` tallies OpenAI token `usage` + USD cost in a request-scoped `track_usage()` meter (contextvars, threadpool-safe). Pricing table lives beside the model names. `answer()` attaches a `usage` dict (tokens, cost_usd, per-model breakdown); the API returns it + logs `cost_usd`/`tokens` per query; the UI shows a **Cost** metric + breakdown. Verified live: fusion query = $0.0048, 4 calls (router + 2 embed + synth). 4 offline unit checks pass.
-- ⬜ 👤 Write README intro (Cognite-style problem statement) + the failure case study in your own voice
-- ⬜ 🤖 Assemble README: eval table + architecture diagram **front and center**, then setup/run + synthetic-data transparency note
+- 🔄 👤 Write README intro (Cognite-style problem statement) + the failure case study in your own voice — **draft in place** at the top of `README.md` (marked as a placeholder to rewrite in your voice)
+- ✅ 🤖 **Assemble README** (`README.md`): leads with the eval-results table (0.804→0.967 recall, 0.250→0.067 over-abstn) + an ASCII architecture diagram front and center, then data sources, query types, eval-harness + judge-validation methodology, the 4-finding failure case study, quickstart, make targets, model stack, layout, and a synthetic-data transparency note. All referenced targets/paths verified to resolve.
 
-**Checkpoint:** demo runs end-to-end; README leads with results.
+**Checkpoint:** ✅ demo runs end-to-end (API + UI verified live); README leads with results. Remaining: 👤 rewrite the intro paragraph in your own voice.
 
 ---
 
