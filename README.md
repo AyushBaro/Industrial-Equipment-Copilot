@@ -1,5 +1,8 @@
 # Industrial Equipment Copilot
 
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://industrial-equipment-copilot-kzigyjrj9jc7hc4htasaz2.streamlit.app)
+&nbsp;[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 A maintenance question about a machine rarely has its answer in one place. Some of it is
 in the live sensor readings, some in an equipment spec sheet, and the rest is buried in
 manuals and old repair logs — three systems that don't talk to each other. Answering
@@ -24,7 +27,9 @@ made 73% fewer wrong refusals — without ever making an ungrounded claim.
 
 ## Try it
 
-**▶ Live demo:** _<!-- paste your Streamlit Cloud URL here after deploying, e.g. https://industrial-equipment-copilot.streamlit.app -->_
+**▶ Live demo:** **https://industrial-equipment-copilot-kzigyjrj9jc7hc4htasaz2.streamlit.app**
+
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://industrial-equipment-copilot-kzigyjrj9jc7hc4htasaz2.streamlit.app)
 
 The hosted demo is a **cached** showcase — real, frozen pipeline outputs for a set of
 curated questions — so it needs no API key and can't run up a bill. For a live
